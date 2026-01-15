@@ -1,1 +1,0 @@
-# beeper-desktop-api-openapi
