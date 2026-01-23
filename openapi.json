@@ -385,6 +385,10 @@
       "Attachment": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "string",
+            "description": "Attachment identifier (typically an mxc:// URL). Use with /v1/assets/download to get a local file path."
+          },
           "type": {
             "type": "string",
             "enum": [
@@ -515,6 +519,22 @@
             "description": "A unique, sortable key used to sort messages.",
             "example": "821744079"
           },
+          "type": {
+            "type": "string",
+            "enum": [
+              "TEXT",
+              "NOTICE",
+              "IMAGE",
+              "VIDEO",
+              "VOICE",
+              "AUDIO",
+              "FILE",
+              "STICKER",
+              "LOCATION",
+              "REACTION"
+            ],
+            "description": "Message content type. Useful for distinguishing reactions, media messages, and state events from regular text messages."
+          },
           "text": {
             "type": "string",
             "description": "Plain-text body if present. May include a JSON fallback with text entities for rich messages."
@@ -533,6 +553,10 @@
           "isUnread": {
             "type": "boolean",
             "description": "True if the message is unread for the authenticated user. May be omitted."
+          },
+          "linkedMessageID": {
+            "type": "string",
+            "description": "ID of the message this is a reply to, if any."
           },
           "reactions": {
             "type": "array",
@@ -588,13 +612,7 @@
           },
           "title": {
             "type": "string",
-            "nullable": true,
-            "description": "Display title of the chat."
-          },
-          "description": {
-            "type": "string",
-            "nullable": true,
-            "description": "Description of the chat."
+            "description": "Display title of the chat as computed by the client/server."
           },
           "type": {
             "type": "string",
@@ -658,17 +676,18 @@
           },
           "isMuted": {
             "type": "boolean",
-            "description": "True if the chat is muted."
+            "description": "True if chat notifications are muted."
           },
           "isPinned": {
             "type": "boolean",
-            "description": "True if the chat is pinned."
+            "description": "True if chat is pinned."
           }
         },
         "required": [
           "id",
           "accountID",
           "network",
+          "title",
           "type",
           "participants",
           "unreadCount"
@@ -1159,7 +1178,7 @@
           "oldestCursor": {
             "type": "string",
             "nullable": true,
-            "description": "Timestamp cursor (ms since epoch) for fetching older results (use with direction='before').",
+            "description": "Cursor for fetching older results (use with direction='before'). Opaque string; do not inspect.",
             "example": "1725489123456",
             "x-stainless-pagination-property": {
               "purpose": "next_cursor_field"
@@ -1168,7 +1187,7 @@
           "newestCursor": {
             "type": "string",
             "nullable": true,
-            "description": "Timestamp cursor (ms since epoch) for fetching newer results (use with direction='after').",
+            "description": "Cursor for fetching newer results (use with direction='after'). Opaque string; do not inspect.",
             "example": "1725489123456",
             "x-stainless-pagination-property": {
               "purpose": "previous_cursor_field"
@@ -1241,7 +1260,7 @@
             "items": {
               "$ref": "#/components/schemas/Message"
             },
-            "description": "Messages from the chat, sorted by timestamp. Use message.sortKey as cursor for pagination.",
+            "description": "Messages from the chat, sorted by timestamp. Use message.sortKey as the cursor for pagination and treat it as an opaque value.",
             "x-stainless-pagination-property": {
               "purpose": "items"
             }
@@ -1281,6 +1300,88 @@
           "pendingMessageID": "m1694783291234567"
         }
       },
+      "MessageAttachmentType": {
+        "type": "string",
+        "enum": [
+          "gif",
+          "voiceNote",
+          "sticker"
+        ],
+        "description": "Special attachment type (gif, voiceNote, sticker). If omitted, auto-detected from mimeType"
+      },
+      "MessageAttachmentInput": {
+        "type": "object",
+        "properties": {
+          "uploadID": {
+            "type": "string",
+            "description": "Upload ID from uploadAsset endpoint. Required to reference uploaded files."
+          },
+          "mimeType": {
+            "type": "string",
+            "description": "MIME type (optional override of cached value)"
+          },
+          "fileName": {
+            "type": "string",
+            "description": "Filename (optional override of cached value)"
+          },
+          "size": {
+            "type": "object",
+            "properties": {
+              "width": {
+                "type": "number"
+              },
+              "height": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "width",
+              "height"
+            ],
+            "description": "Dimensions (optional override of cached value)"
+          },
+          "duration": {
+            "type": "number",
+            "description": "Duration in seconds (optional override of cached value)"
+          },
+          "type": {
+            "$ref": "#/components/schemas/MessageAttachmentType"
+          }
+        },
+        "required": [
+          "uploadID"
+        ],
+        "description": "Single attachment to send with the message"
+      },
+      "EditMessageOutput": {
+        "type": "object",
+        "properties": {
+          "chatID": {
+            "type": "string",
+            "description": "Unique identifier of the chat.",
+            "example": "!NCdzlIaMjZUmvmvyHU:beeper.com"
+          },
+          "messageID": {
+            "type": "string",
+            "description": "Message ID.",
+            "example": "1343993"
+          },
+          "success": {
+            "type": "boolean",
+            "description": "Whether the message was successfully edited"
+          }
+        },
+        "required": [
+          "chatID",
+          "messageID",
+          "success"
+        ],
+        "example": {
+          "chatID": "!signal_adamvy:local-signal.localhost",
+          "messageID": "1343993",
+          "success": true
+        }
+      },
       "DownloadAssetOutput": {
         "type": "object",
         "properties": {
@@ -1309,6 +1410,90 @@
         "example": {
           "url": "mxc://example.org/Q4x9CqGz1pB3Oa6XgJ"
         }
+      },
+      "UploadAssetOutput": {
+        "type": "object",
+        "properties": {
+          "uploadID": {
+            "type": "string",
+            "description": "Unique upload ID for this asset"
+          },
+          "srcURL": {
+            "type": "string",
+            "description": "Local file URL (file://) for the uploaded asset"
+          },
+          "fileName": {
+            "type": "string",
+            "description": "Resolved filename"
+          },
+          "mimeType": {
+            "type": "string",
+            "description": "Detected or provided MIME type"
+          },
+          "fileSize": {
+            "type": "number",
+            "description": "File size in bytes"
+          },
+          "width": {
+            "type": "number",
+            "description": "Width in pixels (images/videos)"
+          },
+          "height": {
+            "type": "number",
+            "description": "Height in pixels (images/videos)"
+          },
+          "duration": {
+            "type": "number",
+            "description": "Duration in seconds (audio/videos)"
+          },
+          "error": {
+            "type": "string",
+            "description": "Error message if upload failed"
+          }
+        }
+      },
+      "UploadAssetInput": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 750000000,
+            "description": "Base64-encoded file content (max ~500MB decoded)"
+          },
+          "fileName": {
+            "type": "string",
+            "description": "Original filename. Generated if omitted"
+          },
+          "mimeType": {
+            "type": "string",
+            "description": "MIME type. Auto-detected from magic bytes if omitted"
+          }
+        },
+        "required": [
+          "content"
+        ]
+      },
+      "UploadAssetMultipart": {
+        "type": "object",
+        "properties": {
+          "file": {
+            "type": "string",
+            "description": "The file to upload (max 500 MB).",
+            "format": "binary"
+          },
+          "fileName": {
+            "type": "string",
+            "description": "Original filename. Defaults to the uploaded file name if omitted"
+          },
+          "mimeType": {
+            "type": "string",
+            "description": "MIME type. Auto-detected from magic bytes if omitted"
+          }
+        },
+        "required": [
+          "file"
+        ]
       }
     },
     "parameters": {
@@ -1423,11 +1608,11 @@
             "schema": {
               "type": "string",
               "minLength": 0,
-              "description": "Literal word search (NOT semantic). Finds messages containing these EXACT words in any order. Use single words users actually type, not concepts or phrases. Example: use \"dinner\" not \"dinner plans\", use \"sick\" not \"health issues\". If omitted, returns results filtered only by other parameters.",
+              "description": "Literal word search (non-semantic). Finds messages containing these EXACT words in any order. Use single words users actually type, not concepts or phrases. Example: use \"dinner\" not \"dinner plans\", use \"sick\" not \"health issues\". If omitted, returns results filtered only by other parameters.",
               "example": "dinner"
             },
             "required": false,
-            "description": "Literal word search (NOT semantic). Finds messages containing these EXACT words in any order. Use single words users actually type, not concepts or phrases. Example: use \"dinner\" not \"dinner plans\", use \"sick\" not \"health issues\". If omitted, returns results filtered only by other parameters.",
+            "description": "Literal word search (non-semantic). Finds messages containing these EXACT words in any order. Use single words users actually type, not concepts or phrases. Example: use \"dinner\" not \"dinner plans\", use \"sick\" not \"health issues\". If omitted, returns results filtered only by other parameters.",
             "name": "query",
             "in": "query"
           },
@@ -1486,7 +1671,6 @@
               },
               "description": "Limit search to specific account IDs.",
               "example": [
-                "whatsapp",
                 "local-whatsapp_ba_EvYDBBsZbRQAy3UOSWqG0LuTVkc",
                 "local-instagram_ba_eRfQMmnSNy_p7Ih7HL7RduRpKFU"
               ]
@@ -1879,7 +2063,7 @@
     "/v1/accounts/{accountID}/contacts": {
       "get": {
         "summary": "Search contacts",
-        "description": "Search contacts across on a specific account using the network's search API. Only use for creating new chats.",
+        "description": "Search contacts on a specific account using the network's search API. Only use for creating new chats.",
         "tags": [
           "Contacts"
         ],
@@ -1971,10 +2155,10 @@
             "schema": {
               "type": "string",
               "minLength": 1,
-              "description": "User-typed search text. Literal word matching (NOT semantic)."
+              "description": "User-typed search text. Literal word matching (non-semantic)."
             },
             "required": true,
-            "description": "User-typed search text. Literal word matching (NOT semantic).",
+            "description": "User-typed search text. Literal word matching (non-semantic).",
             "name": "query",
             "in": "query"
           }
@@ -2123,7 +2307,6 @@
               },
               "description": "Limit to specific account IDs. If omitted, fetches from all accounts.",
               "example": [
-                "whatsapp",
                 "local-whatsapp_ba_EvYDBBsZbRQAy3UOSWqG0LuTVkc",
                 "local-instagram_ba_eRfQMmnSNy_p7Ih7HL7RduRpKFU"
               ]
@@ -2598,7 +2781,7 @@
       },
       "post": {
         "summary": "Send a message",
-        "description": "Send a text message to a specific chat. Supports replying to existing messages. Returns the sent message ID.",
+        "description": "Send a text message to a specific chat. Supports replying to existing messages. Returns a pending message ID.",
         "tags": [
           "Messages"
         ],
@@ -2634,6 +2817,9 @@
                   "replyToMessageID": {
                     "type": "string",
                     "description": "Provide a message ID to send this as a reply to an existing message"
+                  },
+                  "attachment": {
+                    "$ref": "#/components/schemas/MessageAttachmentInput"
                   }
                 }
               }
@@ -2647,6 +2833,95 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/SendMessageOutput"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/v1/chats/{chatID}/messages/{messageID}": {
+      "put": {
+        "summary": "Edit a message",
+        "description": "Edit the text content of an existing message. Messages with attachments cannot be edited.",
+        "tags": [
+          "Messages"
+        ],
+        "operationId": "editMessage",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "description": "Unique identifier of the chat.",
+              "example": "!NCdzlIaMjZUmvmvyHU:beeper.com"
+            },
+            "required": true,
+            "description": "Unique identifier of the chat.",
+            "name": "chatID",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID of the message to edit",
+            "name": "messageID",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "New text content for the message"
+                  }
+                },
+                "required": [
+                  "text"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request executed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EditMessageOutput"
                 }
               }
             }
@@ -2704,6 +2979,68 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DownloadAssetOutput"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/v1/assets/upload": {
+      "post": {
+        "summary": "Upload an asset",
+        "description": "Upload a file to a temporary location. Supports JSON body with base64 `content` field, or multipart/form-data with `file` field. Returns a local file URL that can be used when sending messages with attachments.",
+        "tags": [
+          "App"
+        ],
+        "operationId": "uploadAsset",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadAssetInput"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadAssetMultipart"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request executed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadAssetOutput"
                 }
               }
             }
