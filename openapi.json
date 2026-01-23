@@ -1452,6 +1452,27 @@
           }
         }
       },
+      "UploadAssetMultipart": {
+        "type": "object",
+        "properties": {
+          "file": {
+            "type": "string",
+            "description": "The file to upload (max 500 MB).",
+            "format": "binary"
+          },
+          "fileName": {
+            "type": "string",
+            "description": "Original filename. Defaults to the uploaded file name if omitted"
+          },
+          "mimeType": {
+            "type": "string",
+            "description": "MIME type. Auto-detected from magic bytes if omitted"
+          }
+        },
+        "required": [
+          "file"
+        ]
+      },
       "UploadAssetInput": {
         "type": "object",
         "properties": {
@@ -1472,27 +1493,6 @@
         },
         "required": [
           "content"
-        ]
-      },
-      "UploadAssetMultipart": {
-        "type": "object",
-        "properties": {
-          "file": {
-            "type": "string",
-            "description": "The file to upload (max 500 MB).",
-            "format": "binary"
-          },
-          "fileName": {
-            "type": "string",
-            "description": "Original filename. Defaults to the uploaded file name if omitted"
-          },
-          "mimeType": {
-            "type": "string",
-            "description": "MIME type. Auto-detected from magic bytes if omitted"
-          }
-        },
-        "required": [
-          "file"
         ]
       }
     },
@@ -3010,7 +3010,7 @@
     "/v1/assets/upload": {
       "post": {
         "summary": "Upload an asset",
-        "description": "Upload a file to a temporary location. Supports JSON body with base64 `content` field, or multipart/form-data with `file` field. Returns a local file URL that can be used when sending messages with attachments.",
+        "description": "Upload a file to a temporary location using multipart/form-data. Returns an uploadID that can be referenced when sending messages with attachments.",
         "tags": [
           "App"
         ],
@@ -3022,14 +3022,66 @@
         ],
         "requestBody": {
           "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UploadAssetInput"
-              }
-            },
             "multipart/form-data": {
               "schema": {
                 "$ref": "#/components/schemas/UploadAssetMultipart"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request executed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadAssetOutput"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/v1/assets/upload/base64": {
+      "post": {
+        "summary": "Upload an asset (base64)",
+        "description": "Upload a file using a JSON body with base64-encoded content. Returns an uploadID that can be referenced when sending messages with attachments. Alternative to the multipart upload endpoint.",
+        "tags": [
+          "App"
+        ],
+        "operationId": "uploadAssetBase64",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadAssetInput"
               }
             }
           }

@@ -1452,6 +1452,27 @@
           }
         }
       },
+      "UploadAssetMultipart": {
+        "type": "object",
+        "properties": {
+          "file": {
+            "type": "string",
+            "description": "The file to upload (max 500 MB).",
+            "format": "binary"
+          },
+          "fileName": {
+            "type": "string",
+            "description": "Original filename. Defaults to the uploaded file name if omitted"
+          },
+          "mimeType": {
+            "type": "string",
+            "description": "MIME type. Auto-detected from magic bytes if omitted"
+          }
+        },
+        "required": [
+          "file"
+        ]
+      },
       "UploadAssetInput": {
         "type": "object",
         "properties": {
@@ -1472,27 +1493,6 @@
         },
         "required": [
           "content"
-        ]
-      },
-      "UploadAssetMultipart": {
-        "type": "object",
-        "properties": {
-          "file": {
-            "type": "string",
-            "description": "The file to upload (max 500 MB).",
-            "format": "binary"
-          },
-          "fileName": {
-            "type": "string",
-            "description": "Original filename. Defaults to the uploaded file name if omitted"
-          },
-          "mimeType": {
-            "type": "string",
-            "description": "MIME type. Auto-detected from magic bytes if omitted"
-          }
-        },
-        "required": [
-          "file"
         ]
       }
     },
@@ -3298,7 +3298,7 @@
     "/v1/assets/upload": {
       "post": {
         "summary": "Upload an asset",
-        "description": "Upload a file to a temporary location. Supports JSON body with base64 `content` field, or multipart/form-data with `file` field. Returns a local file URL that can be used when sending messages with attachments.",
+        "description": "Upload a file to a temporary location using multipart/form-data. Returns an uploadID that can be referenced when sending messages with attachments.",
         "tags": [
           "App"
         ],
@@ -3310,11 +3310,6 @@
         ],
         "requestBody": {
           "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UploadAssetInput"
-              }
-            },
             "multipart/form-data": {
               "schema": {
                 "$ref": "#/components/schemas/UploadAssetMultipart"
@@ -3358,19 +3353,94 @@
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.assets.upload({ content: 'x' });\n\nconsole.log(response.width);"
+            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.assets.upload({ file: fs.createReadStream('path/to/file') });\n\nconsole.log(response.width);"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.assets.upload(\n    content=\"x\",\n)\nprint(response.width)"
+            "source": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.assets.upload(\n    file=b\"raw file contents\",\n)\nprint(response.width)"
           },
           {
             "lang": "Go",
-            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Assets.Upload(context.TODO(), beeperdesktopapi.AssetUploadParams{\n\t\tContent: \"x\",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.Width)\n}\n"
+            "source": "package main\n\nimport (\n\t\"bytes\"\n\t\"context\"\n\t\"fmt\"\n\t\"io\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Assets.Upload(context.TODO(), beeperdesktopapi.AssetUploadParams{\n\t\tFile: io.Reader(bytes.NewBuffer([]byte(\"some file contents\"))),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.Width)\n}\n"
           },
           {
             "lang": "cURL",
-            "source": "curl http://localhost:23373/v1/assets/upload \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"content\": \"x\"\n        }'"
+            "source": "curl http://localhost:23373/v1/assets/upload \\\n    -H 'Content-Type: multipart/form-data' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -F 'file=@/path/to/file'"
+          }
+        ]
+      }
+    },
+    "/v1/assets/upload/base64": {
+      "post": {
+        "summary": "Upload an asset (base64)",
+        "description": "Upload a file using a JSON body with base64-encoded content. Returns an uploadID that can be referenced when sending messages with attachments. Alternative to the multipart upload endpoint.",
+        "tags": [
+          "App"
+        ],
+        "operationId": "uploadAssetBase64",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadAssetInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request executed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadAssetOutput"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.assets.uploadBase64({ content: 'x' });\n\nconsole.log(response.width);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.assets.upload_base64(\n    content=\"x\",\n)\nprint(response.width)"
+          },
+          {
+            "lang": "Go",
+            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Assets.UploadBase64(context.TODO(), beeperdesktopapi.AssetUploadBase64Params{\n\t\tContent: \"x\",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.Width)\n}\n"
+          },
+          {
+            "lang": "cURL",
+            "source": "curl http://localhost:23373/v1/assets/upload/base64 \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"content\": \"x\"\n        }'"
           }
         ]
       }
