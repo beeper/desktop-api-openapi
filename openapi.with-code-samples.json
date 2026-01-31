@@ -325,8 +325,7 @@
           "network": {
             "type": "string",
             "description": "Display-only human-readable network name (e.g., 'WhatsApp', 'Messenger').",
-            "example": "WhatsApp",
-            "deprecated": true
+            "example": "WhatsApp"
           },
           "user": {
             "$ref": "#/components/schemas/User"
@@ -604,12 +603,6 @@
             "type": "string",
             "description": "Account ID this chat belongs to."
           },
-          "network": {
-            "type": "string",
-            "description": "Display-only human-readable network name (e.g., 'WhatsApp', 'Messenger').",
-            "example": "WhatsApp",
-            "deprecated": true
-          },
           "title": {
             "type": "string",
             "description": "Display title of the chat as computed by the client/server."
@@ -686,7 +679,6 @@
         "required": [
           "id",
           "accountID",
-          "network",
           "title",
           "type",
           "participants",
@@ -696,7 +688,6 @@
           "id": "!instagram_mattwondra:local-instagram.localhost",
           "localChatID": "1229391",
           "accountID": "local-instagram_ba_eRfQMmnSNy_p7Ih7HL7RduRpKFU",
-          "network": "Instagram",
           "title": "Matt Wondra",
           "type": "single",
           "participants": {
@@ -812,7 +803,6 @@
               "id": "!signal_adamvy:local-signal.localhost",
               "localChatID": "1229720",
               "accountID": "local-signal_ba_7N74FrU29pxij_TnqfxeUHj53FY",
-              "network": "Signal",
               "title": "Adam Van Ymeren",
               "type": "single",
               "participants": {
@@ -843,7 +833,6 @@
               "id": "!telegram_nick:local-telegram.localhost",
               "localChatID": "1229721",
               "accountID": "local-telegram_ba_QFrb5lrLPhO3OT5MFBeTWv0x4BI",
-              "network": "Telegram",
               "title": "Nick Mills-Barrett",
               "type": "single",
               "participants": {
@@ -927,7 +916,6 @@
               "id": "!KPFTtZYWuERwib8T702N9IfqiCc:ba_EvYDBBsZbRQAy3UOSWqG0LuTVkc.local-whatsapp.localhost",
               "localChatID": "1229391",
               "accountID": "local-whatsapp_ba_EvYDBBsZbRQAy3UOSWqG0LuTVkc",
-              "network": "WhatsApp",
               "title": "Kishan Bagaria",
               "type": "single",
               "participants": {
@@ -954,7 +942,6 @@
               "id": "!nZeX7dh67_RaPnmWGJIjUkV2svE:ba_sXf0adnbr287.local-telegram.localhost",
               "localChatID": "1229078",
               "accountID": "local-telegram_ba_sXf0adnbr287_pRup35Tgl-lsIg",
-              "network": "Telegram",
               "title": "Brad Murray",
               "type": "single",
               "participants": {
@@ -981,7 +968,6 @@
               "id": "!twitter_dm_photomatt:local-twitter.localhost",
               "localChatID": "1228956",
               "accountID": "local-twitter_ba_gUU1IHNGo_CsTZLp0vDFUYk9EuE",
-              "network": "Twitter/X",
               "title": "Matt Mullenweg",
               "type": "single",
               "participants": {
@@ -1132,7 +1118,6 @@
                 "id": "!instagram_mattwondra:local-instagram.localhost",
                 "localChatID": "1229391",
                 "accountID": "local-instagram_ba_eRfQMmnSNy_p7Ih7HL7RduRpKFU",
-                "network": "Instagram",
                 "title": "Matt Wondra",
                 "type": "single",
                 "participants": {
@@ -1250,6 +1235,21 @@
           "accountID",
           "type",
           "participantIDs"
+        ]
+      },
+      "SuccessResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "enum": [
+              true
+            ],
+            "description": "Indicates the operation completed successfully"
+          }
+        },
+        "required": [
+          "success"
         ]
       },
       "ListMessagesOutput": {
@@ -2688,8 +2688,15 @@
           }
         },
         "responses": {
-          "204": {
-            "description": "Request executed successfully"
+          "200": {
+            "description": "Request executed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
           },
           "400": {
             "$ref": "#/components/responses/BadRequest"
@@ -2716,15 +2723,15 @@
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nawait client.chats.archive('!NCdzlIaMjZUmvmvyHU:beeper.com');"
+            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.chats.archive('!NCdzlIaMjZUmvmvyHU:beeper.com');\n\nconsole.log(response.success);"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nclient.chats.archive(\n    chat_id=\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n)"
+            "source": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.chats.archive(\n    chat_id=\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n)\nprint(response.success)"
           },
           {
             "lang": "Go",
-            "source": "package main\n\nimport (\n\t\"context\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\terr := client.Chats.Archive(\n\t\tcontext.TODO(),\n\t\t\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n\t\tbeeperdesktopapi.ChatArchiveParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n"
+            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Chats.Archive(\n\t\tcontext.TODO(),\n\t\t\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n\t\tbeeperdesktopapi.ChatArchiveParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.Success)\n}\n"
           },
           {
             "lang": "cURL",
@@ -2791,8 +2798,15 @@
           }
         },
         "responses": {
-          "204": {
-            "description": "Request executed successfully"
+          "200": {
+            "description": "Request executed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
           },
           "400": {
             "$ref": "#/components/responses/BadRequest"
@@ -2819,15 +2833,15 @@
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nawait client.chats.reminders.create('!NCdzlIaMjZUmvmvyHU:beeper.com', {\n  reminder: { remindAtMs: 0 },\n});"
+            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst reminder = await client.chats.reminders.create('!NCdzlIaMjZUmvmvyHU:beeper.com', {\n  reminder: { remindAtMs: 0 },\n});\n\nconsole.log(reminder.success);"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nclient.chats.reminders.create(\n    chat_id=\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n    reminder={\n        \"remind_at_ms\": 0\n    },\n)"
+            "source": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nreminder = client.chats.reminders.create(\n    chat_id=\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n    reminder={\n        \"remind_at_ms\": 0\n    },\n)\nprint(reminder.success)"
           },
           {
             "lang": "Go",
-            "source": "package main\n\nimport (\n\t\"context\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\terr := client.Chats.Reminders.New(\n\t\tcontext.TODO(),\n\t\t\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n\t\tbeeperdesktopapi.ChatReminderNewParams{\n\t\t\tReminder: beeperdesktopapi.ChatReminderNewParamsReminder{\n\t\t\t\tRemindAtMs: 0,\n\t\t\t},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n"
+            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\treminder, err := client.Chats.Reminders.New(\n\t\tcontext.TODO(),\n\t\t\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n\t\tbeeperdesktopapi.ChatReminderNewParams{\n\t\t\tReminder: beeperdesktopapi.ChatReminderNewParamsReminder{\n\t\t\t\tRemindAtMs: 0,\n\t\t\t},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", reminder.Success)\n}\n"
           },
           {
             "lang": "cURL",
@@ -2861,8 +2875,15 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "Request executed successfully"
+          "200": {
+            "description": "Request executed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
           },
           "400": {
             "$ref": "#/components/responses/BadRequest"
@@ -2889,15 +2910,15 @@
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nawait client.chats.reminders.delete('!NCdzlIaMjZUmvmvyHU:beeper.com');"
+            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst reminder = await client.chats.reminders.delete('!NCdzlIaMjZUmvmvyHU:beeper.com');\n\nconsole.log(reminder.success);"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nclient.chats.reminders.delete(\n    \"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n)"
+            "source": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nreminder = client.chats.reminders.delete(\n    \"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n)\nprint(reminder.success)"
           },
           {
             "lang": "Go",
-            "source": "package main\n\nimport (\n\t\"context\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\terr := client.Chats.Reminders.Delete(context.TODO(), \"!NCdzlIaMjZUmvmvyHU:beeper.com\")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n"
+            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\treminder, err := client.Chats.Reminders.Delete(context.TODO(), \"!NCdzlIaMjZUmvmvyHU:beeper.com\")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", reminder.Success)\n}\n"
           },
           {
             "lang": "cURL",
@@ -3291,6 +3312,78 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/assets/download \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"url\": \"mxc://example.org/Q4x9CqGz1pB3Oa6XgJ\"\n        }'"
+          }
+        ]
+      }
+    },
+    "/v1/assets/serve": {
+      "get": {
+        "summary": "Serve an asset",
+        "description": "Stream a file given an mxc://, localmxc://, or file:// URL. Downloads first if not cached. Supports Range requests for seeking in large files.",
+        "tags": [
+          "App"
+        ],
+        "operationId": "serveAsset",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Asset URL to serve. Accepts mxc://, localmxc://, or file:// URLs."
+            },
+            "required": true,
+            "description": "Asset URL to serve. Accepts mxc://, localmxc://, or file:// URLs.",
+            "name": "url",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Request executed successfully"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nawait client.assets.serve({ url: 'x' });"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nclient.assets.serve(\n    url=\"x\",\n)"
+          },
+          {
+            "lang": "Go",
+            "source": "package main\n\nimport (\n\t\"context\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\terr := client.Assets.Serve(context.TODO(), beeperdesktopapi.AssetServeParams{\n\t\tURL: \"x\",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n"
+          },
+          {
+            "lang": "cURL",
+            "source": "curl http://localhost:23373/v1/assets/serve \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
           }
         ]
       }

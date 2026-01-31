@@ -325,8 +325,7 @@
           "network": {
             "type": "string",
             "description": "Display-only human-readable network name (e.g., 'WhatsApp', 'Messenger').",
-            "example": "WhatsApp",
-            "deprecated": true
+            "example": "WhatsApp"
           },
           "user": {
             "$ref": "#/components/schemas/User"
@@ -604,12 +603,6 @@
             "type": "string",
             "description": "Account ID this chat belongs to."
           },
-          "network": {
-            "type": "string",
-            "description": "Display-only human-readable network name (e.g., 'WhatsApp', 'Messenger').",
-            "example": "WhatsApp",
-            "deprecated": true
-          },
           "title": {
             "type": "string",
             "description": "Display title of the chat as computed by the client/server."
@@ -686,7 +679,6 @@
         "required": [
           "id",
           "accountID",
-          "network",
           "title",
           "type",
           "participants",
@@ -696,7 +688,6 @@
           "id": "!instagram_mattwondra:local-instagram.localhost",
           "localChatID": "1229391",
           "accountID": "local-instagram_ba_eRfQMmnSNy_p7Ih7HL7RduRpKFU",
-          "network": "Instagram",
           "title": "Matt Wondra",
           "type": "single",
           "participants": {
@@ -812,7 +803,6 @@
               "id": "!signal_adamvy:local-signal.localhost",
               "localChatID": "1229720",
               "accountID": "local-signal_ba_7N74FrU29pxij_TnqfxeUHj53FY",
-              "network": "Signal",
               "title": "Adam Van Ymeren",
               "type": "single",
               "participants": {
@@ -843,7 +833,6 @@
               "id": "!telegram_nick:local-telegram.localhost",
               "localChatID": "1229721",
               "accountID": "local-telegram_ba_QFrb5lrLPhO3OT5MFBeTWv0x4BI",
-              "network": "Telegram",
               "title": "Nick Mills-Barrett",
               "type": "single",
               "participants": {
@@ -927,7 +916,6 @@
               "id": "!KPFTtZYWuERwib8T702N9IfqiCc:ba_EvYDBBsZbRQAy3UOSWqG0LuTVkc.local-whatsapp.localhost",
               "localChatID": "1229391",
               "accountID": "local-whatsapp_ba_EvYDBBsZbRQAy3UOSWqG0LuTVkc",
-              "network": "WhatsApp",
               "title": "Kishan Bagaria",
               "type": "single",
               "participants": {
@@ -954,7 +942,6 @@
               "id": "!nZeX7dh67_RaPnmWGJIjUkV2svE:ba_sXf0adnbr287.local-telegram.localhost",
               "localChatID": "1229078",
               "accountID": "local-telegram_ba_sXf0adnbr287_pRup35Tgl-lsIg",
-              "network": "Telegram",
               "title": "Brad Murray",
               "type": "single",
               "participants": {
@@ -981,7 +968,6 @@
               "id": "!twitter_dm_photomatt:local-twitter.localhost",
               "localChatID": "1228956",
               "accountID": "local-twitter_ba_gUU1IHNGo_CsTZLp0vDFUYk9EuE",
-              "network": "Twitter/X",
               "title": "Matt Mullenweg",
               "type": "single",
               "participants": {
@@ -1132,7 +1118,6 @@
                 "id": "!instagram_mattwondra:local-instagram.localhost",
                 "localChatID": "1229391",
                 "accountID": "local-instagram_ba_eRfQMmnSNy_p7Ih7HL7RduRpKFU",
-                "network": "Instagram",
                 "title": "Matt Wondra",
                 "type": "single",
                 "participants": {
@@ -1250,6 +1235,21 @@
           "accountID",
           "type",
           "participantIDs"
+        ]
+      },
+      "SuccessResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "enum": [
+              true
+            ],
+            "description": "Indicates the operation completed successfully"
+          }
+        },
+        "required": [
+          "success"
         ]
       },
       "ListMessagesOutput": {
@@ -2526,8 +2526,15 @@
           }
         },
         "responses": {
-          "204": {
-            "description": "Request executed successfully"
+          "200": {
+            "description": "Request executed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
           },
           "400": {
             "$ref": "#/components/responses/BadRequest"
@@ -2611,8 +2618,15 @@
           }
         },
         "responses": {
-          "204": {
-            "description": "Request executed successfully"
+          "200": {
+            "description": "Request executed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
           },
           "400": {
             "$ref": "#/components/responses/BadRequest"
@@ -2663,8 +2677,15 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "Request executed successfully"
+          "200": {
+            "description": "Request executed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
           },
           "400": {
             "$ref": "#/components/responses/BadRequest"
@@ -2982,6 +3003,60 @@
                 }
               }
             }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/v1/assets/serve": {
+      "get": {
+        "summary": "Serve an asset",
+        "description": "Stream a file given an mxc://, localmxc://, or file:// URL. Downloads first if not cached. Supports Range requests for seeking in large files.",
+        "tags": [
+          "App"
+        ],
+        "operationId": "serveAsset",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Asset URL to serve. Accepts mxc://, localmxc://, or file:// URLs."
+            },
+            "required": true,
+            "description": "Asset URL to serve. Accepts mxc://, localmxc://, or file:// URLs.",
+            "name": "url",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Request executed successfully"
           },
           "400": {
             "$ref": "#/components/responses/BadRequest"
