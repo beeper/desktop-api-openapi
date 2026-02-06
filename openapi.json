@@ -10,10 +10,7 @@
       "email": "help@beeper.com",
       "url": "https://www.beeper.com"
     },
-    "license": {
-      "name": "MIT",
-      "url": "https://opensource.org/licenses/MIT"
-    }
+    "license": { "name": "MIT", "url": "https://opensource.org/licenses/MIT" }
   },
   "servers": [
     {
@@ -21,32 +18,16 @@
       "description": "Beeper Desktop API server"
     }
   ],
-  "security": [
-    {
-      "bearerAuth": []
-    }
-  ],
+  "security": [{ "bearerAuth": [] }],
   "tags": [
     {
       "name": "Accounts",
       "description": "Manage connected messaging accounts"
     },
-    {
-      "name": "App",
-      "description": "Control the Beeper Desktop application"
-    },
-    {
-      "name": "Messages",
-      "description": "Send and search messages"
-    },
-    {
-      "name": "Chats",
-      "description": "Manage chats and conversations"
-    },
-    {
-      "name": "Reminders",
-      "description": "Set reminders for chats"
-    },
+    { "name": "App", "description": "Control the Beeper Desktop application" },
+    { "name": "Messages", "description": "Send and search messages" },
+    { "name": "Chats", "description": "Manage chats and conversations" },
+    { "name": "Reminders", "description": "Set reminders for chats" },
     {
       "name": "OAuth",
       "description": "OAuth2 authentication and token management"
@@ -62,9 +43,7 @@
         "description": "Invalid request parameters",
         "content": {
           "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/Error"
-            }
+            "schema": { "$ref": "#/components/schemas/Error" }
           }
         }
       },
@@ -72,9 +51,7 @@
         "description": "Access token is missing or invalid",
         "content": {
           "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/Error"
-            }
+            "schema": { "$ref": "#/components/schemas/Error" }
           }
         }
       },
@@ -82,9 +59,7 @@
         "description": "Access token does not have the required scope",
         "content": {
           "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/Error"
-            }
+            "schema": { "$ref": "#/components/schemas/Error" }
           }
         }
       },
@@ -92,9 +67,7 @@
         "description": "Resource not found",
         "content": {
           "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/Error"
-            }
+            "schema": { "$ref": "#/components/schemas/Error" }
           }
         }
       },
@@ -102,9 +75,7 @@
         "description": "Unprocessable entity - validation error",
         "content": {
           "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/Error"
-            }
+            "schema": { "$ref": "#/components/schemas/Error" }
           }
         }
       },
@@ -112,9 +83,7 @@
         "description": "Too many requests - rate limit exceeded",
         "content": {
           "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/Error"
-            }
+            "schema": { "$ref": "#/components/schemas/Error" }
           }
         }
       },
@@ -122,9 +91,7 @@
         "description": "Internal server error",
         "content": {
           "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/Error"
-            }
+            "schema": { "$ref": "#/components/schemas/Error" }
           }
         }
       }
@@ -132,10 +99,7 @@
     "headers": {
       "X-Beeper-Desktop-Version": {
         "description": "Beeper Desktop application version providing this response.",
-        "schema": {
-          "type": "string",
-          "example": "4.0.0"
-        }
+        "schema": { "type": "string", "example": "4.0.0" }
       }
     },
     "securitySchemes": {
@@ -163,10 +127,7 @@
       "Error": {
         "type": "object",
         "properties": {
-          "message": {
-            "type": "string",
-            "description": "Error message"
-          },
+          "message": { "type": "string", "description": "Error message" },
           "code": {
             "type": "string",
             "description": "Machine-readable error code"
@@ -194,33 +155,20 @@
                           "type": "array",
                           "items": {
                             "anyOf": [
-                              {
-                                "type": "string"
-                              },
-                              {
-                                "type": "number"
-                              }
+                              { "type": "string" },
+                              { "type": "number" }
                             ]
                           },
                           "description": "Path pointing to the invalid field within the payload",
-                          "example": [
-                            "body",
-                            "chatID"
-                          ]
+                          "example": ["body", "chatID"]
                         }
                       },
-                      "required": [
-                        "code",
-                        "message",
-                        "path"
-                      ]
+                      "required": ["code", "message", "path"]
                     },
                     "description": "List of validation issues"
                   }
                 },
-                "required": [
-                  "issues"
-                ],
+                "required": ["issues"],
                 "description": "Validation error details"
               },
               {
@@ -236,17 +184,12 @@
                 "description": "Arbitrary details payload supplied by the server",
                 "x-stainless-any": true
               },
-              {
-                "nullable": true
-              }
+              { "nullable": true }
             ],
             "description": "Additional error details for debugging"
           }
         },
-        "required": [
-          "message",
-          "code"
-        ]
+        "required": ["message", "code"]
       },
       "ChatID": {
         "type": "string",
@@ -261,16 +204,11 @@
         "type": "string",
         "description": "Opaque pagination cursor; do not inspect. Use together with 'direction'.",
         "example": "1725489123456|c29tZUltc2dQYWdl",
-        "x-stainless-pagination-property": {
-          "purpose": "next_cursor_param"
-        }
+        "x-stainless-pagination-property": { "purpose": "next_cursor_param" }
       },
       "Direction": {
         "type": "string",
-        "enum": [
-          "after",
-          "before"
-        ],
+        "enum": ["after", "before"],
         "description": "Pagination direction used with 'cursor': 'before' fetches older results, 'after' fetches newer results. Defaults to 'before' when only 'cursor' is provided.",
         "example": "before"
       },
@@ -310,9 +248,7 @@
             "description": "True if this user represents the authenticated account's own identity."
           }
         },
-        "required": [
-          "id"
-        ],
+        "required": ["id"],
         "description": "User the account belongs to."
       },
       "Account": {
@@ -327,22 +263,14 @@
             "description": "Display-only human-readable network name (e.g., 'WhatsApp', 'Messenger').",
             "example": "WhatsApp"
           },
-          "user": {
-            "$ref": "#/components/schemas/User"
-          }
+          "user": { "$ref": "#/components/schemas/User" }
         },
-        "required": [
-          "accountID",
-          "network",
-          "user"
-        ],
+        "required": ["accountID", "network", "user"],
         "description": "A chat account added to Beeper"
       },
       "GetAccountsOutput": {
         "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/Account"
-        },
+        "items": { "$ref": "#/components/schemas/Account" },
         "description": "Connected accounts the user can act through. Includes accountID, network, and user identity.",
         "example": [
           {
@@ -390,12 +318,7 @@
           },
           "type": {
             "type": "string",
-            "enum": [
-              "unknown",
-              "img",
-              "video",
-              "audio"
-            ],
+            "enum": ["unknown", "img", "video", "audio"],
             "description": "Attachment type."
           },
           "srcURL": {
@@ -437,19 +360,13 @@
           "size": {
             "type": "object",
             "properties": {
-              "width": {
-                "type": "number"
-              },
-              "height": {
-                "type": "number"
-              }
+              "width": { "type": "number" },
+              "height": { "type": "number" }
             },
             "description": "Pixel dimensions of the attachment: width/height in px."
           }
         },
-        "required": [
-          "type"
-        ]
+        "required": ["type"]
       },
       "Reaction": {
         "type": "object",
@@ -475,11 +392,7 @@
             "description": "True if the reactionKey is an emoji."
           }
         },
-        "required": [
-          "id",
-          "reactionKey",
-          "participantID"
-        ]
+        "required": ["id", "reactionKey", "participantID"]
       },
       "Message": {
         "type": "object",
@@ -544,9 +457,7 @@
           },
           "attachments": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Attachment"
-            },
+            "items": { "$ref": "#/components/schemas/Attachment" },
             "description": "Attachments included with this message, if any."
           },
           "isUnread": {
@@ -559,9 +470,7 @@
           },
           "reactions": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Reaction"
-            },
+            "items": { "$ref": "#/components/schemas/Reaction" },
             "description": "Reactions to the message, if any."
           }
         },
@@ -609,10 +518,7 @@
           },
           "type": {
             "type": "string",
-            "enum": [
-              "single",
-              "group"
-            ],
+            "enum": ["single", "group"],
             "description": "Chat type: 'single' for direct messages, 'group' for group chats."
           },
           "participants": {
@@ -622,9 +528,7 @@
                 "type": "array",
                 "items": {
                   "allOf": [
-                    {
-                      "$ref": "#/components/schemas/User"
-                    },
+                    { "$ref": "#/components/schemas/User" },
                     {
                       "description": "A person on or reachable through Beeper. Values are best-effort and can vary by network."
                     }
@@ -641,11 +545,7 @@
                 "description": "Total number of participants in the chat."
               }
             },
-            "required": [
-              "items",
-              "hasMore",
-              "total"
-            ],
+            "required": ["items", "hasMore", "total"],
             "description": "Chat participants information."
           },
           "lastActivity": {
@@ -723,27 +623,19 @@
         "properties": {
           "items": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Message"
-            },
+            "items": { "$ref": "#/components/schemas/Message" },
             "description": "Messages matching the query and filters.",
-            "x-stainless-pagination-property": {
-              "purpose": "items"
-            }
+            "x-stainless-pagination-property": { "purpose": "items" }
           },
           "chats": {
             "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/Chat"
-            },
+            "additionalProperties": { "$ref": "#/components/schemas/Chat" },
             "description": "Map of chatID -> chat details for chats referenced in items."
           },
           "hasMore": {
             "type": "boolean",
             "description": "True if additional results can be fetched using the provided cursors.",
-            "x-stainless-pagination-property": {
-              "purpose": "has_next_page"
-            }
+            "x-stainless-pagination-property": { "purpose": "has_next_page" }
           },
           "oldestCursor": {
             "type": "string",
@@ -872,20 +764,14 @@
         "properties": {
           "items": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Chat"
-            },
+            "items": { "$ref": "#/components/schemas/Chat" },
             "description": "Chats matching the filters.",
-            "x-stainless-pagination-property": {
-              "purpose": "items"
-            }
+            "x-stainless-pagination-property": { "purpose": "items" }
           },
           "hasMore": {
             "type": "boolean",
             "description": "True if additional results can be fetched using the provided cursors.",
-            "x-stainless-pagination-property": {
-              "purpose": "has_next_page"
-            }
+            "x-stainless-pagination-property": { "purpose": "has_next_page" }
           },
           "oldestCursor": {
             "type": "string",
@@ -904,12 +790,7 @@
             }
           }
         },
-        "required": [
-          "items",
-          "hasMore",
-          "oldestCursor",
-          "newestCursor"
-        ],
+        "required": ["items", "hasMore", "oldestCursor", "newestCursor"],
         "example": {
           "items": [
             {
@@ -1003,9 +884,7 @@
             "type": "array",
             "items": {
               "allOf": [
-                {
-                  "$ref": "#/components/schemas/User"
-                },
+                { "$ref": "#/components/schemas/User" },
                 {
                   "description": "A person on or reachable through Beeper. Values are best-effort and can vary by network."
                 }
@@ -1013,9 +892,7 @@
             }
           }
         },
-        "required": [
-          "items"
-        ]
+        "required": ["items"]
       },
       "UnifiedSearchOutput": {
         "type": "object",
@@ -1025,32 +902,22 @@
             "properties": {
               "chats": {
                 "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/Chat"
-                },
+                "items": { "$ref": "#/components/schemas/Chat" },
                 "description": "Top chat results."
               },
               "in_groups": {
                 "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/Chat"
-                },
+                "items": { "$ref": "#/components/schemas/Chat" },
                 "description": "Top group results by participant matches."
               },
               "messages": {
                 "$ref": "#/components/schemas/SearchMessagesOutput"
               }
             },
-            "required": [
-              "chats",
-              "in_groups",
-              "messages"
-            ]
+            "required": ["chats", "in_groups", "messages"]
           }
         },
-        "required": [
-          "results"
-        ]
+        "required": ["results"]
       },
       "FocusAppOutput": {
         "type": "object",
@@ -1060,9 +927,7 @@
             "description": "Whether the app was successfully opened/focused."
           }
         },
-        "required": [
-          "success"
-        ],
+        "required": ["success"],
         "description": "Response indicating successful app focus action."
       },
       "FocusAppInput": {
@@ -1095,17 +960,13 @@
             "type": "array",
             "items": {
               "allOf": [
-                {
-                  "$ref": "#/components/schemas/Chat"
-                },
+                { "$ref": "#/components/schemas/Chat" },
                 {
                   "type": "object",
                   "properties": {
                     "preview": {
                       "allOf": [
-                        {
-                          "$ref": "#/components/schemas/Message"
-                        },
+                        { "$ref": "#/components/schemas/Message" },
                         {
                           "description": "Last message preview for this chat, if available."
                         }
@@ -1149,16 +1010,12 @@
               }
             },
             "description": "Chats ordered by last activity timestamp (most recent first).",
-            "x-stainless-pagination-property": {
-              "purpose": "items"
-            }
+            "x-stainless-pagination-property": { "purpose": "items" }
           },
           "hasMore": {
             "type": "boolean",
             "description": "True if additional results can be fetched using the provided cursors.",
-            "x-stainless-pagination-property": {
-              "purpose": "has_next_page"
-            }
+            "x-stainless-pagination-property": { "purpose": "has_next_page" }
           },
           "oldestCursor": {
             "type": "string",
@@ -1179,12 +1036,7 @@
             }
           }
         },
-        "required": [
-          "items",
-          "hasMore",
-          "oldestCursor",
-          "newestCursor"
-        ]
+        "required": ["items", "hasMore", "oldestCursor", "newestCursor"]
       },
       "CreateChatOutput": {
         "type": "object",
@@ -1195,9 +1047,7 @@
             "example": "!NCdzlIaMjZUmvmvyHU:beeper.com"
           }
         },
-        "required": [
-          "chatID"
-        ]
+        "required": ["chatID"]
       },
       "CreateChatInput": {
         "type": "object",
@@ -1208,17 +1058,12 @@
           },
           "type": {
             "type": "string",
-            "enum": [
-              "single",
-              "group"
-            ],
+            "enum": ["single", "group"],
             "description": "Chat type to create: 'single' requires exactly one participantID; 'group' supports multiple participants and optional title."
           },
           "participantIDs": {
             "type": "array",
-            "items": {
-              "type": "string"
-            },
+            "items": { "type": "string" },
             "minItems": 1,
             "description": "User IDs to include in the new chat."
           },
@@ -1231,52 +1076,35 @@
             "description": "Optional first message content if the platform requires it to create the chat."
           }
         },
-        "required": [
-          "accountID",
-          "type",
-          "participantIDs"
-        ]
+        "required": ["accountID", "type", "participantIDs"]
       },
       "SuccessResponse": {
         "type": "object",
         "properties": {
           "success": {
             "type": "boolean",
-            "enum": [
-              true
-            ],
+            "enum": [true],
             "description": "Indicates the operation completed successfully"
           }
         },
-        "required": [
-          "success"
-        ]
+        "required": ["success"]
       },
       "ListMessagesOutput": {
         "type": "object",
         "properties": {
           "items": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Message"
-            },
+            "items": { "$ref": "#/components/schemas/Message" },
             "description": "Messages from the chat, sorted by timestamp. Use message.sortKey as the cursor for pagination and treat it as an opaque value.",
-            "x-stainless-pagination-property": {
-              "purpose": "items"
-            }
+            "x-stainless-pagination-property": { "purpose": "items" }
           },
           "hasMore": {
             "type": "boolean",
             "description": "True if additional results can be fetched.",
-            "x-stainless-pagination-property": {
-              "purpose": "has_next_page"
-            }
+            "x-stainless-pagination-property": { "purpose": "has_next_page" }
           }
         },
-        "required": [
-          "items",
-          "hasMore"
-        ]
+        "required": ["items", "hasMore"]
       },
       "SendMessageOutput": {
         "type": "object",
@@ -1291,10 +1119,7 @@
             "description": "Pending message ID"
           }
         },
-        "required": [
-          "chatID",
-          "pendingMessageID"
-        ],
+        "required": ["chatID", "pendingMessageID"],
         "example": {
           "chatID": "!signal_adamvy:local-signal.localhost",
           "pendingMessageID": "m1694783291234567"
@@ -1302,11 +1127,7 @@
       },
       "MessageAttachmentType": {
         "type": "string",
-        "enum": [
-          "gif",
-          "voiceNote",
-          "sticker"
-        ],
+        "enum": ["gif", "voiceNote", "sticker"],
         "description": "Special attachment type (gif, voiceNote, sticker). If omitted, auto-detected from mimeType"
       },
       "MessageAttachmentInput": {
@@ -1327,30 +1148,19 @@
           "size": {
             "type": "object",
             "properties": {
-              "width": {
-                "type": "number"
-              },
-              "height": {
-                "type": "number"
-              }
+              "width": { "type": "number" },
+              "height": { "type": "number" }
             },
-            "required": [
-              "width",
-              "height"
-            ],
+            "required": ["width", "height"],
             "description": "Dimensions (optional override of cached value)"
           },
           "duration": {
             "type": "number",
             "description": "Duration in seconds (optional override of cached value)"
           },
-          "type": {
-            "$ref": "#/components/schemas/MessageAttachmentType"
-          }
+          "type": { "$ref": "#/components/schemas/MessageAttachmentType" }
         },
-        "required": [
-          "uploadID"
-        ],
+        "required": ["uploadID"],
         "description": "Single attachment to send with the message"
       },
       "EditMessageOutput": {
@@ -1371,11 +1181,7 @@
             "description": "Whether the message was successfully edited"
           }
         },
-        "required": [
-          "chatID",
-          "messageID",
-          "success"
-        ],
+        "required": ["chatID", "messageID", "success"],
         "example": {
           "chatID": "!signal_adamvy:local-signal.localhost",
           "messageID": "1343993",
@@ -1404,12 +1210,8 @@
             "description": "Matrix content URL (mxc:// or localmxc://) for the asset to download."
           }
         },
-        "required": [
-          "url"
-        ],
-        "example": {
-          "url": "mxc://example.org/Q4x9CqGz1pB3Oa6XgJ"
-        }
+        "required": ["url"],
+        "example": { "url": "mxc://example.org/Q4x9CqGz1pB3Oa6XgJ" }
       },
       "UploadAssetOutput": {
         "type": "object",
@@ -1422,18 +1224,12 @@
             "type": "string",
             "description": "Local file URL (file://) for the uploaded asset"
           },
-          "fileName": {
-            "type": "string",
-            "description": "Resolved filename"
-          },
+          "fileName": { "type": "string", "description": "Resolved filename" },
           "mimeType": {
             "type": "string",
             "description": "Detected or provided MIME type"
           },
-          "fileSize": {
-            "type": "number",
-            "description": "File size in bytes"
-          },
+          "fileSize": { "type": "number", "description": "File size in bytes" },
           "width": {
             "type": "number",
             "description": "Width in pixels (images/videos)"
@@ -1469,9 +1265,7 @@
             "description": "MIME type. Auto-detected from magic bytes if omitted"
           }
         },
-        "required": [
-          "file"
-        ]
+        "required": ["file"]
       },
       "UploadAssetInput": {
         "type": "object",
@@ -1491,25 +1285,19 @@
             "description": "MIME type. Auto-detected from magic bytes if omitted"
           }
         },
-        "required": [
-          "content"
-        ]
+        "required": ["content"]
       }
     },
     "parameters": {
       "ChatID": {
-        "schema": {
-          "$ref": "#/components/schemas/ChatID"
-        },
+        "schema": { "$ref": "#/components/schemas/ChatID" },
         "required": true,
         "description": "Unique identifier of the chat.",
         "name": "chatID",
         "in": "path"
       },
       "AccountID": {
-        "schema": {
-          "$ref": "#/components/schemas/AccountID"
-        },
+        "schema": { "$ref": "#/components/schemas/AccountID" },
         "required": true,
         "description": "Account ID this resource belongs to.",
         "name": "accountID",
@@ -1522,18 +1310,14 @@
         }
       },
       "Cursor": {
-        "schema": {
-          "$ref": "#/components/schemas/Cursor"
-        },
+        "schema": { "$ref": "#/components/schemas/Cursor" },
         "required": false,
         "description": "Opaque pagination cursor; do not inspect. Use together with 'direction'.",
         "name": "cursor",
         "in": "query"
       },
       "Direction": {
-        "schema": {
-          "$ref": "#/components/schemas/Direction"
-        },
+        "schema": { "$ref": "#/components/schemas/Direction" },
         "required": false,
         "description": "Pagination direction used with 'cursor': 'before' fetches older results, 'after' fetches newer results. Defaults to 'before' when only 'cursor' is provided.",
         "name": "direction",
@@ -1546,47 +1330,25 @@
       "get": {
         "summary": "List connected accounts",
         "description": "Lists chat accounts across networks (WhatsApp, Telegram, Twitter/X, etc.) actively connected to this Beeper Desktop instance",
-        "tags": [
-          "Accounts"
-        ],
+        "tags": ["Accounts"],
         "operationId": "getAccounts",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "security": [{ "bearerAuth": [] }],
         "responses": {
           "200": {
             "description": "Request executed successfully",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetAccountsOutput"
-                }
+                "schema": { "$ref": "#/components/schemas/GetAccountsOutput" }
               }
             }
           },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/UnauthorizedError"
-          },
-          "403": {
-            "$ref": "#/components/responses/ForbiddenError"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "422": {
-            "$ref": "#/components/responses/UnprocessableEntity"
-          },
-          "429": {
-            "$ref": "#/components/responses/TooManyRequests"
-          },
-          "500": {
-            "$ref": "#/components/responses/InternalServerError"
-          }
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "401": { "$ref": "#/components/responses/UnauthorizedError" },
+          "403": { "$ref": "#/components/responses/ForbiddenError" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "422": { "$ref": "#/components/responses/UnprocessableEntity" },
+          "429": { "$ref": "#/components/responses/TooManyRequests" },
+          "500": { "$ref": "#/components/responses/InternalServerError" }
         }
       }
     },
@@ -1594,15 +1356,9 @@
       "get": {
         "summary": "Search messages",
         "description": "Search messages across chats using Beeper's message index",
-        "tags": [
-          "Messages"
-        ],
+        "tags": ["Messages"],
         "operationId": "searchMessages",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -1633,10 +1389,7 @@
           {
             "schema": {
               "type": "string",
-              "enum": [
-                "after",
-                "before"
-              ],
+              "enum": ["after", "before"],
               "description": "Pagination direction used with 'cursor': 'before' fetches older results, 'after' fetches newer results. Defaults to 'before' when only 'cursor' is provided.",
               "example": "before"
             },
@@ -1648,14 +1401,9 @@
           {
             "schema": {
               "type": "array",
-              "items": {
-                "type": "string"
-              },
+              "items": { "type": "string" },
               "description": "Limit search to specific chat IDs.",
-              "example": [
-                "!NCdzlIaMjZUmvmvyHU:beeper.com",
-                "1231073"
-              ]
+              "example": ["!NCdzlIaMjZUmvmvyHU:beeper.com", "1231073"]
             },
             "required": false,
             "description": "Limit search to specific chat IDs.",
@@ -1683,10 +1431,7 @@
           {
             "schema": {
               "type": "string",
-              "enum": [
-                "group",
-                "single"
-              ],
+              "enum": ["group", "single"],
               "description": "Filter by chat type: 'group' for group chats, 'single' for 1:1 chats."
             },
             "required": false,
@@ -1699,13 +1444,7 @@
               "type": "array",
               "items": {
                 "type": "string",
-                "enum": [
-                  "any",
-                  "video",
-                  "image",
-                  "link",
-                  "file"
-                ]
+                "enum": ["any", "video", "image", "link", "file"]
               },
               "description": "Filter messages by media types. Use ['any'] for any media type, or specify exact types like ['video', 'image']. Omit for no media filtering."
             },
@@ -1717,21 +1456,9 @@
           {
             "schema": {
               "anyOf": [
-                {
-                  "type": "string",
-                  "enum": [
-                    "me"
-                  ]
-                },
-                {
-                  "type": "string",
-                  "enum": [
-                    "others"
-                  ]
-                },
-                {
-                  "type": "string"
-                }
+                { "type": "string", "enum": ["me"] },
+                { "type": "string", "enum": ["others"] },
+                { "type": "string" }
               ],
               "description": "Filter by sender: 'me' (messages sent by the authenticated user), 'others' (messages sent by others), or a specific user ID string (user.id)."
             },
@@ -1815,27 +1542,13 @@
               }
             }
           },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/UnauthorizedError"
-          },
-          "403": {
-            "$ref": "#/components/responses/ForbiddenError"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "422": {
-            "$ref": "#/components/responses/UnprocessableEntity"
-          },
-          "429": {
-            "$ref": "#/components/responses/TooManyRequests"
-          },
-          "500": {
-            "$ref": "#/components/responses/InternalServerError"
-          }
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "401": { "$ref": "#/components/responses/UnauthorizedError" },
+          "403": { "$ref": "#/components/responses/ForbiddenError" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "422": { "$ref": "#/components/responses/UnprocessableEntity" },
+          "429": { "$ref": "#/components/responses/TooManyRequests" },
+          "500": { "$ref": "#/components/responses/InternalServerError" }
         }
       }
     },
@@ -1843,15 +1556,9 @@
       "get": {
         "summary": "Search chats",
         "description": "Search chats by title/network or participants using Beeper Desktop's renderer algorithm.",
-        "tags": [
-          "Chats"
-        ],
+        "tags": ["Chats"],
         "operationId": "searchChats",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -1870,10 +1577,7 @@
           {
             "schema": {
               "type": "string",
-              "enum": [
-                "after",
-                "before"
-              ],
+              "enum": ["after", "before"],
               "description": "Pagination direction used with 'cursor': 'before' fetches older results, 'after' fetches newer results. Defaults to 'before' when only 'cursor' is provided.",
               "example": "before"
             },
@@ -1885,11 +1589,7 @@
           {
             "schema": {
               "type": "string",
-              "enum": [
-                "primary",
-                "low-priority",
-                "archive"
-              ],
+              "enum": ["primary", "low-priority", "archive"],
               "description": "Filter by inbox type: \"primary\" (non-archived, non-low-priority), \"low-priority\", or \"archive\". If not specified, shows all chats."
             },
             "required": false,
@@ -1924,19 +1624,8 @@
           {
             "schema": {
               "anyOf": [
-                {
-                  "type": "string",
-                  "enum": [
-                    "single",
-                    "group"
-                  ]
-                },
-                {
-                  "type": "string",
-                  "enum": [
-                    "any"
-                  ]
-                }
+                { "type": "string", "enum": ["single", "group"] },
+                { "type": "string", "enum": ["any"] }
               ],
               "default": "any",
               "description": "Specify the type of chats to retrieve: use \"single\" for direct messages, \"group\" for group chats, or \"any\" to get all types"
@@ -1960,10 +1649,7 @@
           {
             "schema": {
               "type": "string",
-              "enum": [
-                "titles",
-                "participants"
-              ],
+              "enum": ["titles", "participants"],
               "default": "titles",
               "description": "Search scope: 'titles' matches title + network; 'participants' matches participant names."
             },
@@ -2030,33 +1716,17 @@
             "description": "Request executed successfully",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SearchChatsOutput"
-                }
+                "schema": { "$ref": "#/components/schemas/SearchChatsOutput" }
               }
             }
           },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/UnauthorizedError"
-          },
-          "403": {
-            "$ref": "#/components/responses/ForbiddenError"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "422": {
-            "$ref": "#/components/responses/UnprocessableEntity"
-          },
-          "429": {
-            "$ref": "#/components/responses/TooManyRequests"
-          },
-          "500": {
-            "$ref": "#/components/responses/InternalServerError"
-          }
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "401": { "$ref": "#/components/responses/UnauthorizedError" },
+          "403": { "$ref": "#/components/responses/ForbiddenError" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "422": { "$ref": "#/components/responses/UnprocessableEntity" },
+          "429": { "$ref": "#/components/responses/TooManyRequests" },
+          "500": { "$ref": "#/components/responses/InternalServerError" }
         }
       }
     },
@@ -2064,15 +1734,9 @@
       "get": {
         "summary": "Search contacts",
         "description": "Search contacts on a specific account using the network's search API. Only use for creating new chats.",
-        "tags": [
-          "Contacts"
-        ],
+        "tags": ["Contacts"],
         "operationId": "searchContacts",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -2113,27 +1777,13 @@
               }
             }
           },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/UnauthorizedError"
-          },
-          "403": {
-            "$ref": "#/components/responses/ForbiddenError"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "422": {
-            "$ref": "#/components/responses/UnprocessableEntity"
-          },
-          "429": {
-            "$ref": "#/components/responses/TooManyRequests"
-          },
-          "500": {
-            "$ref": "#/components/responses/InternalServerError"
-          }
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "401": { "$ref": "#/components/responses/UnauthorizedError" },
+          "403": { "$ref": "#/components/responses/ForbiddenError" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "422": { "$ref": "#/components/responses/UnprocessableEntity" },
+          "429": { "$ref": "#/components/responses/TooManyRequests" },
+          "500": { "$ref": "#/components/responses/InternalServerError" }
         }
       }
     },
@@ -2141,15 +1791,9 @@
       "get": {
         "summary": "Search",
         "description": "Returns matching chats, participant name matches in groups, and the first page of messages in one call. Paginate messages via search-messages. Paginate chats via search-chats. Uses the same sorting as the chat search in the app.",
-        "tags": [
-          "App"
-        ],
+        "tags": ["App"],
         "operationId": "search",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -2168,33 +1812,17 @@
             "description": "Request executed successfully",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnifiedSearchOutput"
-                }
+                "schema": { "$ref": "#/components/schemas/UnifiedSearchOutput" }
               }
             }
           },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/UnauthorizedError"
-          },
-          "403": {
-            "$ref": "#/components/responses/ForbiddenError"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "422": {
-            "$ref": "#/components/responses/UnprocessableEntity"
-          },
-          "429": {
-            "$ref": "#/components/responses/TooManyRequests"
-          },
-          "500": {
-            "$ref": "#/components/responses/InternalServerError"
-          }
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "401": { "$ref": "#/components/responses/UnauthorizedError" },
+          "403": { "$ref": "#/components/responses/ForbiddenError" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "422": { "$ref": "#/components/responses/UnprocessableEntity" },
+          "429": { "$ref": "#/components/responses/TooManyRequests" },
+          "500": { "$ref": "#/components/responses/InternalServerError" }
         }
       }
     },
@@ -2202,21 +1830,13 @@
       "post": {
         "summary": "Focus Beeper Desktop app",
         "description": "Focus Beeper Desktop and optionally navigate to a specific chat, message, or pre-fill draft text and attachment.",
-        "tags": [
-          "App"
-        ],
+        "tags": ["App"],
         "operationId": "focusApp",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/FocusAppInput"
-              }
+              "schema": { "$ref": "#/components/schemas/FocusAppInput" }
             }
           }
         },
@@ -2225,33 +1845,17 @@
             "description": "Request executed successfully",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FocusAppOutput"
-                }
+                "schema": { "$ref": "#/components/schemas/FocusAppOutput" }
               }
             }
           },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/UnauthorizedError"
-          },
-          "403": {
-            "$ref": "#/components/responses/ForbiddenError"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "422": {
-            "$ref": "#/components/responses/UnprocessableEntity"
-          },
-          "429": {
-            "$ref": "#/components/responses/TooManyRequests"
-          },
-          "500": {
-            "$ref": "#/components/responses/InternalServerError"
-          }
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "401": { "$ref": "#/components/responses/UnauthorizedError" },
+          "403": { "$ref": "#/components/responses/ForbiddenError" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "422": { "$ref": "#/components/responses/UnprocessableEntity" },
+          "429": { "$ref": "#/components/responses/TooManyRequests" },
+          "500": { "$ref": "#/components/responses/InternalServerError" }
         }
       }
     },
@@ -2259,15 +1863,9 @@
       "get": {
         "summary": "List chats",
         "description": "List all chats sorted by last activity (most recent first). Combines all accounts into a single paginated list.",
-        "tags": [
-          "Chats"
-        ],
+        "tags": ["Chats"],
         "operationId": "listChats",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -2286,10 +1884,7 @@
           {
             "schema": {
               "type": "string",
-              "enum": [
-                "after",
-                "before"
-              ],
+              "enum": ["after", "before"],
               "description": "Pagination direction used with 'cursor': 'before' fetches older results, 'after' fetches newer results. Defaults to 'before' when only 'cursor' is provided.",
               "example": "before"
             },
@@ -2322,53 +1917,29 @@
             "description": "Request executed successfully",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ListChatsOutput"
-                }
+                "schema": { "$ref": "#/components/schemas/ListChatsOutput" }
               }
             }
           },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/UnauthorizedError"
-          },
-          "403": {
-            "$ref": "#/components/responses/ForbiddenError"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "422": {
-            "$ref": "#/components/responses/UnprocessableEntity"
-          },
-          "429": {
-            "$ref": "#/components/responses/TooManyRequests"
-          },
-          "500": {
-            "$ref": "#/components/responses/InternalServerError"
-          }
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "401": { "$ref": "#/components/responses/UnauthorizedError" },
+          "403": { "$ref": "#/components/responses/ForbiddenError" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "422": { "$ref": "#/components/responses/UnprocessableEntity" },
+          "429": { "$ref": "#/components/responses/TooManyRequests" },
+          "500": { "$ref": "#/components/responses/InternalServerError" }
         }
       },
       "post": {
         "summary": "Create a chat",
         "description": "Create a single or group chat on a specific account using participant IDs and optional title.",
-        "tags": [
-          "Chats"
-        ],
+        "tags": ["Chats"],
         "operationId": "createChat",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateChatInput"
-              }
+              "schema": { "$ref": "#/components/schemas/CreateChatInput" }
             }
           }
         },
@@ -2377,33 +1948,17 @@
             "description": "Request executed successfully",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CreateChatOutput"
-                }
+                "schema": { "$ref": "#/components/schemas/CreateChatOutput" }
               }
             }
           },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/UnauthorizedError"
-          },
-          "403": {
-            "$ref": "#/components/responses/ForbiddenError"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "422": {
-            "$ref": "#/components/responses/UnprocessableEntity"
-          },
-          "429": {
-            "$ref": "#/components/responses/TooManyRequests"
-          },
-          "500": {
-            "$ref": "#/components/responses/InternalServerError"
-          }
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "401": { "$ref": "#/components/responses/UnauthorizedError" },
+          "403": { "$ref": "#/components/responses/ForbiddenError" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "422": { "$ref": "#/components/responses/UnprocessableEntity" },
+          "429": { "$ref": "#/components/responses/TooManyRequests" },
+          "500": { "$ref": "#/components/responses/InternalServerError" }
         }
       }
     },
@@ -2411,15 +1966,9 @@
       "get": {
         "summary": "Retrieve chat details",
         "description": "Retrieve chat details including metadata, participants, and latest message",
-        "tags": [
-          "Chats"
-        ],
+        "tags": ["Chats"],
         "operationId": "getChat",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -2453,33 +2002,17 @@
             "description": "Request executed successfully",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Chat"
-                }
+                "schema": { "$ref": "#/components/schemas/Chat" }
               }
             }
           },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/UnauthorizedError"
-          },
-          "403": {
-            "$ref": "#/components/responses/ForbiddenError"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "422": {
-            "$ref": "#/components/responses/UnprocessableEntity"
-          },
-          "429": {
-            "$ref": "#/components/responses/TooManyRequests"
-          },
-          "500": {
-            "$ref": "#/components/responses/InternalServerError"
-          }
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "401": { "$ref": "#/components/responses/UnauthorizedError" },
+          "403": { "$ref": "#/components/responses/ForbiddenError" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "422": { "$ref": "#/components/responses/UnprocessableEntity" },
+          "429": { "$ref": "#/components/responses/TooManyRequests" },
+          "500": { "$ref": "#/components/responses/InternalServerError" }
         }
       }
     },
@@ -2487,15 +2020,9 @@
       "post": {
         "summary": "Archive or unarchive a chat",
         "description": "Archive or unarchive a chat. Set archived=true to move to archive, archived=false to move back to inbox",
-        "tags": [
-          "Chats"
-        ],
+        "tags": ["Chats"],
         "operationId": "archiveChat",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -2530,33 +2057,17 @@
             "description": "Request executed successfully",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SuccessResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/SuccessResponse" }
               }
             }
           },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/UnauthorizedError"
-          },
-          "403": {
-            "$ref": "#/components/responses/ForbiddenError"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "422": {
-            "$ref": "#/components/responses/UnprocessableEntity"
-          },
-          "429": {
-            "$ref": "#/components/responses/TooManyRequests"
-          },
-          "500": {
-            "$ref": "#/components/responses/InternalServerError"
-          }
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "401": { "$ref": "#/components/responses/UnauthorizedError" },
+          "403": { "$ref": "#/components/responses/ForbiddenError" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "422": { "$ref": "#/components/responses/UnprocessableEntity" },
+          "429": { "$ref": "#/components/responses/TooManyRequests" },
+          "500": { "$ref": "#/components/responses/InternalServerError" }
         }
       }
     },
@@ -2564,15 +2075,9 @@
       "post": {
         "summary": "Create a chat reminder",
         "description": "Set a reminder for a chat at a specific time",
-        "tags": [
-          "Chats"
-        ],
+        "tags": ["Chats"],
         "operationId": "setChatReminder",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -2604,15 +2109,11 @@
                         "description": "Cancel reminder if someone messages in the chat"
                       }
                     },
-                    "required": [
-                      "remindAtMs"
-                    ],
+                    "required": ["remindAtMs"],
                     "description": "Reminder configuration"
                   }
                 },
-                "required": [
-                  "reminder"
-                ]
+                "required": ["reminder"]
               }
             }
           }
@@ -2622,47 +2123,25 @@
             "description": "Request executed successfully",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SuccessResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/SuccessResponse" }
               }
             }
           },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/UnauthorizedError"
-          },
-          "403": {
-            "$ref": "#/components/responses/ForbiddenError"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "422": {
-            "$ref": "#/components/responses/UnprocessableEntity"
-          },
-          "429": {
-            "$ref": "#/components/responses/TooManyRequests"
-          },
-          "500": {
-            "$ref": "#/components/responses/InternalServerError"
-          }
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "401": { "$ref": "#/components/responses/UnauthorizedError" },
+          "403": { "$ref": "#/components/responses/ForbiddenError" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "422": { "$ref": "#/components/responses/UnprocessableEntity" },
+          "429": { "$ref": "#/components/responses/TooManyRequests" },
+          "500": { "$ref": "#/components/responses/InternalServerError" }
         }
       },
       "delete": {
         "summary": "Delete a chat reminder",
         "description": "Clear an existing reminder from a chat",
-        "tags": [
-          "Chats"
-        ],
+        "tags": ["Chats"],
         "operationId": "clearChatReminder",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -2681,33 +2160,17 @@
             "description": "Request executed successfully",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SuccessResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/SuccessResponse" }
               }
             }
           },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/UnauthorizedError"
-          },
-          "403": {
-            "$ref": "#/components/responses/ForbiddenError"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "422": {
-            "$ref": "#/components/responses/UnprocessableEntity"
-          },
-          "429": {
-            "$ref": "#/components/responses/TooManyRequests"
-          },
-          "500": {
-            "$ref": "#/components/responses/InternalServerError"
-          }
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "401": { "$ref": "#/components/responses/UnauthorizedError" },
+          "403": { "$ref": "#/components/responses/ForbiddenError" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "422": { "$ref": "#/components/responses/UnprocessableEntity" },
+          "429": { "$ref": "#/components/responses/TooManyRequests" },
+          "500": { "$ref": "#/components/responses/InternalServerError" }
         }
       }
     },
@@ -2715,15 +2178,9 @@
       "get": {
         "summary": "List messages",
         "description": "List all messages in a chat with cursor-based pagination. Sorted by timestamp.",
-        "tags": [
-          "Messages"
-        ],
+        "tags": ["Messages"],
         "operationId": "listMessages",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -2753,10 +2210,7 @@
           {
             "schema": {
               "type": "string",
-              "enum": [
-                "after",
-                "before"
-              ],
+              "enum": ["after", "before"],
               "description": "Pagination direction used with 'cursor': 'before' fetches older results, 'after' fetches newer results. Defaults to 'before' when only 'cursor' is provided.",
               "example": "before"
             },
@@ -2771,47 +2225,25 @@
             "description": "Request executed successfully",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ListMessagesOutput"
-                }
+                "schema": { "$ref": "#/components/schemas/ListMessagesOutput" }
               }
             }
           },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/UnauthorizedError"
-          },
-          "403": {
-            "$ref": "#/components/responses/ForbiddenError"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "422": {
-            "$ref": "#/components/responses/UnprocessableEntity"
-          },
-          "429": {
-            "$ref": "#/components/responses/TooManyRequests"
-          },
-          "500": {
-            "$ref": "#/components/responses/InternalServerError"
-          }
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "401": { "$ref": "#/components/responses/UnauthorizedError" },
+          "403": { "$ref": "#/components/responses/ForbiddenError" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "422": { "$ref": "#/components/responses/UnprocessableEntity" },
+          "429": { "$ref": "#/components/responses/TooManyRequests" },
+          "500": { "$ref": "#/components/responses/InternalServerError" }
         }
       },
       "post": {
         "summary": "Send a message",
         "description": "Send a text message to a specific chat. Supports replying to existing messages. Returns a pending message ID.",
-        "tags": [
-          "Messages"
-        ],
+        "tags": ["Messages"],
         "operationId": "sendMessage",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -2852,33 +2284,17 @@
             "description": "Request executed successfully",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SendMessageOutput"
-                }
+                "schema": { "$ref": "#/components/schemas/SendMessageOutput" }
               }
             }
           },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/UnauthorizedError"
-          },
-          "403": {
-            "$ref": "#/components/responses/ForbiddenError"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "422": {
-            "$ref": "#/components/responses/UnprocessableEntity"
-          },
-          "429": {
-            "$ref": "#/components/responses/TooManyRequests"
-          },
-          "500": {
-            "$ref": "#/components/responses/InternalServerError"
-          }
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "401": { "$ref": "#/components/responses/UnauthorizedError" },
+          "403": { "$ref": "#/components/responses/ForbiddenError" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "422": { "$ref": "#/components/responses/UnprocessableEntity" },
+          "429": { "$ref": "#/components/responses/TooManyRequests" },
+          "500": { "$ref": "#/components/responses/InternalServerError" }
         }
       }
     },
@@ -2886,15 +2302,9 @@
       "put": {
         "summary": "Edit a message",
         "description": "Edit the text content of an existing message. Messages with attachments cannot be edited.",
-        "tags": [
-          "Messages"
-        ],
+        "tags": ["Messages"],
         "operationId": "editMessage",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -2908,9 +2318,7 @@
             "in": "path"
           },
           {
-            "schema": {
-              "type": "string"
-            },
+            "schema": { "type": "string" },
             "required": true,
             "description": "ID of the message to edit",
             "name": "messageID",
@@ -2929,9 +2337,7 @@
                     "description": "New text content for the message"
                   }
                 },
-                "required": [
-                  "text"
-                ]
+                "required": ["text"]
               }
             }
           }
@@ -2941,33 +2347,17 @@
             "description": "Request executed successfully",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EditMessageOutput"
-                }
+                "schema": { "$ref": "#/components/schemas/EditMessageOutput" }
               }
             }
           },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/UnauthorizedError"
-          },
-          "403": {
-            "$ref": "#/components/responses/ForbiddenError"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "422": {
-            "$ref": "#/components/responses/UnprocessableEntity"
-          },
-          "429": {
-            "$ref": "#/components/responses/TooManyRequests"
-          },
-          "500": {
-            "$ref": "#/components/responses/InternalServerError"
-          }
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "401": { "$ref": "#/components/responses/UnauthorizedError" },
+          "403": { "$ref": "#/components/responses/ForbiddenError" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "422": { "$ref": "#/components/responses/UnprocessableEntity" },
+          "429": { "$ref": "#/components/responses/TooManyRequests" },
+          "500": { "$ref": "#/components/responses/InternalServerError" }
         }
       }
     },
@@ -2975,21 +2365,13 @@
       "post": {
         "summary": "Download an asset",
         "description": "Download a Matrix asset using its mxc:// or localmxc:// URL to the device running Beeper Desktop and return the local file URL.",
-        "tags": [
-          "App"
-        ],
+        "tags": ["App"],
         "operationId": "downloadAsset",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DownloadAssetInput"
-              }
+              "schema": { "$ref": "#/components/schemas/DownloadAssetInput" }
             }
           }
         },
@@ -2998,33 +2380,17 @@
             "description": "Request executed successfully",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DownloadAssetOutput"
-                }
+                "schema": { "$ref": "#/components/schemas/DownloadAssetOutput" }
               }
             }
           },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/UnauthorizedError"
-          },
-          "403": {
-            "$ref": "#/components/responses/ForbiddenError"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "422": {
-            "$ref": "#/components/responses/UnprocessableEntity"
-          },
-          "429": {
-            "$ref": "#/components/responses/TooManyRequests"
-          },
-          "500": {
-            "$ref": "#/components/responses/InternalServerError"
-          }
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "401": { "$ref": "#/components/responses/UnauthorizedError" },
+          "403": { "$ref": "#/components/responses/ForbiddenError" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "422": { "$ref": "#/components/responses/UnprocessableEntity" },
+          "429": { "$ref": "#/components/responses/TooManyRequests" },
+          "500": { "$ref": "#/components/responses/InternalServerError" }
         }
       }
     },
@@ -3032,15 +2398,9 @@
       "get": {
         "summary": "Serve an asset",
         "description": "Stream a file given an mxc://, localmxc://, or file:// URL. Downloads first if not cached. Supports Range requests for seeking in large files.",
-        "tags": [
-          "App"
-        ],
+        "tags": ["App"],
         "operationId": "serveAsset",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -3055,30 +2415,14 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "Request executed successfully"
-          },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/UnauthorizedError"
-          },
-          "403": {
-            "$ref": "#/components/responses/ForbiddenError"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "422": {
-            "$ref": "#/components/responses/UnprocessableEntity"
-          },
-          "429": {
-            "$ref": "#/components/responses/TooManyRequests"
-          },
-          "500": {
-            "$ref": "#/components/responses/InternalServerError"
-          }
+          "204": { "description": "Request executed successfully" },
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "401": { "$ref": "#/components/responses/UnauthorizedError" },
+          "403": { "$ref": "#/components/responses/ForbiddenError" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "422": { "$ref": "#/components/responses/UnprocessableEntity" },
+          "429": { "$ref": "#/components/responses/TooManyRequests" },
+          "500": { "$ref": "#/components/responses/InternalServerError" }
         }
       }
     },
@@ -3086,21 +2430,13 @@
       "post": {
         "summary": "Upload an asset",
         "description": "Upload a file to a temporary location using multipart/form-data. Returns an uploadID that can be referenced when sending messages with attachments.",
-        "tags": [
-          "App"
-        ],
+        "tags": ["App"],
         "operationId": "uploadAsset",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "content": {
             "multipart/form-data": {
-              "schema": {
-                "$ref": "#/components/schemas/UploadAssetMultipart"
-              }
+              "schema": { "$ref": "#/components/schemas/UploadAssetMultipart" }
             }
           }
         },
@@ -3109,33 +2445,17 @@
             "description": "Request executed successfully",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UploadAssetOutput"
-                }
+                "schema": { "$ref": "#/components/schemas/UploadAssetOutput" }
               }
             }
           },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/UnauthorizedError"
-          },
-          "403": {
-            "$ref": "#/components/responses/ForbiddenError"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "422": {
-            "$ref": "#/components/responses/UnprocessableEntity"
-          },
-          "429": {
-            "$ref": "#/components/responses/TooManyRequests"
-          },
-          "500": {
-            "$ref": "#/components/responses/InternalServerError"
-          }
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "401": { "$ref": "#/components/responses/UnauthorizedError" },
+          "403": { "$ref": "#/components/responses/ForbiddenError" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "422": { "$ref": "#/components/responses/UnprocessableEntity" },
+          "429": { "$ref": "#/components/responses/TooManyRequests" },
+          "500": { "$ref": "#/components/responses/InternalServerError" }
         }
       }
     },
@@ -3143,21 +2463,13 @@
       "post": {
         "summary": "Upload an asset (base64)",
         "description": "Upload a file using a JSON body with base64-encoded content. Returns an uploadID that can be referenced when sending messages with attachments. Alternative to the multipart upload endpoint.",
-        "tags": [
-          "App"
-        ],
+        "tags": ["App"],
         "operationId": "uploadAssetBase64",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UploadAssetInput"
-              }
+              "schema": { "$ref": "#/components/schemas/UploadAssetInput" }
             }
           }
         },
@@ -3166,33 +2478,17 @@
             "description": "Request executed successfully",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UploadAssetOutput"
-                }
+                "schema": { "$ref": "#/components/schemas/UploadAssetOutput" }
               }
             }
           },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/UnauthorizedError"
-          },
-          "403": {
-            "$ref": "#/components/responses/ForbiddenError"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "422": {
-            "$ref": "#/components/responses/UnprocessableEntity"
-          },
-          "429": {
-            "$ref": "#/components/responses/TooManyRequests"
-          },
-          "500": {
-            "$ref": "#/components/responses/InternalServerError"
-          }
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "401": { "$ref": "#/components/responses/UnauthorizedError" },
+          "403": { "$ref": "#/components/responses/ForbiddenError" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "422": { "$ref": "#/components/responses/UnprocessableEntity" },
+          "429": { "$ref": "#/components/responses/TooManyRequests" },
+          "500": { "$ref": "#/components/responses/InternalServerError" }
         }
       }
     }
