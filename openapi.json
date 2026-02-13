@@ -3,7 +3,7 @@
   "info": {
     "title": "Beeper Desktop API",
     "version": "0.2.0",
-    "description": "HTTP API for interacting with Beeper Desktop. Allows access to your chats from across all the chat networks. This API provides read and write access to messages, chats, and accounts through OAuth2 or Bearer token authentication.",
+    "description": "HTTP API for interacting with Beeper Desktop. Allows access to your chats from across all the chat networks. This API provides read and write access to messages, chats, and accounts through OAuth2 or Bearer token authentication. A live WebSocket endpoint is available at /v1/ws. Clients authenticate with the same access token and send subscriptions.set with chatIDs (use [\"*\"] for all chats). Server events are flat, typed messages such as message.updated and chat.upserted.",
     "termsOfService": "https://www.beeper.com/terms",
     "contact": {
       "name": "Beeper",
@@ -117,7 +117,7 @@
             "tokenUrl": "http://localhost:23373/oauth/token",
             "scopes": {
               "read": "Read access to messages, chats, and accounts",
-              "write": "Write access to send messages, archive chats, and set reminders"
+              "write": "Write access to send messages, edit messages, react to messages, archive chats, and set reminders"
             }
           }
         }
@@ -261,7 +261,8 @@
           "network": {
             "type": "string",
             "description": "Display-only human-readable network name (e.g., 'WhatsApp', 'Messenger').",
-            "example": "WhatsApp"
+            "example": "WhatsApp",
+            "deprecated": true
           },
           "user": { "$ref": "#/components/schemas/User" }
         },
@@ -512,6 +513,12 @@
             "type": "string",
             "description": "Account ID this chat belongs to."
           },
+          "network": {
+            "type": "string",
+            "description": "Display-only human-readable network name (e.g., 'WhatsApp', 'Messenger').",
+            "example": "WhatsApp",
+            "deprecated": true
+          },
           "title": {
             "type": "string",
             "description": "Display title of the chat as computed by the client/server."
@@ -579,6 +586,7 @@
         "required": [
           "id",
           "accountID",
+          "network",
           "title",
           "type",
           "participants",
@@ -588,6 +596,7 @@
           "id": "!instagram_mattwondra:local-instagram.localhost",
           "localChatID": "1229391",
           "accountID": "local-instagram_ba_eRfQMmnSNy_p7Ih7HL7RduRpKFU",
+          "network": "Instagram",
           "title": "Matt Wondra",
           "type": "single",
           "participants": {
@@ -695,6 +704,7 @@
               "id": "!signal_adamvy:local-signal.localhost",
               "localChatID": "1229720",
               "accountID": "local-signal_ba_7N74FrU29pxij_TnqfxeUHj53FY",
+              "network": "Signal",
               "title": "Adam Van Ymeren",
               "type": "single",
               "participants": {
@@ -725,6 +735,7 @@
               "id": "!telegram_nick:local-telegram.localhost",
               "localChatID": "1229721",
               "accountID": "local-telegram_ba_QFrb5lrLPhO3OT5MFBeTWv0x4BI",
+              "network": "Telegram",
               "title": "Nick Mills-Barrett",
               "type": "single",
               "participants": {
@@ -797,6 +808,7 @@
               "id": "!KPFTtZYWuERwib8T702N9IfqiCc:ba_EvYDBBsZbRQAy3UOSWqG0LuTVkc.local-whatsapp.localhost",
               "localChatID": "1229391",
               "accountID": "local-whatsapp_ba_EvYDBBsZbRQAy3UOSWqG0LuTVkc",
+              "network": "WhatsApp",
               "title": "Kishan Bagaria",
               "type": "single",
               "participants": {
@@ -823,6 +835,7 @@
               "id": "!nZeX7dh67_RaPnmWGJIjUkV2svE:ba_sXf0adnbr287.local-telegram.localhost",
               "localChatID": "1229078",
               "accountID": "local-telegram_ba_sXf0adnbr287_pRup35Tgl-lsIg",
+              "network": "Telegram",
               "title": "Brad Murray",
               "type": "single",
               "participants": {
@@ -849,6 +862,7 @@
               "id": "!twitter_dm_photomatt:local-twitter.localhost",
               "localChatID": "1228956",
               "accountID": "local-twitter_ba_gUU1IHNGo_CsTZLp0vDFUYk9EuE",
+              "network": "Twitter/X",
               "title": "Matt Mullenweg",
               "type": "single",
               "participants": {
@@ -893,6 +907,46 @@
           }
         },
         "required": ["items"]
+      },
+      "ListContactsOutput": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "allOf": [
+                { "$ref": "#/components/schemas/User" },
+                {
+                  "description": "A person on or reachable through Beeper. Values are best-effort and can vary by network."
+                }
+              ]
+            },
+            "description": "Merged contacts for the selected account.",
+            "x-stainless-pagination-property": { "purpose": "items" }
+          },
+          "hasMore": {
+            "type": "boolean",
+            "description": "True if additional results can be fetched using cursors.",
+            "x-stainless-pagination-property": { "purpose": "has_next_page" }
+          },
+          "oldestCursor": {
+            "type": "string",
+            "nullable": true,
+            "description": "Cursor for fetching older results (use with direction='before'). Opaque string; do not inspect.",
+            "x-stainless-pagination-property": {
+              "purpose": "next_cursor_field"
+            }
+          },
+          "newestCursor": {
+            "type": "string",
+            "nullable": true,
+            "description": "Cursor for fetching newer results (use with direction='after'). Opaque string; do not inspect.",
+            "x-stainless-pagination-property": {
+              "purpose": "previous_cursor_field"
+            }
+          }
+        },
+        "required": ["items", "hasMore", "oldestCursor", "newestCursor"]
       },
       "UnifiedSearchOutput": {
         "type": "object",
@@ -979,6 +1033,7 @@
                 "id": "!instagram_mattwondra:local-instagram.localhost",
                 "localChatID": "1229391",
                 "accountID": "local-instagram_ba_eRfQMmnSNy_p7Ih7HL7RduRpKFU",
+                "network": "Instagram",
                 "title": "Matt Wondra",
                 "type": "single",
                 "participants": {
@@ -1045,49 +1100,102 @@
             "type": "string",
             "description": "Newly created chat ID.",
             "example": "!NCdzlIaMjZUmvmvyHU:beeper.com"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["existing", "created"],
+            "description": "Only returned in start mode. 'existing' means an existing chat was reused; 'created' means a new chat was created."
           }
         },
         "required": ["chatID"]
       },
       "CreateChatInput": {
-        "type": "object",
-        "properties": {
-          "accountID": {
-            "type": "string",
-            "description": "Account to create the chat on."
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "accountID": {
+                "type": "string",
+                "description": "Account to create the chat on."
+              },
+              "mode": {
+                "type": "string",
+                "enum": ["create"],
+                "description": "Create mode. Defaults to 'create' when omitted."
+              },
+              "type": {
+                "type": "string",
+                "enum": ["single", "group"],
+                "description": "Chat type to create: 'single' requires exactly one participantID; 'group' supports multiple participants and optional title."
+              },
+              "participantIDs": {
+                "type": "array",
+                "items": { "type": "string" },
+                "minItems": 1,
+                "description": "User IDs to include in the new chat."
+              },
+              "title": {
+                "type": "string",
+                "description": "Optional title for group chats; ignored for single chats on most platforms."
+              },
+              "messageText": {
+                "type": "string",
+                "description": "Optional first message content if the platform requires it to create the chat."
+              }
+            },
+            "required": ["accountID", "type", "participantIDs"]
           },
-          "type": {
-            "type": "string",
-            "enum": ["single", "group"],
-            "description": "Chat type to create: 'single' requires exactly one participantID; 'group' supports multiple participants and optional title."
-          },
-          "participantIDs": {
-            "type": "array",
-            "items": { "type": "string" },
-            "minItems": 1,
-            "description": "User IDs to include in the new chat."
-          },
-          "title": {
-            "type": "string",
-            "description": "Optional title for group chats; ignored for single chats on most platforms."
-          },
-          "messageText": {
-            "type": "string",
-            "description": "Optional first message content if the platform requires it to create the chat."
+          {
+            "type": "object",
+            "properties": {
+              "mode": {
+                "type": "string",
+                "enum": ["start"],
+                "description": "Start mode for resolving/creating a direct chat from merged contact data."
+              },
+              "accountID": {
+                "type": "string",
+                "description": "Account to start the chat on."
+              },
+              "user": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Known user ID when available."
+                  },
+                  "username": {
+                    "type": "string",
+                    "description": "Username/handle candidate."
+                  },
+                  "phoneNumber": {
+                    "type": "string",
+                    "description": "Phone number candidate (E.164 preferred)."
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "Email candidate."
+                  },
+                  "fullName": {
+                    "type": "string",
+                    "description": "Display name hint used for ranking only."
+                  }
+                },
+                "description": "Merged user-like contact payload used to resolve the best identifier."
+              },
+              "messageText": {
+                "type": "string",
+                "description": "Optional first message content if the platform requires it to create the chat."
+              },
+              "allowInvite": {
+                "type": "boolean",
+                "default": true,
+                "description": "Whether invite-based DM creation is allowed when required by the platform."
+              }
+            },
+            "required": ["mode", "accountID", "user"]
           }
-        },
-        "required": ["accountID", "type", "participantIDs"]
-      },
-      "SuccessResponse": {
-        "type": "object",
-        "properties": {
-          "success": {
-            "type": "boolean",
-            "enum": [true],
-            "description": "Indicates the operation completed successfully"
-          }
-        },
-        "required": ["success"]
+        ]
       },
       "ListMessagesOutput": {
         "type": "object",
@@ -1186,6 +1294,79 @@
           "chatID": "!signal_adamvy:local-signal.localhost",
           "messageID": "1343993",
           "success": true
+        }
+      },
+      "AddReactionOutput": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "enum": [true],
+            "description": "Whether the reaction was successfully added"
+          },
+          "chatID": {
+            "type": "string",
+            "description": "Unique identifier of the chat.",
+            "example": "!NCdzlIaMjZUmvmvyHU:beeper.com"
+          },
+          "messageID": {
+            "type": "string",
+            "description": "Message ID.",
+            "example": "1343993"
+          },
+          "reactionKey": {
+            "type": "string",
+            "description": "Reaction key that was added"
+          },
+          "transactionID": {
+            "type": "string",
+            "description": "Transaction ID used for the reaction event"
+          }
+        },
+        "required": [
+          "success",
+          "chatID",
+          "messageID",
+          "reactionKey",
+          "transactionID"
+        ],
+        "example": {
+          "success": true,
+          "chatID": "!signal_adamvy:local-signal.localhost",
+          "messageID": "1343993",
+          "reactionKey": "❤️",
+          "transactionID": "txn_123"
+        }
+      },
+      "RemoveReactionOutput": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "enum": [true],
+            "description": "Whether the reaction was successfully removed"
+          },
+          "chatID": {
+            "type": "string",
+            "description": "Unique identifier of the chat.",
+            "example": "!NCdzlIaMjZUmvmvyHU:beeper.com"
+          },
+          "messageID": {
+            "type": "string",
+            "description": "Message ID.",
+            "example": "1343993"
+          },
+          "reactionKey": {
+            "type": "string",
+            "description": "Reaction key that was removed"
+          }
+        },
+        "required": ["success", "chatID", "messageID", "reactionKey"],
+        "example": {
+          "success": true,
+          "chatID": "!signal_adamvy:local-signal.localhost",
+          "messageID": "1343993",
+          "reactionKey": "❤️"
         }
       },
       "DownloadAssetOutput": {
@@ -1733,7 +1914,7 @@
     "/v1/accounts/{accountID}/contacts": {
       "get": {
         "summary": "Search contacts",
-        "description": "Search contacts on a specific account using the network's search API. Only use for creating new chats.",
+        "description": "Search contacts on a specific account using merged account contacts, network search, and exact identifier lookup.",
         "tags": ["Contacts"],
         "operationId": "searchContacts",
         "security": [{ "bearerAuth": [] }],
@@ -1787,10 +1968,104 @@
         }
       }
     },
+    "/v1/accounts/{accountID}/contacts/list": {
+      "get": {
+        "summary": "List contacts",
+        "description": "List merged contacts for a specific account with cursor-based pagination.",
+        "tags": ["Contacts"],
+        "operationId": "listContacts",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "description": "Account ID this resource belongs to."
+            },
+            "required": true,
+            "description": "Account ID this resource belongs to.",
+            "name": "accountID",
+            "in": "path",
+            "examples": {
+              "AccountIDExample": {
+                "value": "local-whatsapp_ba_EvYDBBsZbRQAy3UOSWqG0LuTVkc",
+                "summary": "Sample account ID"
+              }
+            }
+          },
+          {
+            "schema": {
+              "type": "string",
+              "description": "Opaque pagination cursor; do not inspect. Use together with 'direction'.",
+              "example": "1725489123456|c29tZUltc2dQYWdl",
+              "x-stainless-pagination-property": {
+                "purpose": "next_cursor_param"
+              }
+            },
+            "required": false,
+            "description": "Opaque pagination cursor; do not inspect. Use together with 'direction'.",
+            "name": "cursor",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": ["after", "before"],
+              "description": "Pagination direction used with 'cursor': 'before' fetches older results, 'after' fetches newer results. Defaults to 'before' when only 'cursor' is provided.",
+              "example": "before"
+            },
+            "required": false,
+            "description": "Pagination direction used with 'cursor': 'before' fetches older results, 'after' fetches newer results. Defaults to 'before' when only 'cursor' is provided.",
+            "name": "direction",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200,
+              "default": 50,
+              "description": "Maximum contacts to return per page."
+            },
+            "required": false,
+            "description": "Maximum contacts to return per page.",
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Optional search query for blended contact lookup."
+            },
+            "required": false,
+            "description": "Optional search query for blended contact lookup.",
+            "name": "query",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request executed successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ListContactsOutput" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "401": { "$ref": "#/components/responses/UnauthorizedError" },
+          "403": { "$ref": "#/components/responses/ForbiddenError" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "422": { "$ref": "#/components/responses/UnprocessableEntity" },
+          "429": { "$ref": "#/components/responses/TooManyRequests" },
+          "500": { "$ref": "#/components/responses/InternalServerError" }
+        }
+      }
+    },
     "/v1/search": {
       "get": {
         "summary": "Search",
-        "description": "Returns matching chats, participant name matches in groups, and the first page of messages in one call. Paginate messages via search-messages. Paginate chats via search-chats. Uses the same sorting as the chat search in the app.",
+        "description": "Returns matching chats, participant name matches in groups, and the first page of messages in one call. Paginate messages via search-messages. Paginate chats via search-chats.",
         "tags": ["App"],
         "operationId": "search",
         "security": [{ "bearerAuth": [] }],
@@ -1931,8 +2206,8 @@
         }
       },
       "post": {
-        "summary": "Create a chat",
-        "description": "Create a single or group chat on a specific account using participant IDs and optional title.",
+        "summary": "Create or start a chat",
+        "description": "Create a single/group chat (mode='create') or start a direct chat from merged user data (mode='start').",
         "tags": ["Chats"],
         "operationId": "createChat",
         "security": [{ "bearerAuth": [] }],
@@ -2053,14 +2328,7 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "Request executed successfully",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/SuccessResponse" }
-              }
-            }
-          },
+          "204": { "description": "Request executed successfully" },
           "400": { "$ref": "#/components/responses/BadRequest" },
           "401": { "$ref": "#/components/responses/UnauthorizedError" },
           "403": { "$ref": "#/components/responses/ForbiddenError" },
@@ -2119,14 +2387,7 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "Request executed successfully",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/SuccessResponse" }
-              }
-            }
-          },
+          "204": { "description": "Request executed successfully" },
           "400": { "$ref": "#/components/responses/BadRequest" },
           "401": { "$ref": "#/components/responses/UnauthorizedError" },
           "403": { "$ref": "#/components/responses/ForbiddenError" },
@@ -2156,14 +2417,7 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Request executed successfully",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/SuccessResponse" }
-              }
-            }
-          },
+          "204": { "description": "Request executed successfully" },
           "400": { "$ref": "#/components/responses/BadRequest" },
           "401": { "$ref": "#/components/responses/UnauthorizedError" },
           "403": { "$ref": "#/components/responses/ForbiddenError" },
@@ -2348,6 +2602,130 @@
             "content": {
               "application/json": {
                 "schema": { "$ref": "#/components/schemas/EditMessageOutput" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "401": { "$ref": "#/components/responses/UnauthorizedError" },
+          "403": { "$ref": "#/components/responses/ForbiddenError" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "422": { "$ref": "#/components/responses/UnprocessableEntity" },
+          "429": { "$ref": "#/components/responses/TooManyRequests" },
+          "500": { "$ref": "#/components/responses/InternalServerError" }
+        }
+      }
+    },
+    "/v1/chats/{chatID}/messages/{messageID}/reactions": {
+      "post": {
+        "summary": "Add a reaction",
+        "description": "Add a reaction to an existing message.",
+        "tags": ["Messages"],
+        "operationId": "addReaction",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "description": "Unique identifier of the chat.",
+              "example": "!NCdzlIaMjZUmvmvyHU:beeper.com"
+            },
+            "required": true,
+            "description": "Unique identifier of the chat.",
+            "name": "chatID",
+            "in": "path"
+          },
+          {
+            "schema": { "type": "string" },
+            "required": true,
+            "description": "ID of the message to add a reaction to",
+            "name": "messageID",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reactionKey": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Reaction key to add (emoji, shortcode, or custom emoji key)"
+                  },
+                  "transactionID": {
+                    "type": "string",
+                    "description": "Optional transaction ID for deduplication and local echo tracking"
+                  }
+                },
+                "required": ["reactionKey"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request executed successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AddReactionOutput" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "401": { "$ref": "#/components/responses/UnauthorizedError" },
+          "403": { "$ref": "#/components/responses/ForbiddenError" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "422": { "$ref": "#/components/responses/UnprocessableEntity" },
+          "429": { "$ref": "#/components/responses/TooManyRequests" },
+          "500": { "$ref": "#/components/responses/InternalServerError" }
+        }
+      },
+      "delete": {
+        "summary": "Remove a reaction",
+        "description": "Remove the authenticated user's reaction from an existing message.",
+        "tags": ["Messages"],
+        "operationId": "removeReaction",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "description": "Unique identifier of the chat.",
+              "example": "!NCdzlIaMjZUmvmvyHU:beeper.com"
+            },
+            "required": true,
+            "description": "Unique identifier of the chat.",
+            "name": "chatID",
+            "in": "path"
+          },
+          {
+            "schema": { "type": "string" },
+            "required": true,
+            "description": "ID of the message to remove a reaction from",
+            "name": "messageID",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Reaction key to remove"
+            },
+            "required": true,
+            "description": "Reaction key to remove",
+            "name": "reactionKey",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request executed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RemoveReactionOutput"
+                }
               }
             }
           },
