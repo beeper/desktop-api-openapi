@@ -1087,92 +1087,66 @@
         "required": ["chatID"]
       },
       "CreateChatInput": {
-        "anyOf": [
-          {
-            "type": "object",
-            "properties": {
-              "accountID": {
-                "type": "string",
-                "description": "Account to create the chat on."
-              },
-              "mode": {
-                "type": "string",
-                "enum": ["create"],
-                "description": "Create mode. Defaults to 'create' when omitted."
-              },
-              "type": {
-                "type": "string",
-                "enum": ["single", "group"],
-                "description": "Chat type to create: 'single' requires exactly one participantID; 'group' supports multiple participants and optional title."
-              },
-              "participantIDs": {
-                "type": "array",
-                "items": { "type": "string" },
-                "minItems": 1,
-                "description": "User IDs to include in the new chat."
-              },
-              "title": {
-                "type": "string",
-                "description": "Optional title for group chats; ignored for single chats on most platforms."
-              },
-              "messageText": {
-                "type": "string",
-                "description": "Optional first message content if the platform requires it to create the chat."
-              }
-            },
-            "required": ["accountID", "type", "participantIDs"]
+        "type": "object",
+        "properties": {
+          "accountID": {
+            "type": "string",
+            "description": "Account to create or start the chat on."
           },
-          {
+          "mode": {
+            "type": "string",
+            "enum": ["create", "start"],
+            "description": "Operation mode. Defaults to 'create' when omitted."
+          },
+          "type": {
+            "type": "string",
+            "enum": ["single", "group"],
+            "description": "Required when mode='create'. 'single' requires exactly one participantID; 'group' supports multiple participants and optional title."
+          },
+          "participantIDs": {
+            "type": "array",
+            "items": { "type": "string" },
+            "minItems": 1,
+            "description": "Required when mode='create'. User IDs to include in the new chat."
+          },
+          "title": {
+            "type": "string",
+            "description": "Optional title for group chats when mode='create'; ignored for single chats on most platforms."
+          },
+          "user": {
             "type": "object",
             "properties": {
-              "mode": {
+              "id": {
                 "type": "string",
-                "enum": ["start"],
-                "description": "Start mode for resolving/creating a direct chat from merged contact data."
+                "description": "Known user ID when available."
               },
-              "accountID": {
+              "username": {
                 "type": "string",
-                "description": "Account to start the chat on."
+                "description": "Username/handle candidate."
               },
-              "user": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "string",
-                    "description": "Known user ID when available."
-                  },
-                  "username": {
-                    "type": "string",
-                    "description": "Username/handle candidate."
-                  },
-                  "phoneNumber": {
-                    "type": "string",
-                    "description": "Phone number candidate (E.164 preferred)."
-                  },
-                  "email": {
-                    "type": "string",
-                    "description": "Email candidate."
-                  },
-                  "fullName": {
-                    "type": "string",
-                    "description": "Display name hint used for ranking only."
-                  }
-                },
-                "description": "Merged user-like contact payload used to resolve the best identifier."
-              },
-              "messageText": {
+              "phoneNumber": {
                 "type": "string",
-                "description": "Optional first message content if the platform requires it to create the chat."
+                "description": "Phone number candidate (E.164 preferred)."
               },
-              "allowInvite": {
-                "type": "boolean",
-                "default": true,
-                "description": "Whether invite-based DM creation is allowed when required by the platform."
+              "email": { "type": "string", "description": "Email candidate." },
+              "fullName": {
+                "type": "string",
+                "description": "Display name hint used for ranking only."
               }
             },
-            "required": ["mode", "accountID", "user"]
+            "description": "Required when mode='start'. Merged user-like contact payload used to resolve the best identifier."
+          },
+          "messageText": {
+            "type": "string",
+            "description": "Optional first message content if the platform requires it to create the chat."
+          },
+          "allowInvite": {
+            "type": "boolean",
+            "default": true,
+            "description": "Whether invite-based DM creation is allowed when required by the platform. Used for mode='start'."
           }
-        ]
+        },
+        "required": ["accountID"]
       },
       "ListMessagesOutput": {
         "type": "object",
