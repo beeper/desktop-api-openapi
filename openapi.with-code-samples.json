@@ -2871,15 +2871,15 @@
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.messages.send('!NCdzlIaMjZUmvmvyHU:beeper.com');\n\nconsole.log(response.chatID);"
+            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.messages.send('!NCdzlIaMjZUmvmvyHU:beeper.com');\n\nconsole.log(response.pendingMessageID);"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.messages.send(\n    chat_id=\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n)\nprint(response.chat_id)"
+            "source": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.messages.send(\n    chat_id=\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n)\nprint(response.pending_message_id)"
           },
           {
             "lang": "Go",
-            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Messages.Send(\n\t\tcontext.TODO(),\n\t\t\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n\t\tbeeperdesktopapi.MessageSendParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.ChatID)\n}\n"
+            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Messages.Send(\n\t\tcontext.TODO(),\n\t\t\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n\t\tbeeperdesktopapi.MessageSendParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.PendingMessageID)\n}\n"
           },
           {
             "lang": "cURL",
