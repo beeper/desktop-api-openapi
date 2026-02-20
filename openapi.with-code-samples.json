@@ -2451,19 +2451,19 @@
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst chat = await client.chats.create({ chat: { accountID: 'accountID' } });\n\nconsole.log(chat.chatID);"
+            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst chat = await client.chats.create({ accountID: 'accountID' });\n\nconsole.log(chat.chatID);"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nchat = client.chats.create(\n    chat={\n        \"account_id\": \"accountID\"\n    },\n)\nprint(chat.chat_id)"
+            "source": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nchat = client.chats.create(\n    account_id=\"accountID\",\n)\nprint(chat.chat_id)"
           },
           {
             "lang": "Go",
-            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tchat, err := client.Chats.New(context.TODO(), beeperdesktopapi.ChatNewParams{\n\t\tChat: beeperdesktopapi.ChatNewParamsChat{\n\t\t\tAccountID: \"accountID\",\n\t\t},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", chat.ChatID)\n}\n"
+            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tchat, err := client.Chats.New(context.TODO(), beeperdesktopapi.ChatNewParams{\n\t\tAccountID: \"accountID\",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", chat.ChatID)\n}\n"
           },
           {
             "lang": "cURL",
-            "source": "curl http://localhost:23373/v1/chats \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"accountID\": \"accountID\",\n          \"allowInvite\": true,\n          \"messageText\": \"messageText\",\n          \"mode\": \"create\",\n          \"participantIDs\": [\n            \"string\"\n          ],\n          \"title\": \"title\",\n          \"type\": \"single\",\n          \"user\": {\n            \"id\": \"id\",\n            \"email\": \"email\",\n            \"fullName\": \"fullName\",\n            \"phoneNumber\": \"phoneNumber\",\n            \"username\": \"username\"\n          }\n        }'"
+            "source": "curl http://localhost:23373/v1/chats \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"accountID\": \"accountID\"\n        }'"
           }
         ]
       }
