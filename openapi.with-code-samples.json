@@ -155,8 +155,14 @@
                           "type": "array",
                           "items": {
                             "anyOf": [
-                              { "type": "string" },
-                              { "type": "number" }
+                              {
+                                "type": "string",
+                                "x-stainless-variantName": "field"
+                              },
+                              {
+                                "type": "number",
+                                "x-stainless-variantName": "index"
+                              }
                             ]
                           },
                           "description": "Path pointing to the invalid field within the payload",
@@ -169,7 +175,8 @@
                   }
                 },
                 "required": ["issues"],
-                "description": "Validation error details"
+                "description": "Validation error details",
+                "x-stainless-variantName": "validation_details"
               },
               {
                 "type": "object",
@@ -177,12 +184,14 @@
                   "nullable": true,
                   "x-stainless-any": true
                 },
-                "description": "Additional error context"
+                "description": "Additional error context",
+                "x-stainless-variantName": "context"
               },
               {
                 "nullable": true,
                 "description": "Arbitrary details payload supplied by the server",
-                "x-stainless-any": true
+                "x-stainless-any": true,
+                "x-stainless-variantName": "arbitrary"
               },
               { "nullable": true }
             ],
@@ -1720,11 +1729,7 @@
           },
           {
             "schema": {
-              "anyOf": [
-                { "type": "string", "enum": ["me"] },
-                { "type": "string", "enum": ["others"] },
-                { "type": "string" }
-              ],
+              "type": "string",
               "description": "Filter by sender: 'me' (messages sent by the authenticated user), 'others' (messages sent by others), or a specific user ID string (user.id)."
             },
             "required": false,
@@ -1906,10 +1911,8 @@
           },
           {
             "schema": {
-              "anyOf": [
-                { "type": "string", "enum": ["single", "group"] },
-                { "type": "string", "enum": ["any"] }
-              ],
+              "type": "string",
+              "enum": ["single", "group", "any"],
               "default": "any",
               "description": "Specify the type of chats to retrieve: use \"single\" for direct messages, \"group\" for group chats, or \"any\" to get all types"
             },
