@@ -1087,92 +1087,66 @@
         "required": ["chatID"]
       },
       "CreateChatInput": {
-        "anyOf": [
-          {
-            "type": "object",
-            "properties": {
-              "accountID": {
-                "type": "string",
-                "description": "Account to create the chat on."
-              },
-              "mode": {
-                "type": "string",
-                "enum": ["create"],
-                "description": "Create mode. Defaults to 'create' when omitted."
-              },
-              "type": {
-                "type": "string",
-                "enum": ["single", "group"],
-                "description": "Chat type to create: 'single' requires exactly one participantID; 'group' supports multiple participants and optional title."
-              },
-              "participantIDs": {
-                "type": "array",
-                "items": { "type": "string" },
-                "minItems": 1,
-                "description": "User IDs to include in the new chat."
-              },
-              "title": {
-                "type": "string",
-                "description": "Optional title for group chats; ignored for single chats on most platforms."
-              },
-              "messageText": {
-                "type": "string",
-                "description": "Optional first message content if the platform requires it to create the chat."
-              }
-            },
-            "required": ["accountID", "type", "participantIDs"]
+        "type": "object",
+        "properties": {
+          "accountID": {
+            "type": "string",
+            "description": "Account to create or start the chat on."
           },
-          {
+          "mode": {
+            "type": "string",
+            "enum": ["create", "start"],
+            "description": "Operation mode. Defaults to 'create' when omitted."
+          },
+          "type": {
+            "type": "string",
+            "enum": ["single", "group"],
+            "description": "Required when mode='create'. 'single' requires exactly one participantID; 'group' supports multiple participants and optional title."
+          },
+          "participantIDs": {
+            "type": "array",
+            "items": { "type": "string" },
+            "minItems": 1,
+            "description": "Required when mode='create'. User IDs to include in the new chat."
+          },
+          "title": {
+            "type": "string",
+            "description": "Optional title for group chats when mode='create'; ignored for single chats on most platforms."
+          },
+          "user": {
             "type": "object",
             "properties": {
-              "mode": {
+              "id": {
                 "type": "string",
-                "enum": ["start"],
-                "description": "Start mode for resolving/creating a direct chat from merged contact data."
+                "description": "Known user ID when available."
               },
-              "accountID": {
+              "username": {
                 "type": "string",
-                "description": "Account to start the chat on."
+                "description": "Username/handle candidate."
               },
-              "user": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "string",
-                    "description": "Known user ID when available."
-                  },
-                  "username": {
-                    "type": "string",
-                    "description": "Username/handle candidate."
-                  },
-                  "phoneNumber": {
-                    "type": "string",
-                    "description": "Phone number candidate (E.164 preferred)."
-                  },
-                  "email": {
-                    "type": "string",
-                    "description": "Email candidate."
-                  },
-                  "fullName": {
-                    "type": "string",
-                    "description": "Display name hint used for ranking only."
-                  }
-                },
-                "description": "Merged user-like contact payload used to resolve the best identifier."
-              },
-              "messageText": {
+              "phoneNumber": {
                 "type": "string",
-                "description": "Optional first message content if the platform requires it to create the chat."
+                "description": "Phone number candidate (E.164 preferred)."
               },
-              "allowInvite": {
-                "type": "boolean",
-                "default": true,
-                "description": "Whether invite-based DM creation is allowed when required by the platform."
+              "email": { "type": "string", "description": "Email candidate." },
+              "fullName": {
+                "type": "string",
+                "description": "Display name hint used for ranking only."
               }
             },
-            "required": ["mode", "accountID", "user"]
+            "description": "Required when mode='start'. Merged user-like contact payload used to resolve the best identifier."
+          },
+          "messageText": {
+            "type": "string",
+            "description": "Optional first message content if the platform requires it to create the chat."
+          },
+          "allowInvite": {
+            "type": "boolean",
+            "default": true,
+            "description": "Whether invite-based DM creation is allowed when required by the platform. Used for mode='start'."
           }
-        ]
+        },
+        "required": ["accountID"]
       },
       "ListMessagesOutput": {
         "type": "object",
@@ -2472,19 +2446,19 @@
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst chat = await client.chats.create();\n\nconsole.log(chat.chatID);"
+            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst chat = await client.chats.create({ chat: { accountID: 'accountID' } });\n\nconsole.log(chat.chatID);"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nchat = client.chats.create()\nprint(chat.chat_id)"
+            "source": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nchat = client.chats.create(\n    chat={\n        \"account_id\": \"accountID\"\n    },\n)\nprint(chat.chat_id)"
           },
           {
             "lang": "Go",
-            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tchat, err := client.Chats.New(context.TODO(), beeperdesktopapi.ChatNewParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", chat.ChatID)\n}\n"
+            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tchat, err := client.Chats.New(context.TODO(), beeperdesktopapi.ChatNewParams{\n\t\tChat: beeperdesktopapi.ChatNewParamsChat{\n\t\t\tAccountID: \"accountID\",\n\t\t},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", chat.ChatID)\n}\n"
           },
           {
             "lang": "cURL",
-            "source": "curl http://localhost:23373/v1/chats \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
+            "source": "curl http://localhost:23373/v1/chats \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"accountID\": \"accountID\",\n          \"allowInvite\": true,\n          \"messageText\": \"messageText\",\n          \"mode\": \"create\",\n          \"participantIDs\": [\n            \"string\"\n          ],\n          \"title\": \"title\",\n          \"type\": \"single\",\n          \"user\": {\n            \"id\": \"id\",\n            \"email\": \"email\",\n            \"fullName\": \"fullName\",\n            \"phoneNumber\": \"phoneNumber\",\n            \"username\": \"username\"\n          }\n        }'"
           }
         ]
       }
