@@ -3,7 +3,7 @@
   "info": {
     "title": "Beeper Desktop API",
     "version": "0.2.0",
-    "description": "HTTP API for interacting with Beeper Desktop. Allows access to your chats from across all the chat networks. This API provides read and write access to messages, chats, and accounts through OAuth2 or Bearer token authentication. A live WebSocket endpoint is available at /v1/ws. Clients authenticate with the same access token and send subscriptions.set with chatIDs (use [\"*\"] for all chats). Server events are flat, typed messages such as message.updated and chat.upserted.",
+    "description": "HTTP API for interacting with Beeper Desktop. Allows access to your chats from across all the chat networks. This API provides read and write access to messages, chats, and accounts through OAuth2 or Bearer token authentication. A live WebSocket endpoint is available at /v1/ws. Clients authenticate with the same access token and send subscriptions.set with chatIDs (use [\"*\"] for all chats). Server events are flat, typed messages: chat.upserted, chat.deleted, message.upserted, and message.deleted.",
     "termsOfService": "https://www.beeper.com/terms",
     "contact": {
       "name": "Beeper",
@@ -258,25 +258,18 @@
             "type": "string",
             "description": "Chat account added to Beeper. Use this to route account-scoped actions."
           },
-          "network": {
-            "type": "string",
-            "description": "Display-only human-readable network name (e.g., 'WhatsApp', 'Messenger').",
-            "example": "WhatsApp",
-            "deprecated": true
-          },
           "user": { "$ref": "#/components/schemas/User" }
         },
-        "required": ["accountID", "network", "user"],
+        "required": ["accountID", "user"],
         "description": "A chat account added to Beeper"
       },
       "GetAccountsOutput": {
         "type": "array",
         "items": { "$ref": "#/components/schemas/Account" },
-        "description": "Connected accounts the user can act through. Includes accountID, network, and user identity.",
+        "description": "Connected accounts the user can act through. Includes accountID and user identity.",
         "example": [
           {
             "accountID": "local-whatsapp_ba_EvYDBBsZbRQAy3UOSWqG0LuTVkc",
-            "network": "WhatsApp",
             "user": {
               "id": "ba_EvYDBBsZbRQAy3UOSWqG0LuTVkc",
               "phoneNumber": "+15551234567",
@@ -287,7 +280,6 @@
           },
           {
             "accountID": "local-telegram_ba_QFrb5lrLPhO3OT5MFBeTWv0x4BI",
-            "network": "Telegram",
             "user": {
               "id": "ba_QFrb5lrLPhO3OT5MFBeTWv0x4BI",
               "username": "batuhan",
@@ -299,7 +291,6 @@
           },
           {
             "accountID": "local-twitter_ba_gUU1IHNGo_CsTZLp0vDFUYk9EuE",
-            "network": "Twitter/X",
             "user": {
               "id": "ba_gUU1IHNGo_CsTZLp0vDFUYk9EuE",
               "username": "batuhan",
@@ -513,12 +504,6 @@
             "type": "string",
             "description": "Account ID this chat belongs to."
           },
-          "network": {
-            "type": "string",
-            "description": "Display-only human-readable network name (e.g., 'WhatsApp', 'Messenger').",
-            "example": "WhatsApp",
-            "deprecated": true
-          },
           "title": {
             "type": "string",
             "description": "Display title of the chat as computed by the client/server."
@@ -586,7 +571,6 @@
         "required": [
           "id",
           "accountID",
-          "network",
           "title",
           "type",
           "participants",
@@ -596,7 +580,6 @@
           "id": "!instagram_mattwondra:local-instagram.localhost",
           "localChatID": "1229391",
           "accountID": "local-instagram_ba_eRfQMmnSNy_p7Ih7HL7RduRpKFU",
-          "network": "Instagram",
           "title": "Matt Wondra",
           "type": "single",
           "participants": {
@@ -704,7 +687,6 @@
               "id": "!signal_adamvy:local-signal.localhost",
               "localChatID": "1229720",
               "accountID": "local-signal_ba_7N74FrU29pxij_TnqfxeUHj53FY",
-              "network": "Signal",
               "title": "Adam Van Ymeren",
               "type": "single",
               "participants": {
@@ -735,7 +717,6 @@
               "id": "!telegram_nick:local-telegram.localhost",
               "localChatID": "1229721",
               "accountID": "local-telegram_ba_QFrb5lrLPhO3OT5MFBeTWv0x4BI",
-              "network": "Telegram",
               "title": "Nick Mills-Barrett",
               "type": "single",
               "participants": {
@@ -808,7 +789,6 @@
               "id": "!KPFTtZYWuERwib8T702N9IfqiCc:ba_EvYDBBsZbRQAy3UOSWqG0LuTVkc.local-whatsapp.localhost",
               "localChatID": "1229391",
               "accountID": "local-whatsapp_ba_EvYDBBsZbRQAy3UOSWqG0LuTVkc",
-              "network": "WhatsApp",
               "title": "Kishan Bagaria",
               "type": "single",
               "participants": {
@@ -835,7 +815,6 @@
               "id": "!nZeX7dh67_RaPnmWGJIjUkV2svE:ba_sXf0adnbr287.local-telegram.localhost",
               "localChatID": "1229078",
               "accountID": "local-telegram_ba_sXf0adnbr287_pRup35Tgl-lsIg",
-              "network": "Telegram",
               "title": "Brad Murray",
               "type": "single",
               "participants": {
@@ -862,7 +841,6 @@
               "id": "!twitter_dm_photomatt:local-twitter.localhost",
               "localChatID": "1228956",
               "accountID": "local-twitter_ba_gUU1IHNGo_CsTZLp0vDFUYk9EuE",
-              "network": "Twitter/X",
               "title": "Matt Mullenweg",
               "type": "single",
               "participants": {
@@ -1033,7 +1011,6 @@
                 "id": "!instagram_mattwondra:local-instagram.localhost",
                 "localChatID": "1229391",
                 "accountID": "local-instagram_ba_eRfQMmnSNy_p7Ih7HL7RduRpKFU",
-                "network": "Instagram",
                 "title": "Matt Wondra",
                 "type": "single",
                 "participants": {
@@ -1467,6 +1444,119 @@
           }
         },
         "required": ["content"]
+      },
+      "ConnectInfoOutput": {
+        "type": "object",
+        "properties": {
+          "app": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string", "description": "App name" },
+              "version": { "type": "string", "description": "App version" },
+              "bundle_id": {
+                "type": "string",
+                "description": "App bundle identifier"
+              }
+            },
+            "required": ["name", "version", "bundle_id"]
+          },
+          "platform": {
+            "type": "object",
+            "properties": {
+              "os": {
+                "type": "string",
+                "description": "Operating system identifier"
+              },
+              "arch": { "type": "string", "description": "CPU architecture" },
+              "release": {
+                "type": "string",
+                "description": "Runtime release version"
+              }
+            },
+            "required": ["os", "arch"]
+          },
+          "server": {
+            "type": "object",
+            "properties": {
+              "status": { "type": "string", "description": "Server status" },
+              "base_url": {
+                "type": "string",
+                "description": "Base URL of the Connect server"
+              },
+              "port": { "type": "integer", "description": "Listening port" },
+              "hostname": { "type": "string", "description": "Listening host" },
+              "remote_access": {
+                "type": "boolean",
+                "description": "Whether remote access is enabled"
+              },
+              "mcp_enabled": {
+                "type": "boolean",
+                "description": "Whether MCP endpoint is enabled"
+              }
+            },
+            "required": [
+              "status",
+              "base_url",
+              "port",
+              "hostname",
+              "remote_access",
+              "mcp_enabled"
+            ]
+          },
+          "endpoints": {
+            "type": "object",
+            "properties": {
+              "oauth": {
+                "type": "object",
+                "properties": {
+                  "authorization_endpoint": {
+                    "type": "string",
+                    "description": "OAuth authorization endpoint"
+                  },
+                  "token_endpoint": {
+                    "type": "string",
+                    "description": "OAuth token endpoint"
+                  },
+                  "introspection_endpoint": {
+                    "type": "string",
+                    "description": "OAuth introspection endpoint"
+                  },
+                  "userinfo_endpoint": {
+                    "type": "string",
+                    "description": "OAuth userinfo endpoint"
+                  },
+                  "revocation_endpoint": {
+                    "type": "string",
+                    "description": "OAuth token revocation endpoint"
+                  },
+                  "registration_endpoint": {
+                    "type": "string",
+                    "description": "OAuth dynamic client registration endpoint"
+                  }
+                },
+                "required": [
+                  "authorization_endpoint",
+                  "token_endpoint",
+                  "introspection_endpoint",
+                  "userinfo_endpoint",
+                  "revocation_endpoint",
+                  "registration_endpoint"
+                ]
+              },
+              "spec": {
+                "type": "string",
+                "description": "OpenAPI spec endpoint"
+              },
+              "mcp": { "type": "string", "description": "MCP endpoint" },
+              "ws_events": {
+                "type": "string",
+                "description": "WebSocket events endpoint"
+              }
+            },
+            "required": ["oauth", "spec", "mcp", "ws_events"]
+          }
+        },
+        "required": ["app", "platform", "server", "endpoints"]
       }
     },
     "parameters": {
@@ -2866,6 +2956,26 @@
           "404": { "$ref": "#/components/responses/NotFound" },
           "422": { "$ref": "#/components/responses/UnprocessableEntity" },
           "429": { "$ref": "#/components/responses/TooManyRequests" },
+          "500": { "$ref": "#/components/responses/InternalServerError" }
+        }
+      }
+    },
+    "/v1/info": {
+      "get": {
+        "summary": "Get Connect server info",
+        "description": "Returns app, platform, server, and endpoint discovery metadata for this Beeper Desktop instance.",
+        "tags": ["App"],
+        "operationId": "get_connect_info",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Connect server info",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ConnectInfoOutput" }
+              }
+            }
+          },
           "500": { "$ref": "#/components/responses/InternalServerError" }
         }
       }
