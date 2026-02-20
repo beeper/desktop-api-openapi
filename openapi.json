@@ -1253,7 +1253,8 @@
           "success": {
             "type": "boolean",
             "enum": [true],
-            "description": "Whether the reaction was successfully added"
+            "description": "Whether the reaction was successfully added",
+            "x-stainless-const": true
           },
           "chatID": {
             "type": "string",
@@ -1295,7 +1296,8 @@
           "success": {
             "type": "boolean",
             "enum": [true],
-            "description": "Whether the reaction was successfully removed"
+            "description": "Whether the reaction was successfully removed",
+            "x-stainless-const": true
           },
           "chatID": {
             "type": "string",
