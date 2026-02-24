@@ -1588,7 +1588,7 @@
         "description": "Lists chat accounts across networks (WhatsApp, Telegram, Twitter/X, etc.) actively connected to this Beeper Desktop instance",
         "tags": ["Accounts"],
         "operationId": "getAccounts",
-        "security": [{ "bearerAuth": [] }],
+        "security": [{}, { "bearerAuth": [] }],
         "responses": {
           "200": {
             "description": "Request executed successfully",
@@ -1609,19 +1609,19 @@
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst accounts = await client.accounts.list();\n\nconsole.log(accounts);"
+            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop();\n\nconst accounts = await client.accounts.list();\n\nconsole.log(accounts);"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\naccounts = client.accounts.list()\nprint(accounts)"
+            "source": "from beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop()\naccounts = client.accounts.list()\nprint(accounts)"
           },
           {
             "lang": "Go",
-            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\taccounts, err := client.Accounts.List(context.TODO())\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", accounts)\n}\n"
+            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient()\n\taccounts, err := client.Accounts.List(context.TODO())\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", accounts)\n}\n"
           },
           {
             "lang": "cURL",
-            "source": "curl http://localhost:23373/v1/accounts \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
+            "source": "curl http://localhost:23373/v1/accounts"
           }
         ]
       }
@@ -1632,7 +1632,7 @@
         "description": "Search messages across chats using Beeper's message index",
         "tags": ["Messages"],
         "operationId": "searchMessages",
-        "security": [{ "bearerAuth": [] }],
+        "security": [{}, { "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -1823,19 +1823,19 @@
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const message of client.messages.search()) {\n  console.log(message.id);\n}"
+            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop();\n\n// Automatically fetches more pages as needed.\nfor await (const message of client.messages.search()) {\n  console.log(message.id);\n}"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\npage = client.messages.search()\npage = page.items[0]\nprint(page.id)"
+            "source": "from beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop()\npage = client.messages.search()\npage = page.items[0]\nprint(page.id)"
           },
           {
             "lang": "Go",
-            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tpage, err := client.Messages.Search(context.TODO(), beeperdesktopapi.MessageSearchParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", page)\n}\n"
+            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient()\n\tpage, err := client.Messages.Search(context.TODO(), beeperdesktopapi.MessageSearchParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", page)\n}\n"
           },
           {
             "lang": "cURL",
-            "source": "curl http://localhost:23373/v1/messages/search \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
+            "source": "curl http://localhost:23373/v1/messages/search"
           }
         ]
       }
@@ -1846,7 +1846,7 @@
         "description": "Search chats by title/network or participants using Beeper Desktop's renderer algorithm.",
         "tags": ["Chats"],
         "operationId": "searchChats",
-        "security": [{ "bearerAuth": [] }],
+        "security": [{}, { "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -2017,19 +2017,19 @@
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const chat of client.chats.search()) {\n  console.log(chat.id);\n}"
+            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop();\n\n// Automatically fetches more pages as needed.\nfor await (const chat of client.chats.search()) {\n  console.log(chat.id);\n}"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\npage = client.chats.search()\npage = page.items[0]\nprint(page.id)"
+            "source": "from beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop()\npage = client.chats.search()\npage = page.items[0]\nprint(page.id)"
           },
           {
             "lang": "Go",
-            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tpage, err := client.Chats.Search(context.TODO(), beeperdesktopapi.ChatSearchParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", page)\n}\n"
+            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient()\n\tpage, err := client.Chats.Search(context.TODO(), beeperdesktopapi.ChatSearchParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", page)\n}\n"
           },
           {
             "lang": "cURL",
-            "source": "curl http://localhost:23373/v1/chats/search \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
+            "source": "curl http://localhost:23373/v1/chats/search"
           }
         ]
       }
@@ -2040,7 +2040,7 @@
         "description": "Search contacts on a specific account using merged account contacts, network search, and exact identifier lookup.",
         "tags": ["Contacts"],
         "operationId": "searchContacts",
-        "security": [{ "bearerAuth": [] }],
+        "security": [{}, { "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -2092,19 +2092,19 @@
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.accounts.contacts.search('accountID', { query: 'x' });\n\nconsole.log(response.items);"
+            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop();\n\nconst response = await client.accounts.contacts.search('accountID', { query: 'x' });\n\nconsole.log(response.items);"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.accounts.contacts.search(\n    account_id=\"accountID\",\n    query=\"x\",\n)\nprint(response.items)"
+            "source": "from beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop()\nresponse = client.accounts.contacts.search(\n    account_id=\"accountID\",\n    query=\"x\",\n)\nprint(response.items)"
           },
           {
             "lang": "Go",
-            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Accounts.Contacts.Search(\n\t\tcontext.TODO(),\n\t\t\"accountID\",\n\t\tbeeperdesktopapi.AccountContactSearchParams{\n\t\t\tQuery: \"x\",\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.Items)\n}\n"
+            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient()\n\tresponse, err := client.Accounts.Contacts.Search(\n\t\tcontext.TODO(),\n\t\t\"accountID\",\n\t\tbeeperdesktopapi.AccountContactSearchParams{\n\t\t\tQuery: \"x\",\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.Items)\n}\n"
           },
           {
             "lang": "cURL",
-            "source": "curl http://localhost:23373/v1/accounts/$ACCOUNT_ID/contacts \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
+            "source": "curl http://localhost:23373/v1/accounts/$ACCOUNT_ID/contacts"
           }
         ]
       }
@@ -2115,7 +2115,7 @@
         "description": "List merged contacts for a specific account with cursor-based pagination.",
         "tags": ["Contacts"],
         "operationId": "listContacts",
-        "security": [{ "bearerAuth": [] }],
+        "security": [{}, { "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -2204,19 +2204,19 @@
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const user of client.accounts.contacts.list('accountID')) {\n  console.log(user.id);\n}"
+            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop();\n\n// Automatically fetches more pages as needed.\nfor await (const user of client.accounts.contacts.list('accountID')) {\n  console.log(user.id);\n}"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\npage = client.accounts.contacts.list(\n    account_id=\"accountID\",\n)\npage = page.items[0]\nprint(page.id)"
+            "source": "from beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop()\npage = client.accounts.contacts.list(\n    account_id=\"accountID\",\n)\npage = page.items[0]\nprint(page.id)"
           },
           {
             "lang": "Go",
-            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tpage, err := client.Accounts.Contacts.List(\n\t\tcontext.TODO(),\n\t\t\"accountID\",\n\t\tbeeperdesktopapi.AccountContactListParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", page)\n}\n"
+            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient()\n\tpage, err := client.Accounts.Contacts.List(\n\t\tcontext.TODO(),\n\t\t\"accountID\",\n\t\tbeeperdesktopapi.AccountContactListParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", page)\n}\n"
           },
           {
             "lang": "cURL",
-            "source": "curl http://localhost:23373/v1/accounts/$ACCOUNT_ID/contacts/list \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
+            "source": "curl http://localhost:23373/v1/accounts/$ACCOUNT_ID/contacts/list"
           }
         ]
       }
@@ -2227,7 +2227,7 @@
         "description": "Returns matching chats, participant name matches in groups, and the first page of messages in one call. Paginate messages via search-messages. Paginate chats via search-chats.",
         "tags": ["App"],
         "operationId": "search",
-        "security": [{ "bearerAuth": [] }],
+        "security": [{}, { "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -2261,20 +2261,17 @@
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.search({ query: 'x' });\n\nconsole.log(response.results);"
+            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop();\n\nconst response = await client.search({ query: 'x' });\n\nconsole.log(response.results);"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.search(\n    query=\"x\",\n)\nprint(response.results)"
+            "source": "from beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop()\nresponse = client.search(\n    query=\"x\",\n)\nprint(response.results)"
           },
           {
             "lang": "Go",
-            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Search(context.TODO(), beeperdesktopapi.SearchParams{\n\t\tQuery: \"x\",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.Results)\n}\n"
+            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient()\n\tresponse, err := client.Search(context.TODO(), beeperdesktopapi.SearchParams{\n\t\tQuery: \"x\",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.Results)\n}\n"
           },
-          {
-            "lang": "cURL",
-            "source": "curl http://localhost:23373/v1/search \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          }
+          { "lang": "cURL", "source": "curl http://localhost:23373/v1/search" }
         ]
       }
     },
@@ -2284,7 +2281,7 @@
         "description": "Focus Beeper Desktop and optionally navigate to a specific chat, message, or pre-fill draft text and attachment.",
         "tags": ["App"],
         "operationId": "focusApp",
-        "security": [{ "bearerAuth": [] }],
+        "security": [{}, { "bearerAuth": [] }],
         "requestBody": {
           "content": {
             "application/json": {
@@ -2312,19 +2309,19 @@
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.focus();\n\nconsole.log(response.success);"
+            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop();\n\nconst response = await client.focus();\n\nconsole.log(response.success);"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.focus()\nprint(response.success)"
+            "source": "from beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop()\nresponse = client.focus()\nprint(response.success)"
           },
           {
             "lang": "Go",
-            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Focus(context.TODO(), beeperdesktopapi.FocusParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.Success)\n}\n"
+            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient()\n\tresponse, err := client.Focus(context.TODO(), beeperdesktopapi.FocusParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.Success)\n}\n"
           },
           {
             "lang": "cURL",
-            "source": "curl http://localhost:23373/v1/focus \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
+            "source": "curl http://localhost:23373/v1/focus \\\n    -X POST"
           }
         ]
       }
@@ -2335,7 +2332,7 @@
         "description": "List all chats sorted by last activity (most recent first). Combines all accounts into a single paginated list.",
         "tags": ["Chats"],
         "operationId": "listChats",
-        "security": [{ "bearerAuth": [] }],
+        "security": [{}, { "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -2402,20 +2399,17 @@
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const chatListResponse of client.chats.list()) {\n  console.log(chatListResponse);\n}"
+            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop();\n\n// Automatically fetches more pages as needed.\nfor await (const chatListResponse of client.chats.list()) {\n  console.log(chatListResponse);\n}"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\npage = client.chats.list()\npage = page.items[0]\nprint(page)"
+            "source": "from beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop()\npage = client.chats.list()\npage = page.items[0]\nprint(page)"
           },
           {
             "lang": "Go",
-            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tpage, err := client.Chats.List(context.TODO(), beeperdesktopapi.ChatListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", page)\n}\n"
+            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient()\n\tpage, err := client.Chats.List(context.TODO(), beeperdesktopapi.ChatListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", page)\n}\n"
           },
-          {
-            "lang": "cURL",
-            "source": "curl http://localhost:23373/v1/chats \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          }
+          { "lang": "cURL", "source": "curl http://localhost:23373/v1/chats" }
         ]
       },
       "post": {
@@ -2423,7 +2417,7 @@
         "description": "Create a single/group chat (mode='create') or start a direct chat from merged user data (mode='start').",
         "tags": ["Chats"],
         "operationId": "createChat",
-        "security": [{ "bearerAuth": [] }],
+        "security": [{}, { "bearerAuth": [] }],
         "requestBody": {
           "content": {
             "application/json": {
@@ -2451,19 +2445,19 @@
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst chat = await client.chats.create({ accountID: 'accountID' });\n\nconsole.log(chat.chatID);"
+            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop();\n\nconst chat = await client.chats.create({ accountID: 'accountID' });\n\nconsole.log(chat.chatID);"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nchat = client.chats.create(\n    account_id=\"accountID\",\n)\nprint(chat.chat_id)"
+            "source": "from beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop()\nchat = client.chats.create(\n    account_id=\"accountID\",\n)\nprint(chat.chat_id)"
           },
           {
             "lang": "Go",
-            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tchat, err := client.Chats.New(context.TODO(), beeperdesktopapi.ChatNewParams{\n\t\tAccountID: \"accountID\",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", chat.ChatID)\n}\n"
+            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient()\n\tchat, err := client.Chats.New(context.TODO(), beeperdesktopapi.ChatNewParams{\n\t\tAccountID: \"accountID\",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", chat.ChatID)\n}\n"
           },
           {
             "lang": "cURL",
-            "source": "curl http://localhost:23373/v1/chats \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"accountID\": \"accountID\"\n        }'"
+            "source": "curl http://localhost:23373/v1/chats \\\n    -H 'Content-Type: application/json' \\\n    -d '{\n          \"accountID\": \"accountID\"\n        }'"
           }
         ]
       }
@@ -2474,7 +2468,7 @@
         "description": "Retrieve chat details including metadata, participants, and latest message",
         "tags": ["Chats"],
         "operationId": "getChat",
-        "security": [{ "bearerAuth": [] }],
+        "security": [{}, { "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -2523,19 +2517,19 @@
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst chat = await client.chats.retrieve('!NCdzlIaMjZUmvmvyHU:beeper.com');\n\nconsole.log(chat.id);"
+            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop();\n\nconst chat = await client.chats.retrieve('!NCdzlIaMjZUmvmvyHU:beeper.com');\n\nconsole.log(chat.id);"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nchat = client.chats.retrieve(\n    chat_id=\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n)\nprint(chat.id)"
+            "source": "from beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop()\nchat = client.chats.retrieve(\n    chat_id=\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n)\nprint(chat.id)"
           },
           {
             "lang": "Go",
-            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tchat, err := client.Chats.Get(\n\t\tcontext.TODO(),\n\t\t\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n\t\tbeeperdesktopapi.ChatGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", chat.ID)\n}\n"
+            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient()\n\tchat, err := client.Chats.Get(\n\t\tcontext.TODO(),\n\t\t\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n\t\tbeeperdesktopapi.ChatGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", chat.ID)\n}\n"
           },
           {
             "lang": "cURL",
-            "source": "curl http://localhost:23373/v1/chats/$CHAT_ID \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
+            "source": "curl http://localhost:23373/v1/chats/$CHAT_ID"
           }
         ]
       }
@@ -2546,7 +2540,7 @@
         "description": "Archive or unarchive a chat. Set archived=true to move to archive, archived=false to move back to inbox",
         "tags": ["Chats"],
         "operationId": "archiveChat",
-        "security": [{ "bearerAuth": [] }],
+        "security": [{}, { "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -2589,19 +2583,19 @@
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nawait client.chats.archive('!NCdzlIaMjZUmvmvyHU:beeper.com');"
+            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop();\n\nawait client.chats.archive('!NCdzlIaMjZUmvmvyHU:beeper.com');"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nclient.chats.archive(\n    chat_id=\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n)"
+            "source": "from beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop()\nclient.chats.archive(\n    chat_id=\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n)"
           },
           {
             "lang": "Go",
-            "source": "package main\n\nimport (\n\t\"context\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\terr := client.Chats.Archive(\n\t\tcontext.TODO(),\n\t\t\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n\t\tbeeperdesktopapi.ChatArchiveParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n"
+            "source": "package main\n\nimport (\n\t\"context\"\n\n\t\"github.com/beeper/desktop-api-go\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient()\n\terr := client.Chats.Archive(\n\t\tcontext.TODO(),\n\t\t\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n\t\tbeeperdesktopapi.ChatArchiveParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n"
           },
           {
             "lang": "cURL",
-            "source": "curl http://localhost:23373/v1/chats/$CHAT_ID/archive \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
+            "source": "curl http://localhost:23373/v1/chats/$CHAT_ID/archive \\\n    -X POST"
           }
         ]
       }
@@ -2612,7 +2606,7 @@
         "description": "Set a reminder for a chat at a specific time",
         "tags": ["Chats"],
         "operationId": "setChatReminder",
-        "security": [{ "bearerAuth": [] }],
+        "security": [{}, { "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -2666,19 +2660,19 @@
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nawait client.chats.reminders.create('!NCdzlIaMjZUmvmvyHU:beeper.com', {\n  reminder: { remindAtMs: 0 },\n});"
+            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop();\n\nawait client.chats.reminders.create('!NCdzlIaMjZUmvmvyHU:beeper.com', {\n  reminder: { remindAtMs: 0 },\n});"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nclient.chats.reminders.create(\n    chat_id=\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n    reminder={\n        \"remind_at_ms\": 0\n    },\n)"
+            "source": "from beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop()\nclient.chats.reminders.create(\n    chat_id=\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n    reminder={\n        \"remind_at_ms\": 0\n    },\n)"
           },
           {
             "lang": "Go",
-            "source": "package main\n\nimport (\n\t\"context\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\terr := client.Chats.Reminders.New(\n\t\tcontext.TODO(),\n\t\t\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n\t\tbeeperdesktopapi.ChatReminderNewParams{\n\t\t\tReminder: beeperdesktopapi.ChatReminderNewParamsReminder{\n\t\t\t\tRemindAtMs: 0,\n\t\t\t},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n"
+            "source": "package main\n\nimport (\n\t\"context\"\n\n\t\"github.com/beeper/desktop-api-go\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient()\n\terr := client.Chats.Reminders.New(\n\t\tcontext.TODO(),\n\t\t\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n\t\tbeeperdesktopapi.ChatReminderNewParams{\n\t\t\tReminder: beeperdesktopapi.ChatReminderNewParamsReminder{\n\t\t\t\tRemindAtMs: 0,\n\t\t\t},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n"
           },
           {
             "lang": "cURL",
-            "source": "curl http://localhost:23373/v1/chats/$CHAT_ID/reminders \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"reminder\": {\n            \"remindAtMs\": 0\n          }\n        }'"
+            "source": "curl http://localhost:23373/v1/chats/$CHAT_ID/reminders \\\n    -H 'Content-Type: application/json' \\\n    -d '{\n          \"reminder\": {\n            \"remindAtMs\": 0\n          }\n        }'"
           }
         ]
       },
@@ -2687,7 +2681,7 @@
         "description": "Clear an existing reminder from a chat",
         "tags": ["Chats"],
         "operationId": "clearChatReminder",
-        "security": [{ "bearerAuth": [] }],
+        "security": [{}, { "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -2714,19 +2708,19 @@
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nawait client.chats.reminders.delete('!NCdzlIaMjZUmvmvyHU:beeper.com');"
+            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop();\n\nawait client.chats.reminders.delete('!NCdzlIaMjZUmvmvyHU:beeper.com');"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nclient.chats.reminders.delete(\n    \"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n)"
+            "source": "from beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop()\nclient.chats.reminders.delete(\n    \"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n)"
           },
           {
             "lang": "Go",
-            "source": "package main\n\nimport (\n\t\"context\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\terr := client.Chats.Reminders.Delete(context.TODO(), \"!NCdzlIaMjZUmvmvyHU:beeper.com\")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n"
+            "source": "package main\n\nimport (\n\t\"context\"\n\n\t\"github.com/beeper/desktop-api-go\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient()\n\terr := client.Chats.Reminders.Delete(context.TODO(), \"!NCdzlIaMjZUmvmvyHU:beeper.com\")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n"
           },
           {
             "lang": "cURL",
-            "source": "curl http://localhost:23373/v1/chats/$CHAT_ID/reminders \\\n    -X DELETE \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
+            "source": "curl http://localhost:23373/v1/chats/$CHAT_ID/reminders \\\n    -X DELETE"
           }
         ]
       }
@@ -2737,7 +2731,7 @@
         "description": "List all messages in a chat with cursor-based pagination. Sorted by timestamp.",
         "tags": ["Messages"],
         "operationId": "listMessages",
-        "security": [{ "bearerAuth": [] }],
+        "security": [{}, { "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -2797,19 +2791,19 @@
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const message of client.messages.list('!NCdzlIaMjZUmvmvyHU:beeper.com')) {\n  console.log(message.id);\n}"
+            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop();\n\n// Automatically fetches more pages as needed.\nfor await (const message of client.messages.list('!NCdzlIaMjZUmvmvyHU:beeper.com')) {\n  console.log(message.id);\n}"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\npage = client.messages.list(\n    chat_id=\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n)\npage = page.items[0]\nprint(page.id)"
+            "source": "from beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop()\npage = client.messages.list(\n    chat_id=\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n)\npage = page.items[0]\nprint(page.id)"
           },
           {
             "lang": "Go",
-            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tpage, err := client.Messages.List(\n\t\tcontext.TODO(),\n\t\t\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n\t\tbeeperdesktopapi.MessageListParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", page)\n}\n"
+            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient()\n\tpage, err := client.Messages.List(\n\t\tcontext.TODO(),\n\t\t\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n\t\tbeeperdesktopapi.MessageListParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", page)\n}\n"
           },
           {
             "lang": "cURL",
-            "source": "curl http://localhost:23373/v1/chats/$CHAT_ID/messages \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
+            "source": "curl http://localhost:23373/v1/chats/$CHAT_ID/messages"
           }
         ]
       },
@@ -2818,7 +2812,7 @@
         "description": "Send a text message to a specific chat. Supports replying to existing messages. Returns a pending message ID.",
         "tags": ["Messages"],
         "operationId": "sendMessage",
-        "security": [{ "bearerAuth": [] }],
+        "security": [{}, { "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -2874,19 +2868,19 @@
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.messages.send('!NCdzlIaMjZUmvmvyHU:beeper.com');\n\nconsole.log(response.pendingMessageID);"
+            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop();\n\nconst response = await client.messages.send('!NCdzlIaMjZUmvmvyHU:beeper.com');\n\nconsole.log(response.pendingMessageID);"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.messages.send(\n    chat_id=\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n)\nprint(response.pending_message_id)"
+            "source": "from beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop()\nresponse = client.messages.send(\n    chat_id=\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n)\nprint(response.pending_message_id)"
           },
           {
             "lang": "Go",
-            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Messages.Send(\n\t\tcontext.TODO(),\n\t\t\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n\t\tbeeperdesktopapi.MessageSendParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.PendingMessageID)\n}\n"
+            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient()\n\tresponse, err := client.Messages.Send(\n\t\tcontext.TODO(),\n\t\t\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n\t\tbeeperdesktopapi.MessageSendParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.PendingMessageID)\n}\n"
           },
           {
             "lang": "cURL",
-            "source": "curl http://localhost:23373/v1/chats/$CHAT_ID/messages \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
+            "source": "curl http://localhost:23373/v1/chats/$CHAT_ID/messages \\\n    -X POST"
           }
         ]
       }
@@ -2897,7 +2891,7 @@
         "description": "Edit the text content of an existing message. Messages with attachments cannot be edited.",
         "tags": ["Messages"],
         "operationId": "editMessage",
-        "security": [{ "bearerAuth": [] }],
+        "security": [{}, { "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -2955,19 +2949,19 @@
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst message = await client.messages.update('messageID', {\n  chatID: '!NCdzlIaMjZUmvmvyHU:beeper.com',\n  text: 'x',\n});\n\nconsole.log(message.chatID);"
+            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop();\n\nconst message = await client.messages.update('messageID', {\n  chatID: '!NCdzlIaMjZUmvmvyHU:beeper.com',\n  text: 'x',\n});\n\nconsole.log(message.chatID);"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nmessage = client.messages.update(\n    message_id=\"messageID\",\n    chat_id=\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n    text=\"x\",\n)\nprint(message.chat_id)"
+            "source": "from beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop()\nmessage = client.messages.update(\n    message_id=\"messageID\",\n    chat_id=\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n    text=\"x\",\n)\nprint(message.chat_id)"
           },
           {
             "lang": "Go",
-            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tmessage, err := client.Messages.Update(\n\t\tcontext.TODO(),\n\t\t\"messageID\",\n\t\tbeeperdesktopapi.MessageUpdateParams{\n\t\t\tChatID: \"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n\t\t\tText:   \"x\",\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", message.ChatID)\n}\n"
+            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient()\n\tmessage, err := client.Messages.Update(\n\t\tcontext.TODO(),\n\t\t\"messageID\",\n\t\tbeeperdesktopapi.MessageUpdateParams{\n\t\t\tChatID: \"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n\t\t\tText:   \"x\",\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", message.ChatID)\n}\n"
           },
           {
             "lang": "cURL",
-            "source": "curl http://localhost:23373/v1/chats/$CHAT_ID/messages/$MESSAGE_ID \\\n    -X PUT \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"text\": \"x\"\n        }'"
+            "source": "curl http://localhost:23373/v1/chats/$CHAT_ID/messages/$MESSAGE_ID \\\n    -X PUT \\\n    -H 'Content-Type: application/json' \\\n    -d '{\n          \"text\": \"x\"\n        }'"
           }
         ]
       }
@@ -2978,7 +2972,7 @@
         "description": "Add a reaction to an existing message.",
         "tags": ["Messages"],
         "operationId": "addReaction",
-        "security": [{ "bearerAuth": [] }],
+        "security": [{}, { "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -3040,19 +3034,19 @@
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.chats.messages.reactions.add('messageID', {\n  chatID: '!NCdzlIaMjZUmvmvyHU:beeper.com',\n  reactionKey: 'x',\n});\n\nconsole.log(response.chatID);"
+            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop();\n\nconst response = await client.chats.messages.reactions.add('messageID', {\n  chatID: '!NCdzlIaMjZUmvmvyHU:beeper.com',\n  reactionKey: 'x',\n});\n\nconsole.log(response.chatID);"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.chats.messages.reactions.add(\n    message_id=\"messageID\",\n    chat_id=\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n    reaction_key=\"x\",\n)\nprint(response.chat_id)"
+            "source": "from beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop()\nresponse = client.chats.messages.reactions.add(\n    message_id=\"messageID\",\n    chat_id=\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n    reaction_key=\"x\",\n)\nprint(response.chat_id)"
           },
           {
             "lang": "Go",
-            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Chats.Messages.Reactions.Add(\n\t\tcontext.TODO(),\n\t\t\"messageID\",\n\t\tbeeperdesktopapi.ChatMessageReactionAddParams{\n\t\t\tChatID:      \"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n\t\t\tReactionKey: \"x\",\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.ChatID)\n}\n"
+            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient()\n\tresponse, err := client.Chats.Messages.Reactions.Add(\n\t\tcontext.TODO(),\n\t\t\"messageID\",\n\t\tbeeperdesktopapi.ChatMessageReactionAddParams{\n\t\t\tChatID:      \"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n\t\t\tReactionKey: \"x\",\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.ChatID)\n}\n"
           },
           {
             "lang": "cURL",
-            "source": "curl http://localhost:23373/v1/chats/$CHAT_ID/messages/$MESSAGE_ID/reactions \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"reactionKey\": \"x\"\n        }'"
+            "source": "curl http://localhost:23373/v1/chats/$CHAT_ID/messages/$MESSAGE_ID/reactions \\\n    -H 'Content-Type: application/json' \\\n    -d '{\n          \"reactionKey\": \"x\"\n        }'"
           }
         ]
       },
@@ -3061,7 +3055,7 @@
         "description": "Remove the authenticated user's reaction from an existing message.",
         "tags": ["Messages"],
         "operationId": "removeReaction",
-        "security": [{ "bearerAuth": [] }],
+        "security": [{}, { "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -3115,19 +3109,19 @@
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst reaction = await client.chats.messages.reactions.delete('messageID', {\n  chatID: '!NCdzlIaMjZUmvmvyHU:beeper.com',\n  reactionKey: 'x',\n});\n\nconsole.log(reaction.chatID);"
+            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop();\n\nconst reaction = await client.chats.messages.reactions.delete('messageID', {\n  chatID: '!NCdzlIaMjZUmvmvyHU:beeper.com',\n  reactionKey: 'x',\n});\n\nconsole.log(reaction.chatID);"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nreaction = client.chats.messages.reactions.delete(\n    message_id=\"messageID\",\n    chat_id=\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n    reaction_key=\"x\",\n)\nprint(reaction.chat_id)"
+            "source": "from beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop()\nreaction = client.chats.messages.reactions.delete(\n    message_id=\"messageID\",\n    chat_id=\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n    reaction_key=\"x\",\n)\nprint(reaction.chat_id)"
           },
           {
             "lang": "Go",
-            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\treaction, err := client.Chats.Messages.Reactions.Delete(\n\t\tcontext.TODO(),\n\t\t\"messageID\",\n\t\tbeeperdesktopapi.ChatMessageReactionDeleteParams{\n\t\t\tChatID:      \"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n\t\t\tReactionKey: \"x\",\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", reaction.ChatID)\n}\n"
+            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient()\n\treaction, err := client.Chats.Messages.Reactions.Delete(\n\t\tcontext.TODO(),\n\t\t\"messageID\",\n\t\tbeeperdesktopapi.ChatMessageReactionDeleteParams{\n\t\t\tChatID:      \"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n\t\t\tReactionKey: \"x\",\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", reaction.ChatID)\n}\n"
           },
           {
             "lang": "cURL",
-            "source": "curl http://localhost:23373/v1/chats/$CHAT_ID/messages/$MESSAGE_ID/reactions \\\n    -X DELETE \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
+            "source": "curl http://localhost:23373/v1/chats/$CHAT_ID/messages/$MESSAGE_ID/reactions \\\n    -X DELETE"
           }
         ]
       }
@@ -3138,7 +3132,7 @@
         "description": "Download a Matrix asset using its mxc:// or localmxc:// URL to the device running Beeper Desktop and return the local file URL.",
         "tags": ["App"],
         "operationId": "downloadAsset",
-        "security": [{ "bearerAuth": [] }],
+        "security": [{}, { "bearerAuth": [] }],
         "requestBody": {
           "content": {
             "application/json": {
@@ -3166,19 +3160,19 @@
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.assets.download({ url: 'mxc://example.org/Q4x9CqGz1pB3Oa6XgJ' });\n\nconsole.log(response.error);"
+            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop();\n\nconst response = await client.assets.download({ url: 'mxc://example.org/Q4x9CqGz1pB3Oa6XgJ' });\n\nconsole.log(response.error);"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.assets.download(\n    url=\"mxc://example.org/Q4x9CqGz1pB3Oa6XgJ\",\n)\nprint(response.error)"
+            "source": "from beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop()\nresponse = client.assets.download(\n    url=\"mxc://example.org/Q4x9CqGz1pB3Oa6XgJ\",\n)\nprint(response.error)"
           },
           {
             "lang": "Go",
-            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Assets.Download(context.TODO(), beeperdesktopapi.AssetDownloadParams{\n\t\tURL: \"mxc://example.org/Q4x9CqGz1pB3Oa6XgJ\",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.Error)\n}\n"
+            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient()\n\tresponse, err := client.Assets.Download(context.TODO(), beeperdesktopapi.AssetDownloadParams{\n\t\tURL: \"mxc://example.org/Q4x9CqGz1pB3Oa6XgJ\",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.Error)\n}\n"
           },
           {
             "lang": "cURL",
-            "source": "curl http://localhost:23373/v1/assets/download \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"url\": \"mxc://example.org/Q4x9CqGz1pB3Oa6XgJ\"\n        }'"
+            "source": "curl http://localhost:23373/v1/assets/download \\\n    -H 'Content-Type: application/json' \\\n    -d '{\n          \"url\": \"mxc://example.org/Q4x9CqGz1pB3Oa6XgJ\"\n        }'"
           }
         ]
       }
@@ -3189,7 +3183,7 @@
         "description": "Stream a file given an mxc://, localmxc://, or file:// URL. Downloads first if not cached. Supports Range requests for seeking in large files.",
         "tags": ["App"],
         "operationId": "serveAsset",
-        "security": [{ "bearerAuth": [] }],
+        "security": [{}, { "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -3216,19 +3210,19 @@
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nawait client.assets.serve({ url: 'x' });"
+            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop();\n\nawait client.assets.serve({ url: 'x' });"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nclient.assets.serve(\n    url=\"x\",\n)"
+            "source": "from beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop()\nclient.assets.serve(\n    url=\"x\",\n)"
           },
           {
             "lang": "Go",
-            "source": "package main\n\nimport (\n\t\"context\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\terr := client.Assets.Serve(context.TODO(), beeperdesktopapi.AssetServeParams{\n\t\tURL: \"x\",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n"
+            "source": "package main\n\nimport (\n\t\"context\"\n\n\t\"github.com/beeper/desktop-api-go\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient()\n\terr := client.Assets.Serve(context.TODO(), beeperdesktopapi.AssetServeParams{\n\t\tURL: \"x\",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n"
           },
           {
             "lang": "cURL",
-            "source": "curl http://localhost:23373/v1/assets/serve \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
+            "source": "curl http://localhost:23373/v1/assets/serve"
           }
         ]
       }
@@ -3239,7 +3233,7 @@
         "description": "Upload a file to a temporary location using multipart/form-data. Returns an uploadID that can be referenced when sending messages with attachments.",
         "tags": ["App"],
         "operationId": "uploadAsset",
-        "security": [{ "bearerAuth": [] }],
+        "security": [{}, { "bearerAuth": [] }],
         "requestBody": {
           "content": {
             "multipart/form-data": {
@@ -3267,19 +3261,19 @@
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.assets.upload({ file: fs.createReadStream('path/to/file') });\n\nconsole.log(response.width);"
+            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop();\n\nconst response = await client.assets.upload({ file: fs.createReadStream('path/to/file') });\n\nconsole.log(response.width);"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.assets.upload(\n    file=b\"raw file contents\",\n)\nprint(response.width)"
+            "source": "from beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop()\nresponse = client.assets.upload(\n    file=b\"raw file contents\",\n)\nprint(response.width)"
           },
           {
             "lang": "Go",
-            "source": "package main\n\nimport (\n\t\"bytes\"\n\t\"context\"\n\t\"fmt\"\n\t\"io\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Assets.Upload(context.TODO(), beeperdesktopapi.AssetUploadParams{\n\t\tFile: io.Reader(bytes.NewBuffer([]byte(\"some file contents\"))),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.Width)\n}\n"
+            "source": "package main\n\nimport (\n\t\"bytes\"\n\t\"context\"\n\t\"fmt\"\n\t\"io\"\n\n\t\"github.com/beeper/desktop-api-go\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient()\n\tresponse, err := client.Assets.Upload(context.TODO(), beeperdesktopapi.AssetUploadParams{\n\t\tFile: io.Reader(bytes.NewBuffer([]byte(\"some file contents\"))),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.Width)\n}\n"
           },
           {
             "lang": "cURL",
-            "source": "curl http://localhost:23373/v1/assets/upload \\\n    -H 'Content-Type: multipart/form-data' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -F 'file=@/path/to/file'"
+            "source": "curl http://localhost:23373/v1/assets/upload \\\n    -H 'Content-Type: multipart/form-data' \\\n    -F 'file=@/path/to/file'"
           }
         ]
       }
@@ -3290,7 +3284,7 @@
         "description": "Upload a file using a JSON body with base64-encoded content. Returns an uploadID that can be referenced when sending messages with attachments. Alternative to the multipart upload endpoint.",
         "tags": ["App"],
         "operationId": "uploadAssetBase64",
-        "security": [{ "bearerAuth": [] }],
+        "security": [{}, { "bearerAuth": [] }],
         "requestBody": {
           "content": {
             "application/json": {
@@ -3318,19 +3312,19 @@
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.assets.uploadBase64({ content: 'x' });\n\nconsole.log(response.width);"
+            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop();\n\nconst response = await client.assets.uploadBase64({ content: 'x' });\n\nconsole.log(response.width);"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.assets.upload_base64(\n    content=\"x\",\n)\nprint(response.width)"
+            "source": "from beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop()\nresponse = client.assets.upload_base64(\n    content=\"x\",\n)\nprint(response.width)"
           },
           {
             "lang": "Go",
-            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Assets.UploadBase64(context.TODO(), beeperdesktopapi.AssetUploadBase64Params{\n\t\tContent: \"x\",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.Width)\n}\n"
+            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient()\n\tresponse, err := client.Assets.UploadBase64(context.TODO(), beeperdesktopapi.AssetUploadBase64Params{\n\t\tContent: \"x\",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.Width)\n}\n"
           },
           {
             "lang": "cURL",
-            "source": "curl http://localhost:23373/v1/assets/upload/base64 \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"content\": \"x\"\n        }'"
+            "source": "curl http://localhost:23373/v1/assets/upload/base64 \\\n    -H 'Content-Type: application/json' \\\n    -d '{\n          \"content\": \"x\"\n        }'"
           }
         ]
       }
