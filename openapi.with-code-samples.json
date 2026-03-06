@@ -3265,11 +3265,11 @@
           },
           {
             "lang": "Python",
-            "source": "from beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop()\nresponse = client.assets.upload(\n    file=b\"raw file contents\",\n)\nprint(response.width)"
+            "source": "from beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop()\nresponse = client.assets.upload(\n    file=b\"Example data\",\n)\nprint(response.width)"
           },
           {
             "lang": "Go",
-            "source": "package main\n\nimport (\n\t\"bytes\"\n\t\"context\"\n\t\"fmt\"\n\t\"io\"\n\n\t\"github.com/beeper/desktop-api-go\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient()\n\tresponse, err := client.Assets.Upload(context.TODO(), beeperdesktopapi.AssetUploadParams{\n\t\tFile: io.Reader(bytes.NewBuffer([]byte(\"some file contents\"))),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.Width)\n}\n"
+            "source": "package main\n\nimport (\n\t\"bytes\"\n\t\"context\"\n\t\"fmt\"\n\t\"io\"\n\n\t\"github.com/beeper/desktop-api-go\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient()\n\tresponse, err := client.Assets.Upload(context.TODO(), beeperdesktopapi.AssetUploadParams{\n\t\tFile: io.Reader(bytes.NewBuffer([]byte(\"Example data\"))),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.Width)\n}\n"
           },
           {
             "lang": "cURL",
