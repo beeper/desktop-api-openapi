@@ -1622,7 +1622,8 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/accounts"
-          }
+          },
+          { "lang": "CLI", "source": "beeper-desktop-cli accounts list" }
         ]
       }
     },
@@ -1836,7 +1837,8 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/messages/search"
-          }
+          },
+          { "lang": "CLI", "source": "beeper-desktop-cli messages search" }
         ]
       }
     },
@@ -2030,7 +2032,8 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/chats/search"
-          }
+          },
+          { "lang": "CLI", "source": "beeper-desktop-cli chats search" }
         ]
       }
     },
@@ -2105,6 +2108,10 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/accounts/$ACCOUNT_ID/contacts"
+          },
+          {
+            "lang": "CLI",
+            "source": "beeper-desktop-cli accounts:contacts search \\\n  --account-id accountID \\\n  --query x"
           }
         ]
       }
@@ -2217,6 +2224,10 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/accounts/$ACCOUNT_ID/contacts/list"
+          },
+          {
+            "lang": "CLI",
+            "source": "beeper-desktop-cli accounts:contacts list \\\n  --account-id accountID"
           }
         ]
       }
@@ -2271,7 +2282,11 @@
             "lang": "Go",
             "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient()\n\tresponse, err := client.Search(context.TODO(), beeperdesktopapi.SearchParams{\n\t\tQuery: \"x\",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.Results)\n}\n"
           },
-          { "lang": "cURL", "source": "curl http://localhost:23373/v1/search" }
+          { "lang": "cURL", "source": "curl http://localhost:23373/v1/search" },
+          {
+            "lang": "CLI",
+            "source": "beeper-desktop-cli search \\\n  --query x"
+          }
         ]
       }
     },
@@ -2322,7 +2337,8 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/focus \\\n    -X POST"
-          }
+          },
+          { "lang": "CLI", "source": "beeper-desktop-cli focus" }
         ]
       }
     },
@@ -2409,7 +2425,8 @@
             "lang": "Go",
             "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient()\n\tpage, err := client.Chats.List(context.TODO(), beeperdesktopapi.ChatListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", page)\n}\n"
           },
-          { "lang": "cURL", "source": "curl http://localhost:23373/v1/chats" }
+          { "lang": "cURL", "source": "curl http://localhost:23373/v1/chats" },
+          { "lang": "CLI", "source": "beeper-desktop-cli chats list" }
         ]
       },
       "post": {
@@ -2458,6 +2475,10 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/chats \\\n    -H 'Content-Type: application/json' \\\n    -d '{\n          \"accountID\": \"accountID\"\n        }'"
+          },
+          {
+            "lang": "CLI",
+            "source": "beeper-desktop-cli chats create \\\n  --account-id accountID"
           }
         ]
       }
@@ -2530,6 +2551,10 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/chats/$CHAT_ID"
+          },
+          {
+            "lang": "CLI",
+            "source": "beeper-desktop-cli chats retrieve \\\n  --chat-id '!NCdzlIaMjZUmvmvyHU:beeper.com'"
           }
         ]
       }
@@ -2596,6 +2621,10 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/chats/$CHAT_ID/archive \\\n    -X POST"
+          },
+          {
+            "lang": "CLI",
+            "source": "beeper-desktop-cli chats archive \\\n  --chat-id '!NCdzlIaMjZUmvmvyHU:beeper.com'"
           }
         ]
       }
@@ -2673,6 +2702,10 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/chats/$CHAT_ID/reminders \\\n    -H 'Content-Type: application/json' \\\n    -d '{\n          \"reminder\": {\n            \"remindAtMs\": 0\n          }\n        }'"
+          },
+          {
+            "lang": "CLI",
+            "source": "beeper-desktop-cli chats:reminders create \\\n  --chat-id '!NCdzlIaMjZUmvmvyHU:beeper.com' \\\n  --reminder '{remindAtMs: 0}'"
           }
         ]
       },
@@ -2721,6 +2754,10 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/chats/$CHAT_ID/reminders \\\n    -X DELETE"
+          },
+          {
+            "lang": "CLI",
+            "source": "beeper-desktop-cli chats:reminders delete \\\n  --chat-id '!NCdzlIaMjZUmvmvyHU:beeper.com'"
           }
         ]
       }
@@ -2804,6 +2841,10 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/chats/$CHAT_ID/messages"
+          },
+          {
+            "lang": "CLI",
+            "source": "beeper-desktop-cli messages list \\\n  --chat-id '!NCdzlIaMjZUmvmvyHU:beeper.com'"
           }
         ]
       },
@@ -2881,6 +2922,10 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/chats/$CHAT_ID/messages \\\n    -X POST"
+          },
+          {
+            "lang": "CLI",
+            "source": "beeper-desktop-cli messages send \\\n  --chat-id '!NCdzlIaMjZUmvmvyHU:beeper.com'"
           }
         ]
       }
@@ -2962,6 +3007,10 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/chats/$CHAT_ID/messages/$MESSAGE_ID \\\n    -X PUT \\\n    -H 'Content-Type: application/json' \\\n    -d '{\n          \"text\": \"x\"\n        }'"
+          },
+          {
+            "lang": "CLI",
+            "source": "beeper-desktop-cli messages update \\\n  --chat-id '!NCdzlIaMjZUmvmvyHU:beeper.com' \\\n  --message-id messageID \\\n  --text x"
           }
         ]
       }
@@ -3047,6 +3096,10 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/chats/$CHAT_ID/messages/$MESSAGE_ID/reactions \\\n    -H 'Content-Type: application/json' \\\n    -d '{\n          \"reactionKey\": \"x\"\n        }'"
+          },
+          {
+            "lang": "CLI",
+            "source": "beeper-desktop-cli chats:messages:reactions add \\\n  --chat-id '!NCdzlIaMjZUmvmvyHU:beeper.com' \\\n  --message-id messageID \\\n  --reaction-key x"
           }
         ]
       },
@@ -3122,6 +3175,10 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/chats/$CHAT_ID/messages/$MESSAGE_ID/reactions \\\n    -X DELETE"
+          },
+          {
+            "lang": "CLI",
+            "source": "beeper-desktop-cli chats:messages:reactions delete \\\n  --chat-id '!NCdzlIaMjZUmvmvyHU:beeper.com' \\\n  --message-id messageID \\\n  --reaction-key x"
           }
         ]
       }
@@ -3173,6 +3230,10 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/assets/download \\\n    -H 'Content-Type: application/json' \\\n    -d '{\n          \"url\": \"mxc://example.org/Q4x9CqGz1pB3Oa6XgJ\"\n        }'"
+          },
+          {
+            "lang": "CLI",
+            "source": "beeper-desktop-cli assets download \\\n  --url mxc://example.org/Q4x9CqGz1pB3Oa6XgJ"
           }
         ]
       }
@@ -3223,6 +3284,10 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/assets/serve"
+          },
+          {
+            "lang": "CLI",
+            "source": "beeper-desktop-cli assets serve \\\n  --url x"
           }
         ]
       }
@@ -3274,6 +3339,10 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/assets/upload \\\n    -H 'Content-Type: multipart/form-data' \\\n    -F 'file=@/path/to/file'"
+          },
+          {
+            "lang": "CLI",
+            "source": "beeper-desktop-cli assets upload \\\n  --file 'Example data'"
           }
         ]
       }
@@ -3325,6 +3394,10 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/assets/upload/base64 \\\n    -H 'Content-Type: application/json' \\\n    -d '{\n          \"content\": \"x\"\n        }'"
+          },
+          {
+            "lang": "CLI",
+            "source": "beeper-desktop-cli assets upload-base64 \\\n  --content x"
           }
         ]
       }
@@ -3363,6 +3436,10 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/info \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
+          },
+          {
+            "lang": "CLI",
+            "source": "beeper-desktop-cli info retrieve \\\n  --access-token 'My Access Token'"
           }
         ]
       }
