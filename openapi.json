@@ -221,6 +221,23 @@
         "description": "Pagination direction used with 'cursor': 'before' fetches older results, 'after' fetches newer results. Defaults to 'before' when only 'cursor' is provided.",
         "example": "before"
       },
+      "Bridge": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Bridge instance identifier."
+          },
+          "type": { "type": "string", "description": "Bridge type." },
+          "provider": {
+            "type": "string",
+            "enum": ["cloud", "self-hosted", "local", "platform-sdk"],
+            "description": "Bridge provider for the account."
+          }
+        },
+        "required": ["id", "type", "provider"],
+        "description": "Bridge metadata for the account. Available from Beeper Desktop v.4.2.719+."
+      },
       "User": {
         "type": "object",
         "properties": {
@@ -267,9 +284,14 @@
             "type": "string",
             "description": "Chat account added to Beeper. Use this to route account-scoped actions."
           },
+          "bridge": { "$ref": "#/components/schemas/Bridge" },
+          "network": {
+            "type": "string",
+            "description": "Human-friendly network name for the account."
+          },
           "user": { "$ref": "#/components/schemas/User" }
         },
-        "required": ["accountID", "user"],
+        "required": ["accountID", "bridge", "network", "user"],
         "description": "A chat account added to Beeper"
       },
       "GetAccountsOutput": {
@@ -279,6 +301,12 @@
         "example": [
           {
             "accountID": "local-whatsapp_ba_EvYDBBsZbRQAy3UOSWqG0LuTVkc",
+            "bridge": {
+              "id": "local-whatsapp",
+              "type": "whatsapp",
+              "provider": "local"
+            },
+            "network": "WhatsApp",
             "user": {
               "id": "ba_EvYDBBsZbRQAy3UOSWqG0LuTVkc",
               "phoneNumber": "+15551234567",
@@ -289,6 +317,12 @@
           },
           {
             "accountID": "local-telegram_ba_QFrb5lrLPhO3OT5MFBeTWv0x4BI",
+            "bridge": {
+              "id": "local-telegram",
+              "type": "telegram",
+              "provider": "local"
+            },
+            "network": "Telegram",
             "user": {
               "id": "ba_QFrb5lrLPhO3OT5MFBeTWv0x4BI",
               "username": "batuhan",
@@ -300,6 +334,12 @@
           },
           {
             "accountID": "local-twitter_ba_gUU1IHNGo_CsTZLp0vDFUYk9EuE",
+            "bridge": {
+              "id": "local-twitter",
+              "type": "twitter",
+              "provider": "local"
+            },
+            "network": "Twitter/X",
             "user": {
               "id": "ba_gUU1IHNGo_CsTZLp0vDFUYk9EuE",
               "username": "batuhan",
@@ -1096,66 +1136,93 @@
         "required": ["chatID"]
       },
       "CreateChatInput": {
-        "type": "object",
-        "properties": {
-          "accountID": {
-            "type": "string",
-            "description": "Account to create or start the chat on."
-          },
-          "mode": {
-            "type": "string",
-            "enum": ["create", "start"],
-            "description": "Operation mode. Defaults to 'create' when omitted."
-          },
-          "type": {
-            "type": "string",
-            "enum": ["single", "group"],
-            "description": "Required when mode='create'. 'single' requires exactly one participantID; 'group' supports multiple participants and optional title."
-          },
-          "participantIDs": {
-            "type": "array",
-            "items": { "type": "string" },
-            "minItems": 1,
-            "description": "Required when mode='create'. User IDs to include in the new chat."
-          },
-          "title": {
-            "type": "string",
-            "description": "Optional title for group chats when mode='create'; ignored for single chats on most platforms."
-          },
-          "user": {
+        "anyOf": [
+          {
             "type": "object",
             "properties": {
-              "id": {
+              "accountID": {
                 "type": "string",
-                "description": "Known user ID when available."
+                "description": "Account to create or start the chat on."
               },
-              "username": {
+              "messageText": {
                 "type": "string",
-                "description": "Username/handle candidate."
+                "description": "Optional first message content if the platform requires it to create the chat."
               },
-              "phoneNumber": {
+              "mode": {
                 "type": "string",
-                "description": "Phone number candidate (E.164 preferred)."
+                "enum": ["start"],
+                "description": "Operation mode. Use 'start' to resolve a user/contact and start a direct chat."
               },
-              "email": { "type": "string", "description": "Email candidate." },
-              "fullName": {
-                "type": "string",
-                "description": "Display name hint used for ranking only."
+              "user": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Known user ID when available."
+                  },
+                  "username": {
+                    "type": "string",
+                    "description": "Username/handle candidate."
+                  },
+                  "phoneNumber": {
+                    "type": "string",
+                    "description": "Phone number candidate (E.164 preferred)."
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "Email candidate."
+                  },
+                  "fullName": {
+                    "type": "string",
+                    "description": "Display name hint used for ranking only."
+                  }
+                },
+                "description": "Merged user-like contact payload used to resolve the best identifier."
+              },
+              "allowInvite": {
+                "type": "boolean",
+                "default": true,
+                "description": "Whether invite-based DM creation is allowed when required by the platform. Used for mode='start'."
               }
             },
-            "description": "Required when mode='start'. Merged user-like contact payload used to resolve the best identifier."
+            "required": ["accountID", "mode", "user"]
           },
-          "messageText": {
-            "type": "string",
-            "description": "Optional first message content if the platform requires it to create the chat."
-          },
-          "allowInvite": {
-            "type": "boolean",
-            "default": true,
-            "description": "Whether invite-based DM creation is allowed when required by the platform. Used for mode='start'."
+          {
+            "type": "object",
+            "properties": {
+              "accountID": {
+                "type": "string",
+                "description": "Account to create or start the chat on."
+              },
+              "messageText": {
+                "type": "string",
+                "description": "Optional first message content if the platform requires it to create the chat."
+              },
+              "mode": {
+                "type": "string",
+                "enum": ["create"],
+                "default": "create",
+                "description": "Operation mode. Defaults to 'create' when omitted."
+              },
+              "type": {
+                "type": "string",
+                "enum": ["single", "group"],
+                "description": "'single' requires exactly one participantID; 'group' supports multiple participants and optional title."
+              },
+              "participantIDs": {
+                "type": "array",
+                "items": { "type": "string" },
+                "minItems": 1,
+                "description": "User IDs to include in the new chat."
+              },
+              "title": {
+                "type": "string",
+                "description": "Optional title for group chats; ignored for single chats on most platforms."
+              }
+            },
+            "required": ["accountID", "type", "participantIDs"]
           }
-        },
-        "required": ["accountID"]
+        ]
       },
       "ListMessagesOutput": {
         "type": "object",
@@ -1588,7 +1655,7 @@
         "description": "Lists chat accounts across networks (WhatsApp, Telegram, Twitter/X, etc.) actively connected to this Beeper Desktop instance",
         "tags": ["Accounts"],
         "operationId": "getAccounts",
-        "security": [{}, { "bearerAuth": [] }],
+        "security": [{ "bearerAuth": [] }],
         "responses": {
           "200": {
             "description": "Request executed successfully",
@@ -1614,7 +1681,7 @@
         "description": "Search messages across chats using Beeper's message index",
         "tags": ["Messages"],
         "operationId": "searchMessages",
-        "security": [{}, { "bearerAuth": [] }],
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -1810,7 +1877,7 @@
         "description": "Search chats by title/network or participants using Beeper Desktop's renderer algorithm.",
         "tags": ["Chats"],
         "operationId": "searchChats",
-        "security": [{}, { "bearerAuth": [] }],
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -1986,7 +2053,7 @@
         "description": "Search contacts on a specific account using merged account contacts, network search, and exact identifier lookup.",
         "tags": ["Contacts"],
         "operationId": "searchContacts",
-        "security": [{}, { "bearerAuth": [] }],
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -2043,7 +2110,7 @@
         "description": "List merged contacts for a specific account with cursor-based pagination.",
         "tags": ["Contacts"],
         "operationId": "listContacts",
-        "security": [{}, { "bearerAuth": [] }],
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -2137,7 +2204,7 @@
         "description": "Returns matching chats, participant name matches in groups, and the first page of messages in one call. Paginate messages via search-messages. Paginate chats via search-chats.",
         "tags": ["App"],
         "operationId": "search",
-        "security": [{}, { "bearerAuth": [] }],
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -2176,7 +2243,7 @@
         "description": "Focus Beeper Desktop and optionally navigate to a specific chat, message, or pre-fill draft text and attachment.",
         "tags": ["App"],
         "operationId": "focusApp",
-        "security": [{}, { "bearerAuth": [] }],
+        "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "content": {
             "application/json": {
@@ -2209,7 +2276,7 @@
         "description": "List all chats sorted by last activity (most recent first). Combines all accounts into a single paginated list.",
         "tags": ["Chats"],
         "operationId": "listChats",
-        "security": [{}, { "bearerAuth": [] }],
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -2279,7 +2346,7 @@
         "description": "Create a single/group chat (mode='create') or start a direct chat from merged user data (mode='start').",
         "tags": ["Chats"],
         "operationId": "createChat",
-        "security": [{}, { "bearerAuth": [] }],
+        "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "content": {
             "application/json": {
@@ -2312,7 +2379,7 @@
         "description": "Retrieve chat details including metadata, participants, and latest message",
         "tags": ["Chats"],
         "operationId": "getChat",
-        "security": [{}, { "bearerAuth": [] }],
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -2366,7 +2433,7 @@
         "description": "Archive or unarchive a chat. Set archived=true to move to archive, archived=false to move back to inbox",
         "tags": ["Chats"],
         "operationId": "archiveChat",
-        "security": [{}, { "bearerAuth": [] }],
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -2414,7 +2481,7 @@
         "description": "Set a reminder for a chat at a specific time",
         "tags": ["Chats"],
         "operationId": "setChatReminder",
-        "security": [{}, { "bearerAuth": [] }],
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -2471,7 +2538,7 @@
         "description": "Clear an existing reminder from a chat",
         "tags": ["Chats"],
         "operationId": "clearChatReminder",
-        "security": [{}, { "bearerAuth": [] }],
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -2503,7 +2570,7 @@
         "description": "List all messages in a chat with cursor-based pagination. Sorted by timestamp.",
         "tags": ["Messages"],
         "operationId": "listMessages",
-        "security": [{}, { "bearerAuth": [] }],
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -2566,7 +2633,7 @@
         "description": "Send a text message to a specific chat. Supports replying to existing messages. Returns a pending message ID.",
         "tags": ["Messages"],
         "operationId": "sendMessage",
-        "security": [{}, { "bearerAuth": [] }],
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -2627,7 +2694,7 @@
         "description": "Edit the text content of an existing message. Messages with attachments cannot be edited.",
         "tags": ["Messages"],
         "operationId": "editMessage",
-        "security": [{}, { "bearerAuth": [] }],
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -2690,7 +2757,7 @@
         "description": "Add a reaction to an existing message.",
         "tags": ["Messages"],
         "operationId": "addReaction",
-        "security": [{}, { "bearerAuth": [] }],
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -2755,7 +2822,7 @@
         "description": "Remove the authenticated user's reaction from an existing message.",
         "tags": ["Messages"],
         "operationId": "removeReaction",
-        "security": [{}, { "bearerAuth": [] }],
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -2814,7 +2881,7 @@
         "description": "Download a Matrix asset using its mxc:// or localmxc:// URL to the device running Beeper Desktop and return the local file URL.",
         "tags": ["App"],
         "operationId": "downloadAsset",
-        "security": [{}, { "bearerAuth": [] }],
+        "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "content": {
             "application/json": {
@@ -2847,7 +2914,7 @@
         "description": "Stream a file given an mxc://, localmxc://, or file:// URL. Downloads first if not cached. Supports Range requests for seeking in large files.",
         "tags": ["App"],
         "operationId": "serveAsset",
-        "security": [{}, { "bearerAuth": [] }],
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -2879,7 +2946,7 @@
         "description": "Upload a file to a temporary location using multipart/form-data. Returns an uploadID that can be referenced when sending messages with attachments.",
         "tags": ["App"],
         "operationId": "uploadAsset",
-        "security": [{}, { "bearerAuth": [] }],
+        "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "content": {
             "multipart/form-data": {
@@ -2912,7 +2979,7 @@
         "description": "Upload a file using a JSON body with base64-encoded content. Returns an uploadID that can be referenced when sending messages with attachments. Alternative to the multipart upload endpoint.",
         "tags": ["App"],
         "operationId": "uploadAssetBase64",
-        "security": [{}, { "bearerAuth": [] }],
+        "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "content": {
             "application/json": {
