@@ -2,8 +2,6 @@
 
 This repository contains an [OpenAPI](https://spec.openapis.org/oas/v3.1.0.html) specification for the [Beeper Desktop API](https://developers.beeper.com/desktop-api/).
 
-It is generated with [Stainless](https://www.stainless.com/).
-
 ## Spec
 
 > [!CAUTION]
