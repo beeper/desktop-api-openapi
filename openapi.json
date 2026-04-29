@@ -2945,11 +2945,28 @@
           }
         ],
         "responses": {
-          "204": { "description": "Request executed successfully" },
+          "200": {
+            "description": "Asset stream",
+            "content": {
+              "application/octet-stream": {
+                "schema": { "type": "string", "format": "binary" }
+              }
+            }
+          },
+          "206": {
+            "description": "Partial asset stream",
+            "content": {
+              "application/octet-stream": {
+                "schema": { "type": "string", "format": "binary" }
+              }
+            }
+          },
+          "304": { "description": "Asset not modified" },
           "400": { "$ref": "#/components/responses/BadRequest" },
           "401": { "$ref": "#/components/responses/UnauthorizedError" },
           "403": { "$ref": "#/components/responses/ForbiddenError" },
           "404": { "$ref": "#/components/responses/NotFound" },
+          "416": { "description": "Requested range not satisfiable" },
           "422": { "$ref": "#/components/responses/UnprocessableEntity" },
           "429": { "$ref": "#/components/responses/TooManyRequests" },
           "500": { "$ref": "#/components/responses/InternalServerError" }
