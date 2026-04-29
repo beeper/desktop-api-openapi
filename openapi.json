@@ -226,17 +226,21 @@
         "properties": {
           "id": {
             "type": "string",
-            "description": "Bridge instance identifier."
+            "description": "Bridge instance identifier. Available in Beeper Desktop v4.2.789+."
           },
-          "type": { "type": "string", "description": "Bridge type." },
+          "type": {
+            "type": "string",
+            "description": "Bridge type. Available in Beeper Desktop v4.2.789+."
+          },
           "provider": {
             "type": "string",
             "enum": ["cloud", "self-hosted", "local", "platform-sdk"],
-            "description": "Bridge provider for the account."
+            "description": "Bridge provider for the account. Available in Beeper Desktop v4.2.789+."
           }
         },
         "required": ["id", "type", "provider"],
-        "description": "Bridge metadata for the account. Available from Beeper Desktop v.4.2.719+."
+        "description": "Bridge metadata for the account. Available in Beeper Desktop v4.2.789+.",
+        "x-beeper-available-since": "Beeper Desktop v4.2.789+"
       },
       "User": {
         "type": "object",
@@ -287,17 +291,17 @@
           "bridge": { "$ref": "#/components/schemas/Bridge" },
           "network": {
             "type": "string",
-            "description": "Human-friendly network name for the account."
+            "description": "Human-friendly network name for the account. Omitted when the network is unknown."
           },
           "user": { "$ref": "#/components/schemas/User" }
         },
-        "required": ["accountID", "bridge", "network", "user"],
-        "description": "A chat account added to Beeper"
+        "required": ["accountID", "bridge", "user"],
+        "description": "A chat account added to Beeper."
       },
       "GetAccountsOutput": {
         "type": "array",
         "items": { "$ref": "#/components/schemas/Account" },
-        "description": "Connected accounts the user can act through. Includes accountID and user identity.",
+        "description": "Accounts configured on this device. Includes accountID, bridge metadata, optional network name, and user identity.",
         "example": [
           {
             "accountID": "local-whatsapp_ba_EvYDBBsZbRQAy3UOSWqG0LuTVkc",
@@ -691,10 +695,7 @@
             "type": "string",
             "nullable": true,
             "description": "Cursor for fetching newer results (use with direction='after'). Opaque string; do not inspect.",
-            "example": "1725489123456|c29tZUltc2dQYWdl",
-            "x-stainless-pagination-property": {
-              "purpose": "previous_cursor_field"
-            }
+            "example": "1725489123456|c29tZUltc2dQYWdl"
           }
         },
         "required": [
@@ -825,10 +826,7 @@
           "newestCursor": {
             "type": "string",
             "nullable": true,
-            "description": "Cursor for fetching newer results (use with direction='after'). Opaque string; do not inspect.",
-            "x-stainless-pagination-property": {
-              "purpose": "previous_cursor_field"
-            }
+            "description": "Cursor for fetching newer results (use with direction='after'). Opaque string; do not inspect."
           }
         },
         "required": ["items", "hasMore", "oldestCursor", "newestCursor"],
@@ -967,10 +965,7 @@
           "newestCursor": {
             "type": "string",
             "nullable": true,
-            "description": "Cursor for fetching newer results (use with direction='after'). Opaque string; do not inspect.",
-            "x-stainless-pagination-property": {
-              "purpose": "previous_cursor_field"
-            }
+            "description": "Cursor for fetching newer results (use with direction='after'). Opaque string; do not inspect."
           }
         },
         "required": ["items", "hasMore", "oldestCursor", "newestCursor"]
@@ -1111,10 +1106,7 @@
             "type": "string",
             "nullable": true,
             "description": "Cursor for fetching newer results (use with direction='after'). Opaque string; do not inspect.",
-            "example": "1725489123456",
-            "x-stainless-pagination-property": {
-              "purpose": "previous_cursor_field"
-            }
+            "example": "1725489123456"
           }
         },
         "required": ["items", "hasMore", "oldestCursor", "newestCursor"]
@@ -1136,93 +1128,104 @@
         "required": ["chatID"]
       },
       "CreateChatInput": {
-        "anyOf": [
-          {
+        "type": "object",
+        "properties": {
+          "accountID": {
+            "type": "string",
+            "description": "Account to create or start the chat on."
+          },
+          "messageText": {
+            "type": "string",
+            "description": "Optional first message content if the platform requires it to create the chat."
+          },
+          "mode": {
+            "type": "string",
+            "enum": ["start", "create"],
+            "description": "Operation mode. Use 'start' to resolve a user/contact and start a direct chat. Omit or set 'create' to create a chat directly."
+          },
+          "type": {
+            "type": "string",
+            "enum": ["single", "group"],
+            "description": "Required for create mode. 'single' creates a direct message chat; 'group' creates a group chat."
+          },
+          "user": {
             "type": "object",
             "properties": {
-              "accountID": {
+              "id": {
                 "type": "string",
-                "description": "Account to create or start the chat on."
+                "description": "Known user ID when available."
               },
-              "messageText": {
+              "username": {
                 "type": "string",
-                "description": "Optional first message content if the platform requires it to create the chat."
+                "description": "Username/handle candidate."
               },
-              "mode": {
+              "phoneNumber": {
                 "type": "string",
-                "enum": ["start"],
-                "description": "Operation mode. Use 'start' to resolve a user/contact and start a direct chat."
+                "description": "Phone number candidate (E.164 preferred)."
               },
-              "user": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "string",
-                    "description": "Known user ID when available."
-                  },
-                  "username": {
-                    "type": "string",
-                    "description": "Username/handle candidate."
-                  },
-                  "phoneNumber": {
-                    "type": "string",
-                    "description": "Phone number candidate (E.164 preferred)."
-                  },
-                  "email": {
-                    "type": "string",
-                    "description": "Email candidate."
-                  },
-                  "fullName": {
-                    "type": "string",
-                    "description": "Display name hint used for ranking only."
-                  }
-                },
-                "description": "Merged user-like contact payload used to resolve the best identifier."
-              },
-              "allowInvite": {
-                "type": "boolean",
-                "default": true,
-                "description": "Whether invite-based DM creation is allowed when required by the platform. Used for mode='start'."
+              "email": { "type": "string", "description": "Email candidate." },
+              "fullName": {
+                "type": "string",
+                "description": "Display name hint used for ranking only."
               }
             },
-            "required": ["accountID", "mode", "user"]
+            "description": "Required for mode='start'. Merged user-like contact payload used to resolve the best identifier."
           },
-          {
-            "type": "object",
+          "allowInvite": {
+            "type": "boolean",
+            "default": true,
+            "description": "Only used for mode='start'. Whether invite-based DM creation is allowed when required by the platform."
+          },
+          "participantIDs": {
+            "type": "array",
+            "items": { "type": "string" },
+            "minItems": 1,
+            "description": "Required for create mode. Provide exactly one user ID for 'single' chats and one or more for 'group' chats."
+          },
+          "title": {
+            "type": "string",
+            "description": "Optional title for group chats; ignored for single chats on most networks."
+          }
+        },
+        "required": ["accountID"],
+        "additionalProperties": false,
+        "if": {
+          "properties": { "mode": { "const": "start" } },
+          "required": ["mode"]
+        },
+        "then": { "required": ["user"] },
+        "else": {
+          "required": ["type", "participantIDs"],
+          "if": {
+            "properties": { "type": { "const": "single" } },
+            "required": ["type"]
+          },
+          "then": {
             "properties": {
-              "accountID": {
-                "type": "string",
-                "description": "Account to create or start the chat on."
-              },
-              "messageText": {
-                "type": "string",
-                "description": "Optional first message content if the platform requires it to create the chat."
-              },
-              "mode": {
-                "type": "string",
-                "enum": ["create"],
-                "default": "create",
-                "description": "Operation mode. Defaults to 'create' when omitted."
-              },
-              "type": {
-                "type": "string",
-                "enum": ["single", "group"],
-                "description": "'single' requires exactly one participantID; 'group' supports multiple participants and optional title."
-              },
               "participantIDs": {
                 "type": "array",
                 "items": { "type": "string" },
                 "minItems": 1,
-                "description": "User IDs to include in the new chat."
-              },
-              "title": {
-                "type": "string",
-                "description": "Optional title for group chats; ignored for single chats on most platforms."
+                "maxItems": 1
               }
+            }
+          },
+          "else": {
+            "if": {
+              "properties": { "type": { "const": "group" } },
+              "required": ["type"]
             },
-            "required": ["accountID", "type", "participantIDs"]
+            "then": {
+              "properties": {
+                "participantIDs": {
+                  "type": "array",
+                  "items": { "type": "string" },
+                  "minItems": 1
+                }
+              }
+            }
           }
-        ]
+        }
       },
       "ListMessagesOutput": {
         "type": "object",
@@ -1230,16 +1233,29 @@
           "items": {
             "type": "array",
             "items": { "$ref": "#/components/schemas/Message" },
-            "description": "Messages from the chat, sorted by timestamp. Use message.sortKey as the cursor for pagination and treat it as an opaque value.",
+            "description": "Messages from the chat, sorted by timestamp. Use oldestCursor/newestCursor for pagination and treat both as opaque values.",
             "x-stainless-pagination-property": { "purpose": "items" }
           },
           "hasMore": {
             "type": "boolean",
             "description": "True if additional results can be fetched.",
             "x-stainless-pagination-property": { "purpose": "has_next_page" }
+          },
+          "oldestCursor": {
+            "type": "string",
+            "nullable": true,
+            "description": "Cursor for fetching older results (use with direction='before'). Opaque string; do not inspect.",
+            "x-stainless-pagination-property": {
+              "purpose": "next_cursor_field"
+            }
+          },
+          "newestCursor": {
+            "type": "string",
+            "nullable": true,
+            "description": "Cursor for fetching newer results (use with direction='after'). Opaque string; do not inspect."
           }
         },
-        "required": ["items", "hasMore"]
+        "required": ["items", "hasMore", "oldestCursor", "newestCursor"]
       },
       "SendMessageOutput": {
         "type": "object",
@@ -1678,7 +1694,7 @@
     "/v1/messages/search": {
       "get": {
         "summary": "Search messages",
-        "description": "Search messages across chats using Beeper's message index",
+        "description": "Search messages across chats.",
         "tags": ["Messages"],
         "operationId": "searchMessages",
         "security": [{ "bearerAuth": [] }],
@@ -1874,7 +1890,7 @@
     "/v1/chats/search": {
       "get": {
         "summary": "Search chats",
-        "description": "Search chats by title/network or participants using Beeper Desktop's renderer algorithm.",
+        "description": "Search chats by title, network, or participant names.",
         "tags": ["Chats"],
         "operationId": "searchChats",
         "security": [{ "bearerAuth": [] }],
@@ -2343,7 +2359,7 @@
       },
       "post": {
         "summary": "Create or start a chat",
-        "description": "Create a single/group chat (mode='create') or start a direct chat from merged user data (mode='start').",
+        "description": "Create a direct or group chat with mode=\"create\", or use mode=\"start\" to resolve a contact and open a direct chat.",
         "tags": ["Chats"],
         "operationId": "createChat",
         "security": [{ "bearerAuth": [] }],
@@ -2819,7 +2835,7 @@
       },
       "delete": {
         "summary": "Remove a reaction",
-        "description": "Remove the authenticated user's reaction from an existing message.",
+        "description": "Remove the reaction added by the authenticated user from an existing message.",
         "tags": ["Messages"],
         "operationId": "removeReaction",
         "security": [{ "bearerAuth": [] }],
@@ -2929,11 +2945,28 @@
           }
         ],
         "responses": {
-          "204": { "description": "Request executed successfully" },
+          "200": {
+            "description": "Asset stream",
+            "content": {
+              "application/octet-stream": {
+                "schema": { "type": "string", "format": "binary" }
+              }
+            }
+          },
+          "206": {
+            "description": "Partial asset stream",
+            "content": {
+              "application/octet-stream": {
+                "schema": { "type": "string", "format": "binary" }
+              }
+            }
+          },
+          "304": { "description": "Asset not modified" },
           "400": { "$ref": "#/components/responses/BadRequest" },
           "401": { "$ref": "#/components/responses/UnauthorizedError" },
           "403": { "$ref": "#/components/responses/ForbiddenError" },
           "404": { "$ref": "#/components/responses/NotFound" },
+          "416": { "description": "Requested range not satisfiable" },
           "422": { "$ref": "#/components/responses/UnprocessableEntity" },
           "429": { "$ref": "#/components/responses/TooManyRequests" },
           "500": { "$ref": "#/components/responses/InternalServerError" }
