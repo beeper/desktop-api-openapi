@@ -3515,52 +3515,35 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Asset stream",
-            "content": {
-              "application/octet-stream": {
-                "schema": { "type": "string", "format": "binary" }
-              }
-            }
-          },
-          "206": {
-            "description": "Partial asset stream",
-            "content": {
-              "application/octet-stream": {
-                "schema": { "type": "string", "format": "binary" }
-              }
-            }
-          },
-          "304": { "description": "Asset not modified" },
+          "204": { "description": "Request executed successfully" },
           "400": { "$ref": "#/components/responses/BadRequest" },
           "401": { "$ref": "#/components/responses/UnauthorizedError" },
           "403": { "$ref": "#/components/responses/ForbiddenError" },
           "404": { "$ref": "#/components/responses/NotFound" },
-          "416": { "description": "Requested range not satisfiable" },
           "422": { "$ref": "#/components/responses/UnprocessableEntity" },
           "429": { "$ref": "#/components/responses/TooManyRequests" },
           "500": { "$ref": "#/components/responses/InternalServerError" }
         },
         "x-stainless-snippets": {
-          "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.assets.serve({ url: 'x' });\n\nconsole.log(response);\n\nconst content = await response.blob();\nconsole.log(content);",
-          "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.assets.serve(\n    url=\"x\",\n)\nprint(response)\ncontent = response.read()\nprint(content)",
-          "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Assets.Serve(context.TODO(), beeperdesktopapi.AssetServeParams{\n\t\tURL: \"x\",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response)\n}\n",
+          "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nawait client.assets.serve({ url: 'x' });",
+          "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nclient.assets.serve(\n    url=\"x\",\n)",
+          "go": "package main\n\nimport (\n\t\"context\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\terr := client.Assets.Serve(context.TODO(), beeperdesktopapi.AssetServeParams{\n\t\tURL: \"x\",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n",
           "cli": "beeper-desktop-cli assets serve \\\n  --access-token 'My Access Token' \\\n  --url x",
-          "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $response = $client->assets->serve(url: 'x');\n\n  var_dump($response);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
+          "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $result = $client->assets->serve(url: 'x');\n\n  var_dump($result);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/assets/serve \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.assets.serve({ url: 'x' });\n\nconsole.log(response);\n\nconst content = await response.blob();\nconsole.log(content);"
+            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nawait client.assets.serve({ url: 'x' });"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.assets.serve(\n    url=\"x\",\n)\nprint(response)\ncontent = response.read()\nprint(content)"
+            "source": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nclient.assets.serve(\n    url=\"x\",\n)"
           },
           {
             "lang": "Go",
-            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Assets.Serve(context.TODO(), beeperdesktopapi.AssetServeParams{\n\t\tURL: \"x\",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response)\n}\n"
+            "source": "package main\n\nimport (\n\t\"context\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\terr := client.Assets.Serve(context.TODO(), beeperdesktopapi.AssetServeParams{\n\t\tURL: \"x\",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n"
           },
           {
             "lang": "cURL",
