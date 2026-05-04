@@ -540,6 +540,106 @@
           "isUnread": false
         }
       },
+      "DraftJSONContent": {
+        "type": "object",
+        "nullable": true,
+        "properties": {
+          "type": { "type": "string" },
+          "attrs": {
+            "type": "object",
+            "additionalProperties": { "nullable": true }
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": { "nullable": true }
+            }
+          },
+          "marks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": { "type": "string" },
+                "attrs": {
+                  "type": "object",
+                  "additionalProperties": { "nullable": true }
+                }
+              },
+              "required": ["type"]
+            }
+          },
+          "text": { "type": "string" }
+        },
+        "description": "Rich-text draft content as Tiptap JSON."
+      },
+      "DraftAttachment": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Draft attachment identifier."
+          },
+          "mimeType": {
+            "type": "string",
+            "description": "MIME type if known."
+          },
+          "fileName": {
+            "type": "string",
+            "description": "Original filename if available."
+          },
+          "filePath": {
+            "type": "string",
+            "description": "Local filesystem path for the draft attachment."
+          },
+          "fileSize": {
+            "type": "number",
+            "description": "File size in bytes if known."
+          },
+          "isGif": {
+            "type": "boolean",
+            "description": "True if the attachment is a GIF."
+          },
+          "isRecordedAudio": {
+            "type": "boolean",
+            "description": "True if the attachment is recorded audio."
+          },
+          "audioDurationSeconds": {
+            "type": "number",
+            "description": "Audio duration in seconds if known."
+          },
+          "size": {
+            "type": "object",
+            "properties": {
+              "width": { "type": "number" },
+              "height": { "type": "number" }
+            },
+            "description": "Pixel dimensions of the attachment."
+          }
+        },
+        "required": ["id"]
+      },
+      "ChatDraft": {
+        "type": "object",
+        "nullable": true,
+        "properties": {
+          "text": {
+            "type": "string",
+            "nullable": true,
+            "description": "Plain-text draft projection."
+          },
+          "json": { "$ref": "#/components/schemas/DraftJSONContent" },
+          "attachments": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/DraftAttachment"
+            },
+            "description": "Draft attachments keyed by attachment ID."
+          }
+        },
+        "description": "Current draft object for this chat, or null when no draft is set."
+      },
       "Chat": {
         "type": "object",
         "properties": {
@@ -557,9 +657,23 @@
             "type": "string",
             "description": "Account ID this chat belongs to."
           },
+          "network": {
+            "type": "string",
+            "description": "Display-only human-readable account/network name."
+          },
           "title": {
             "type": "string",
             "description": "Display title of the chat as computed by the client/server."
+          },
+          "description": {
+            "type": "string",
+            "nullable": true,
+            "description": "Group chat description/topic when available."
+          },
+          "imgURL": {
+            "type": "string",
+            "nullable": true,
+            "description": "Local filesystem path to the chat avatar image when available."
           },
           "type": {
             "type": "string",
@@ -608,6 +722,7 @@
             "type": "string",
             "description": "Last read message sortKey."
           },
+          "draft": { "$ref": "#/components/schemas/ChatDraft" },
           "isArchived": {
             "type": "boolean",
             "description": "True if chat is archived."
@@ -619,11 +734,34 @@
           "isPinned": {
             "type": "boolean",
             "description": "True if chat is pinned."
+          },
+          "mutedUntil": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time",
+                "description": "ISO 8601 timestamp.",
+                "example": "2025-08-31T23:30:12.520Z"
+              },
+              { "type": "string", "enum": ["forever"] },
+              { "nullable": true }
+            ],
+            "description": "Mute expiration timestamp, forever, or null when not muted."
+          },
+          "isLowPriority": {
+            "type": "boolean",
+            "description": "True if chat is marked low priority."
+          },
+          "messageExpirySeconds": {
+            "type": "integer",
+            "nullable": true,
+            "description": "Disappearing-message timer in seconds when available."
           }
         },
         "required": [
           "id",
           "accountID",
+          "network",
           "title",
           "type",
           "participants",
@@ -633,6 +771,7 @@
           "id": "!instagram_mattwondra:local-instagram.localhost",
           "localChatID": "1229391",
           "accountID": "local-instagram_ba_eRfQMmnSNy_p7Ih7HL7RduRpKFU",
+          "network": "Instagram",
           "title": "Matt Wondra",
           "type": "single",
           "participants": {
@@ -658,6 +797,7 @@
           "lastActivity": "2025-08-31T19:41:41.000Z",
           "unreadCount": 0,
           "lastReadMessageSortKey": "449706228480",
+          "draft": null,
           "isArchived": false,
           "isMuted": false,
           "isPinned": false
@@ -737,6 +877,7 @@
               "id": "!signal_adamvy:local-signal.localhost",
               "localChatID": "1229720",
               "accountID": "local-signal_ba_7N74FrU29pxij_TnqfxeUHj53FY",
+              "network": "Signal",
               "title": "Adam Van Ymeren",
               "type": "single",
               "participants": {
@@ -767,6 +908,7 @@
               "id": "!telegram_nick:local-telegram.localhost",
               "localChatID": "1229721",
               "accountID": "local-telegram_ba_QFrb5lrLPhO3OT5MFBeTWv0x4BI",
+              "network": "Telegram",
               "title": "Nick Mills-Barrett",
               "type": "single",
               "participants": {
@@ -836,6 +978,7 @@
               "id": "!KPFTtZYWuERwib8T702N9IfqiCc:ba_EvYDBBsZbRQAy3UOSWqG0LuTVkc.local-whatsapp.localhost",
               "localChatID": "1229391",
               "accountID": "local-whatsapp_ba_EvYDBBsZbRQAy3UOSWqG0LuTVkc",
+              "network": "WhatsApp",
               "title": "Kishan Bagaria",
               "type": "single",
               "participants": {
@@ -862,6 +1005,7 @@
               "id": "!nZeX7dh67_RaPnmWGJIjUkV2svE:ba_sXf0adnbr287.local-telegram.localhost",
               "localChatID": "1229078",
               "accountID": "local-telegram_ba_sXf0adnbr287_pRup35Tgl-lsIg",
+              "network": "Telegram",
               "title": "Brad Murray",
               "type": "single",
               "participants": {
@@ -888,6 +1032,7 @@
               "id": "!twitter_dm_photomatt:local-twitter.localhost",
               "localChatID": "1228956",
               "accountID": "local-twitter_ba_gUU1IHNGo_CsTZLp0vDFUYk9EuE",
+              "network": "Twitter/X",
               "title": "Matt Mullenweg",
               "type": "single",
               "participants": {
@@ -1055,6 +1200,7 @@
                 "id": "!instagram_mattwondra:local-instagram.localhost",
                 "localChatID": "1229391",
                 "accountID": "local-instagram_ba_eRfQMmnSNy_p7Ih7HL7RduRpKFU",
+                "network": "Instagram",
                 "title": "Matt Wondra",
                 "type": "single",
                 "participants": {
@@ -1080,6 +1226,7 @@
                 "lastActivity": "2025-08-31T19:41:41.000Z",
                 "unreadCount": 0,
                 "lastReadMessageSortKey": "449706228480",
+                "draft": null,
                 "isArchived": false,
                 "isMuted": false,
                 "isPinned": false
@@ -1199,6 +1346,26 @@
         "required": ["accountID", "user"],
         "description": "Start a direct chat from a user/contact payload. Available in Beeper Desktop v4.2.799+.",
         "x-beeper-available-since": "Beeper Desktop v4.2.799+"
+      },
+      "ChatDraftInput": {
+        "type": "object",
+        "nullable": true,
+        "properties": {
+          "text": {
+            "type": "string",
+            "nullable": true,
+            "description": "Plain-text draft projection."
+          },
+          "json": { "$ref": "#/components/schemas/DraftJSONContent" },
+          "attachments": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/DraftAttachment"
+            },
+            "description": "Draft attachments keyed by attachment ID."
+          }
+        },
+        "description": "Draft object to set or clear. Non-empty drafts are only accepted when the current draft is empty. Use null, empty text, or null json to clear."
       },
       "ListMessagesOutput": {
         "type": "object",
@@ -1465,6 +1632,28 @@
           }
         },
         "required": ["file"]
+      },
+      "UploadAssetCompatJSONInput": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 750000000,
+            "description": "Base64-encoded file content (max ~500MB decoded)"
+          },
+          "fileName": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Original filename. Required for the JSON form of /v1/assets/upload."
+          },
+          "mimeType": {
+            "type": "string",
+            "minLength": 1,
+            "description": "MIME type. Required for the JSON form of /v1/assets/upload."
+          }
+        },
+        "required": ["content", "fileName", "mimeType"]
       },
       "UploadAssetInput": {
         "type": "object",
@@ -2777,6 +2966,97 @@
             "source": "beeper-desktop-cli chats retrieve \\\n  --access-token 'My Access Token' \\\n  --chat-id '!NCdzlIaMjZUmvmvyHU:beeper.com'"
           }
         ]
+      },
+      "patch": {
+        "summary": "Update chat",
+        "description": "Update supported chat fields. Non-empty draft objects are accepted only when the current draft is empty. Send draft=null, draft.text=\"\", or draft.json=null to clear the draft.",
+        "tags": ["Chats"],
+        "operationId": "patchChat",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "description": "Unique identifier of the chat.",
+              "example": "!NCdzlIaMjZUmvmvyHU:beeper.com"
+            },
+            "required": true,
+            "description": "Unique identifier of the chat.",
+            "name": "chatID",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "draft": { "$ref": "#/components/schemas/ChatDraftInput" },
+                  "title": {
+                    "type": "string",
+                    "nullable": true,
+                    "description": "Custom chat title. Support depends on the chat account and chat permissions."
+                  },
+                  "description": {
+                    "type": "string",
+                    "nullable": true,
+                    "description": "Group chat description/topic. Support depends on the chat account and chat permissions."
+                  },
+                  "imgURL": {
+                    "type": "string",
+                    "nullable": true,
+                    "description": "Local filesystem path to a group chat avatar image. Support depends on the chat account and chat permissions."
+                  },
+                  "isArchived": {
+                    "type": "boolean",
+                    "description": "Archive or unarchive the chat."
+                  },
+                  "isLowPriority": {
+                    "type": "boolean",
+                    "description": "Mark or unmark the chat as low priority when supported by the account."
+                  },
+                  "isPinned": {
+                    "type": "boolean",
+                    "description": "Pin or unpin the chat when supported by the account."
+                  },
+                  "mutedUntil": {
+                    "anyOf": [
+                      { "type": "string", "format": "date-time" },
+                      { "type": "string", "enum": ["forever"] },
+                      { "nullable": true },
+                      { "nullable": true }
+                    ],
+                    "description": "Mute the chat until an ISO 8601 datetime, mute forever, or unmute with null."
+                  },
+                  "messageExpirySeconds": {
+                    "type": "integer",
+                    "nullable": true,
+                    "minimum": 0,
+                    "description": "Disappearing-message timer in seconds, or null to clear when supported."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request executed successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Chat" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "401": { "$ref": "#/components/responses/UnauthorizedError" },
+          "403": { "$ref": "#/components/responses/ForbiddenError" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "422": { "$ref": "#/components/responses/UnprocessableEntity" },
+          "429": { "$ref": "#/components/responses/TooManyRequests" },
+          "500": { "$ref": "#/components/responses/InternalServerError" }
+        }
       }
     },
     "/v1/chats/{chatID}/archive": {
@@ -3620,6 +3900,11 @@
           "content": {
             "multipart/form-data": {
               "schema": { "$ref": "#/components/schemas/UploadAssetMultipart" }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadAssetCompatJSONInput"
+              }
             }
           }
         },
@@ -3641,33 +3926,33 @@
           "500": { "$ref": "#/components/responses/InternalServerError" }
         },
         "x-stainless-snippets": {
-          "typescript": "import fs from 'fs';\nimport BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.assets.upload({ file: fs.createReadStream('path/to/file') });\n\nconsole.log(response.width);",
-          "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.assets.upload(\n    file=b\"Example data\",\n)\nprint(response.width)",
-          "go": "package main\n\nimport (\n\t\"bytes\"\n\t\"context\"\n\t\"fmt\"\n\t\"io\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Assets.Upload(context.TODO(), beeperdesktopapi.AssetUploadParams{\n\t\tFile: io.Reader(bytes.NewBuffer([]byte(\"Example data\"))),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.Width)\n}\n",
-          "cli": "beeper-desktop-cli assets upload \\\n  --access-token 'My Access Token' \\\n  --file 'Example data'",
-          "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\FileParam;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $response = $client->assets->upload(\n    file: FileParam::fromString('Example data', filename: uniqid('file-upload-', true)),\n    fileName: 'fileName',\n    mimeType: 'mimeType',\n  );\n\n  var_dump($response);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
-          "curl": "curl http://localhost:23373/v1/assets/upload \\\n    -H 'Content-Type: multipart/form-data' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -F 'file=@/path/to/file'"
+          "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.assets.upload({\n  content: 'x',\n  fileName: 'x',\n  mimeType: 'x',\n});\n\nconsole.log(response.width);",
+          "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.assets.upload(\n    content=\"x\",\n    file_name=\"x\",\n    mime_type=\"x\",\n)\nprint(response.width)",
+          "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Assets.Upload(context.TODO(), beeperdesktopapi.AssetUploadParams{\n\t\tContent:  \"x\",\n\t\tFileName: \"x\",\n\t\tMimeType: \"x\",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.Width)\n}\n",
+          "cli": "beeper-desktop-cli assets upload \\\n  --access-token 'My Access Token' \\\n  --content x \\\n  --file-name x \\\n  --mime-type x",
+          "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $response = $client->assets->upload(\n    content: 'x', fileName: 'x', mimeType: 'x'\n  );\n\n  var_dump($response);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
+          "curl": "curl http://localhost:23373/v1/assets/upload \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"content\": \"x\",\n          \"fileName\": \"x\",\n          \"mimeType\": \"x\"\n        }'"
         },
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import fs from 'fs';\nimport BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.assets.upload({ file: fs.createReadStream('path/to/file') });\n\nconsole.log(response.width);"
+            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.assets.upload({\n  content: 'x',\n  fileName: 'x',\n  mimeType: 'x',\n});\n\nconsole.log(response.width);"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.assets.upload(\n    file=b\"Example data\",\n)\nprint(response.width)"
+            "source": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.assets.upload(\n    content=\"x\",\n    file_name=\"x\",\n    mime_type=\"x\",\n)\nprint(response.width)"
           },
           {
             "lang": "Go",
-            "source": "package main\n\nimport (\n\t\"bytes\"\n\t\"context\"\n\t\"fmt\"\n\t\"io\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Assets.Upload(context.TODO(), beeperdesktopapi.AssetUploadParams{\n\t\tFile: io.Reader(bytes.NewBuffer([]byte(\"Example data\"))),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.Width)\n}\n"
+            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Assets.Upload(context.TODO(), beeperdesktopapi.AssetUploadParams{\n\t\tContent:  \"x\",\n\t\tFileName: \"x\",\n\t\tMimeType: \"x\",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.Width)\n}\n"
           },
           {
             "lang": "cURL",
-            "source": "curl http://localhost:23373/v1/assets/upload \\\n    -H 'Content-Type: multipart/form-data' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -F 'file=@/path/to/file'"
+            "source": "curl http://localhost:23373/v1/assets/upload \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"content\": \"x\",\n          \"fileName\": \"x\",\n          \"mimeType\": \"x\"\n        }'"
           },
           {
             "lang": "CLI",
-            "source": "beeper-desktop-cli assets upload \\\n  --access-token 'My Access Token' \\\n  --file 'Example data'"
+            "source": "beeper-desktop-cli assets upload \\\n  --access-token 'My Access Token' \\\n  --content x \\\n  --file-name x \\\n  --mime-type x"
           }
         ]
       }
