@@ -226,21 +226,21 @@
         "properties": {
           "id": {
             "type": "string",
-            "description": "Bridge instance identifier. Available in Beeper Desktop v4.2.789+."
+            "description": "Bridge instance identifier. Available in Beeper Desktop v4.2.799+."
           },
           "type": {
             "type": "string",
-            "description": "Bridge type. Available in Beeper Desktop v4.2.789+."
+            "description": "Bridge type. Available in Beeper Desktop v4.2.799+."
           },
           "provider": {
             "type": "string",
             "enum": ["cloud", "self-hosted", "local", "platform-sdk"],
-            "description": "Bridge provider for the account. Available in Beeper Desktop v4.2.789+."
+            "description": "Bridge provider for the account. Available in Beeper Desktop v4.2.799+."
           }
         },
         "required": ["id", "type", "provider"],
-        "description": "Bridge metadata for the account. Available in Beeper Desktop v4.2.789+.",
-        "x-beeper-available-since": "Beeper Desktop v4.2.789+"
+        "description": "Bridge metadata for the account. Available in Beeper Desktop v4.2.799+.",
+        "x-beeper-available-since": "Beeper Desktop v4.2.799+"
       },
       "User": {
         "type": "object",
@@ -1127,7 +1127,7 @@
         },
         "required": ["chatID"]
       },
-      "CreateChatInput": {
+      "CreateChatDirectInput": {
         "type": "object",
         "properties": {
           "accountID": {
@@ -1138,15 +1138,34 @@
             "type": "string",
             "description": "Optional first message content if the platform requires it to create the chat."
           },
-          "mode": {
-            "type": "string",
-            "enum": ["start", "create"],
-            "description": "Operation mode. Use 'start' to resolve a user/contact and start a direct chat. Omit or set 'create' to create a chat directly."
-          },
           "type": {
             "type": "string",
             "enum": ["single", "group"],
-            "description": "Required for create mode. 'single' creates a direct message chat; 'group' creates a group chat."
+            "description": "'single' requires exactly one participantID; 'group' supports multiple participants and optional title."
+          },
+          "participantIDs": {
+            "type": "array",
+            "items": { "type": "string" },
+            "minItems": 1,
+            "description": "User IDs to include in the new chat."
+          },
+          "title": {
+            "type": "string",
+            "description": "Optional title for group chats; ignored for single chats on most networks."
+          }
+        },
+        "required": ["accountID", "type", "participantIDs"]
+      },
+      "StartChatInput": {
+        "type": "object",
+        "properties": {
+          "accountID": {
+            "type": "string",
+            "description": "Account to create or start the chat on."
+          },
+          "messageText": {
+            "type": "string",
+            "description": "Optional first message content if the platform requires it to create the chat."
           },
           "user": {
             "type": "object",
@@ -1169,63 +1188,17 @@
                 "description": "Display name hint used for ranking only."
               }
             },
-            "description": "Required for mode='start'. Merged user-like contact payload used to resolve the best identifier."
+            "description": "Merged user-like contact payload used to resolve the best identifier."
           },
           "allowInvite": {
             "type": "boolean",
             "default": true,
-            "description": "Only used for mode='start'. Whether invite-based DM creation is allowed when required by the platform."
-          },
-          "participantIDs": {
-            "type": "array",
-            "items": { "type": "string" },
-            "minItems": 1,
-            "description": "Required for create mode. Provide exactly one user ID for 'single' chats and one or more for 'group' chats."
-          },
-          "title": {
-            "type": "string",
-            "description": "Optional title for group chats; ignored for single chats on most networks."
+            "description": "Whether invite-based DM creation is allowed when required by the platform."
           }
         },
-        "required": ["accountID"],
-        "additionalProperties": false,
-        "if": {
-          "properties": { "mode": { "const": "start" } },
-          "required": ["mode"]
-        },
-        "then": { "required": ["user"] },
-        "else": {
-          "required": ["type", "participantIDs"],
-          "if": {
-            "properties": { "type": { "const": "single" } },
-            "required": ["type"]
-          },
-          "then": {
-            "properties": {
-              "participantIDs": {
-                "type": "array",
-                "items": { "type": "string" },
-                "minItems": 1,
-                "maxItems": 1
-              }
-            }
-          },
-          "else": {
-            "if": {
-              "properties": { "type": { "const": "group" } },
-              "required": ["type"]
-            },
-            "then": {
-              "properties": {
-                "participantIDs": {
-                  "type": "array",
-                  "items": { "type": "string" },
-                  "minItems": 1
-                }
-              }
-            }
-          }
-        }
+        "required": ["accountID", "user"],
+        "description": "Start a direct chat from a user/contact payload. Available in Beeper Desktop v4.2.799+.",
+        "x-beeper-available-since": "Beeper Desktop v4.2.799+"
       },
       "ListMessagesOutput": {
         "type": "object",
@@ -2598,15 +2571,15 @@
         ]
       },
       "post": {
-        "summary": "Create or start a chat",
-        "description": "Create a direct or group chat with mode=\"create\", or use mode=\"start\" to resolve a contact and open a direct chat.",
+        "summary": "Create a chat",
+        "description": "Create a direct or group chat from participant IDs.",
         "tags": ["Chats"],
         "operationId": "createChat",
         "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": { "$ref": "#/components/schemas/CreateChatInput" }
+              "schema": { "$ref": "#/components/schemas/CreateChatDirectInput" }
             }
           }
         },
@@ -2628,33 +2601,96 @@
           "500": { "$ref": "#/components/responses/InternalServerError" }
         },
         "x-stainless-snippets": {
-          "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst chat = await client.chats.create({ accountID: 'accountID' });\n\nconsole.log(chat.chatID);",
-          "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nchat = client.chats.create(\n    account_id=\"accountID\",\n)\nprint(chat.chat_id)",
-          "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tchat, err := client.Chats.New(context.TODO(), beeperdesktopapi.ChatNewParams{\n\t\tAccountID: \"accountID\",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", chat.ChatID)\n}\n",
-          "cli": "beeper-desktop-cli chats create \\\n  --access-token 'My Access Token' \\\n  --account-id accountID",
-          "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $chat = $client->chats->create(\n    accountID: 'accountID',\n    allowInvite: true,\n    messageText: 'messageText',\n    mode: 'start',\n    participantIDs: ['string'],\n    title: 'title',\n    type: 'single',\n    user: [\n      'id' => 'id',\n      'email' => 'email',\n      'fullName' => 'fullName',\n      'phoneNumber' => 'phoneNumber',\n      'username' => 'username',\n    ],\n  );\n\n  var_dump($chat);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
-          "curl": "curl http://localhost:23373/v1/chats \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"accountID\": \"accountID\"\n        }'"
+          "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst chat = await client.chats.create({\n  accountID: 'accountID',\n  participantIDs: ['string'],\n  type: 'single',\n});\n\nconsole.log(chat.chatID);",
+          "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nchat = client.chats.create(\n    account_id=\"accountID\",\n    participant_ids=[\"string\"],\n    type=\"single\",\n)\nprint(chat.chat_id)",
+          "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tchat, err := client.Chats.New(context.TODO(), beeperdesktopapi.ChatNewParams{\n\t\tAccountID:      \"accountID\",\n\t\tParticipantIDs: []string{\"string\"},\n\t\tType:           beeperdesktopapi.ChatNewParamsTypeSingle,\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", chat.ChatID)\n}\n",
+          "cli": "beeper-desktop-cli chats create \\\n  --access-token 'My Access Token' \\\n  --account-id accountID \\\n  --participant-id string \\\n  --type single",
+          "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $chat = $client->chats->create(\n    accountID: 'accountID',\n    participantIDs: ['string'],\n    type: 'single',\n    messageText: 'messageText',\n    title: 'title',\n  );\n\n  var_dump($chat);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
+          "curl": "curl http://localhost:23373/v1/chats \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"accountID\": \"accountID\",\n          \"participantIDs\": [\n            \"string\"\n          ],\n          \"type\": \"single\"\n        }'"
         },
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst chat = await client.chats.create({ accountID: 'accountID' });\n\nconsole.log(chat.chatID);"
+            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst chat = await client.chats.create({\n  accountID: 'accountID',\n  participantIDs: ['string'],\n  type: 'single',\n});\n\nconsole.log(chat.chatID);"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nchat = client.chats.create(\n    account_id=\"accountID\",\n)\nprint(chat.chat_id)"
+            "source": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nchat = client.chats.create(\n    account_id=\"accountID\",\n    participant_ids=[\"string\"],\n    type=\"single\",\n)\nprint(chat.chat_id)"
           },
           {
             "lang": "Go",
-            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tchat, err := client.Chats.New(context.TODO(), beeperdesktopapi.ChatNewParams{\n\t\tAccountID: \"accountID\",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", chat.ChatID)\n}\n"
+            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tchat, err := client.Chats.New(context.TODO(), beeperdesktopapi.ChatNewParams{\n\t\tAccountID:      \"accountID\",\n\t\tParticipantIDs: []string{\"string\"},\n\t\tType:           beeperdesktopapi.ChatNewParamsTypeSingle,\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", chat.ChatID)\n}\n"
           },
           {
             "lang": "cURL",
-            "source": "curl http://localhost:23373/v1/chats \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"accountID\": \"accountID\"\n        }'"
+            "source": "curl http://localhost:23373/v1/chats \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"accountID\": \"accountID\",\n          \"participantIDs\": [\n            \"string\"\n          ],\n          \"type\": \"single\"\n        }'"
           },
           {
             "lang": "CLI",
-            "source": "beeper-desktop-cli chats create \\\n  --access-token 'My Access Token' \\\n  --account-id accountID"
+            "source": "beeper-desktop-cli chats create \\\n  --access-token 'My Access Token' \\\n  --account-id accountID \\\n  --participant-id string \\\n  --type single"
+          }
+        ]
+      }
+    },
+    "/v1/chats.start": {
+      "post": {
+        "summary": "Start a direct chat",
+        "description": "Resolve a user/contact and open a direct chat. Reuses an existing direct chat when one is found. Available in Beeper Desktop v4.2.799+.",
+        "tags": ["Chats"],
+        "operationId": "startChat",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/StartChatInput" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request executed successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CreateChatOutput" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "401": { "$ref": "#/components/responses/UnauthorizedError" },
+          "403": { "$ref": "#/components/responses/ForbiddenError" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "422": { "$ref": "#/components/responses/UnprocessableEntity" },
+          "429": { "$ref": "#/components/responses/TooManyRequests" },
+          "500": { "$ref": "#/components/responses/InternalServerError" }
+        },
+        "x-stainless-snippets": {
+          "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.chats.start({\n  accountID: 'accountID',\n  user: {},\n});\n\nconsole.log(response.chatID);",
+          "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.chats.start(\n    account_id=\"accountID\",\n    user={},\n)\nprint(response.chat_id)",
+          "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Chats.Start(context.TODO(), beeperdesktopapi.ChatStartParams{\n\t\tAccountID: \"accountID\",\n\t\tUser:      beeperdesktopapi.ChatStartParamsUser{},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.ChatID)\n}\n",
+          "cli": "beeper-desktop-cli chats start \\\n  --access-token 'My Access Token' \\\n  --account-id accountID \\\n  --user '{}'",
+          "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $response = $client->chats->start(\n    accountID: 'accountID',\n    user: [\n      'id' => 'id',\n      'email' => 'email',\n      'fullName' => 'fullName',\n      'phoneNumber' => 'phoneNumber',\n      'username' => 'username',\n    ],\n    allowInvite: true,\n    messageText: 'messageText',\n  );\n\n  var_dump($response);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
+          "curl": "curl http://localhost:23373/v1/chats.start \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"accountID\": \"accountID\",\n          \"user\": {}\n        }'"
+        },
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.chats.start({\n  accountID: 'accountID',\n  user: {},\n});\n\nconsole.log(response.chatID);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.chats.start(\n    account_id=\"accountID\",\n    user={},\n)\nprint(response.chat_id)"
+          },
+          {
+            "lang": "Go",
+            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Chats.Start(context.TODO(), beeperdesktopapi.ChatStartParams{\n\t\tAccountID: \"accountID\",\n\t\tUser:      beeperdesktopapi.ChatStartParamsUser{},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.ChatID)\n}\n"
+          },
+          {
+            "lang": "cURL",
+            "source": "curl http://localhost:23373/v1/chats.start \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"accountID\": \"accountID\",\n          \"user\": {}\n        }'"
+          },
+          {
+            "lang": "CLI",
+            "source": "beeper-desktop-cli chats start \\\n  --access-token 'My Access Token' \\\n  --account-id accountID \\\n  --user '{}'"
           }
         ]
       }
