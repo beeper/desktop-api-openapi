@@ -16,6 +16,4 @@ Our official clients are generated from this spec:
 - [desktop-api-js](https://github.com/beeper/desktop-api-js) (TypeScript)
 - [desktop-api-python](https://github.com/beeper/desktop-api-python) (Python)
 - [desktop-api-go](https://github.com/beeper/desktop-api-go) (Go)
-- [desktop-api-cli](https://github.com/beeper/desktop-api-cli) (CLI)
 - [desktop-api-php](https://github.com/beeper/desktop-api-php) (PHP)
-- [desktop-api-sql](https://github.com/beeper/desktop-api-sql) (SQL)
