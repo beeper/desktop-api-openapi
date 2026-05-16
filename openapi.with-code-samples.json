@@ -5429,7 +5429,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst accounts = await client.accounts.list();\n\nconsole.log(accounts);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\naccounts = client.accounts.list()\nprint(accounts)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\taccounts, err := client.Accounts.List(context.TODO())\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", accounts)\n}\n",
-          "cli": "beeper-desktop-cli accounts list \\\n  --access-token 'My Access Token'",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $accounts = $client->accounts->list();\n\n  var_dump($accounts);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/accounts \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -5453,10 +5452,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/accounts \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli accounts list \\\n  --access-token 'My Access Token'"
           }
         ]
       }
@@ -5494,7 +5489,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst bridges = await client.bridges.list();\n\nconsole.log(bridges.items);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nbridges = client.bridges.list()\nprint(bridges.items)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tbridges, err := client.Bridges.List(context.TODO())\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", bridges.Items)\n}\n",
-          "cli": "beeper-desktop-cli bridges list \\\n  --access-token 'My Access Token'",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $bridges = $client->bridges->list();\n\n  var_dump($bridges);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/bridges \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -5518,10 +5512,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/bridges \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli bridges list \\\n  --access-token 'My Access Token'"
           }
         ]
       }
@@ -5730,7 +5720,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const message of client.messages.search()) {\n  console.log(message.id);\n}",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\npage = client.messages.search()\npage = page.items[0]\nprint(page.id)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tpage, err := client.Messages.Search(context.TODO(), beeperdesktopapi.MessageSearchParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", page)\n}\n",
-          "cli": "beeper-desktop-cli messages search \\\n  --access-token 'My Access Token'",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $page = $client->messages->search(\n    accountIDs: [\n      'matrix', 'discordgo', 'local-whatsapp_ba_EvYDBBsZbRQAy3UOSWqG0LuTVkc'\n    ],\n    chatIDs: ['!NCdzlIaMjZUmvmvyHU:beeper.com', '1231073'],\n    chatType: 'group',\n    cursor: '1725489123456|c29tZUltc2dQYWdl',\n    dateAfter: new \\DateTimeImmutable('2025-08-01T00:00:00Z'),\n    dateBefore: new \\DateTimeImmutable('2025-08-31T23:59:59Z'),\n    direction: 'before',\n    excludeLowPriority: true,\n    includeMuted: true,\n    limit: 20,\n    mediaTypes: ['any'],\n    query: 'dinner',\n    sender: 'sender',\n  );\n\n  var_dump($page);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/messages/search \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -5754,10 +5743,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/messages/search \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli messages search \\\n  --access-token 'My Access Token'"
           }
         ]
       }
@@ -5946,7 +5931,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const chat of client.chats.search()) {\n  console.log(chat.id);\n}",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\npage = client.chats.search()\npage = page.items[0]\nprint(page.id)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tpage, err := client.Chats.Search(context.TODO(), beeperdesktopapi.ChatSearchParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", page)\n}\n",
-          "cli": "beeper-desktop-cli chats search \\\n  --access-token 'My Access Token'",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $page = $client->chats->search(\n    accountIDs: [\n      'matrix', 'discordgo', 'local-whatsapp_ba_EvYDBBsZbRQAy3UOSWqG0LuTVkc'\n    ],\n    cursor: '1725489123456|c29tZUltc2dQYWdl',\n    direction: 'before',\n    inbox: 'primary',\n    includeMuted: true,\n    lastActivityAfter: new \\DateTimeImmutable('2019-12-27T18:11:19.117Z'),\n    lastActivityBefore: new \\DateTimeImmutable('2019-12-27T18:11:19.117Z'),\n    limit: 1,\n    query: 'x',\n    scope: 'titles',\n    type: 'single',\n    unreadOnly: true,\n  );\n\n  var_dump($page);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/chats/search \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -5970,10 +5954,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/chats/search \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli chats search \\\n  --access-token 'My Access Token'"
           }
         ]
       }
@@ -6042,7 +6022,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.accounts.contacts.search('accountID', { query: 'x' });\n\nconsole.log(response.items);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.accounts.contacts.search(\n    account_id=\"accountID\",\n    query=\"x\",\n)\nprint(response.items)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Accounts.Contacts.Search(\n\t\tcontext.TODO(),\n\t\t\"accountID\",\n\t\tbeeperdesktopapi.AccountContactSearchParams{\n\t\t\tQuery: \"x\",\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.Items)\n}\n",
-          "cli": "beeper-desktop-cli accounts:contacts search \\\n  --access-token 'My Access Token' \\\n  --account-id accountID \\\n  --query x",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $response = $client->accounts->contacts->search('accountID', query: 'x');\n\n  var_dump($response);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/accounts/$ACCOUNT_ID/contacts \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -6066,10 +6045,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/accounts/$ACCOUNT_ID/contacts \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli accounts:contacts search \\\n  --access-token 'My Access Token' \\\n  --account-id accountID \\\n  --query x"
           }
         ]
       }
@@ -6175,7 +6150,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const user of client.accounts.contacts.list('accountID')) {\n  console.log(user.id);\n}",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\npage = client.accounts.contacts.list(\n    account_id=\"accountID\",\n)\npage = page.items[0]\nprint(page.id)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tpage, err := client.Accounts.Contacts.List(\n\t\tcontext.TODO(),\n\t\t\"accountID\",\n\t\tbeeperdesktopapi.AccountContactListParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", page)\n}\n",
-          "cli": "beeper-desktop-cli accounts:contacts list \\\n  --access-token 'My Access Token' \\\n  --account-id accountID",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $page = $client->accounts->contacts->list(\n    'accountID',\n    cursor: '1725489123456|c29tZUltc2dQYWdl',\n    direction: 'before',\n    limit: 1,\n    query: 'x',\n  );\n\n  var_dump($page);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/accounts/$ACCOUNT_ID/contacts/list \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -6199,10 +6173,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/accounts/$ACCOUNT_ID/contacts/list \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli accounts:contacts list \\\n  --access-token 'My Access Token' \\\n  --account-id accountID"
           }
         ]
       }
@@ -6253,7 +6223,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.search({ query: 'x' });\n\nconsole.log(response.results);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.search(\n    query=\"x\",\n)\nprint(response.results)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Search(context.TODO(), beeperdesktopapi.SearchParams{\n\t\tQuery: \"x\",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.Results)\n}\n",
-          "cli": "beeper-desktop-cli search \\\n  --access-token 'My Access Token' \\\n  --query x",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $response = $client->search(query: 'x');\n\n  var_dump($response);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/search \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -6277,10 +6246,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/search \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli search \\\n  --access-token 'My Access Token' \\\n  --query x"
           }
         ]
       }
@@ -6325,7 +6290,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.focus();\n\nconsole.log(response.success);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.focus()\nprint(response.success)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Focus(context.TODO(), beeperdesktopapi.FocusParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.Success)\n}\n",
-          "cli": "beeper-desktop-cli focus \\\n  --access-token 'My Access Token'",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $response = $client->focus(\n    chatID: '!NCdzlIaMjZUmvmvyHU:beeper.com',\n    draftAttachmentPath: 'draftAttachmentPath',\n    draftText: 'draftText',\n    messageID: 'messageID',\n  );\n\n  var_dump($response);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/focus \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -6349,10 +6313,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/focus \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli focus \\\n  --access-token 'My Access Token'"
           }
         ]
       }
@@ -6437,7 +6397,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const chatListResponse of client.chats.list()) {\n  console.log(chatListResponse);\n}",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\npage = client.chats.list()\npage = page.items[0]\nprint(page)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tpage, err := client.Chats.List(context.TODO(), beeperdesktopapi.ChatListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", page)\n}\n",
-          "cli": "beeper-desktop-cli chats list \\\n  --access-token 'My Access Token'",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $page = $client->chats->list(\n    accountIDs: [\n      'matrix', 'discordgo', 'local-whatsapp_ba_EvYDBBsZbRQAy3UOSWqG0LuTVkc'\n    ],\n    cursor: '1725489123456|c29tZUltc2dQYWdl',\n    direction: 'before',\n  );\n\n  var_dump($page);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/chats \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -6461,10 +6420,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/chats \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli chats list \\\n  --access-token 'My Access Token'"
           }
         ]
       },
@@ -6507,7 +6462,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst chat = await client.chats.create({\n  accountID: 'accountID',\n  participantIDs: ['string'],\n  type: 'single',\n});\n\nconsole.log(chat);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nchat = client.chats.create(\n    account_id=\"accountID\",\n    participant_ids=[\"string\"],\n    type=\"single\",\n)\nprint(chat)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tchat, err := client.Chats.New(context.TODO(), beeperdesktopapi.ChatNewParams{\n\t\tAccountID:      \"accountID\",\n\t\tParticipantIDs: []string{\"string\"},\n\t\tType:           beeperdesktopapi.ChatNewParamsTypeSingle,\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", chat)\n}\n",
-          "cli": "beeper-desktop-cli chats create \\\n  --access-token 'My Access Token' \\\n  --account-id accountID \\\n  --participant-id string \\\n  --type single",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $chat = $client->chats->create(\n    accountID: 'accountID',\n    participantIDs: ['string'],\n    type: 'single',\n    messageText: 'messageText',\n    title: 'title',\n  );\n\n  var_dump($chat);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/chats \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"accountID\": \"accountID\",\n          \"participantIDs\": [\n            \"string\"\n          ],\n          \"type\": \"single\"\n        }'"
         },
@@ -6531,10 +6485,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/chats \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"accountID\": \"accountID\",\n          \"participantIDs\": [\n            \"string\"\n          ],\n          \"type\": \"single\"\n        }'"
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli chats create \\\n  --access-token 'My Access Token' \\\n  --account-id accountID \\\n  --participant-id string \\\n  --type single"
           }
         ]
       }
@@ -6579,7 +6529,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.chats.start({\n  accountID: 'accountID',\n  user: {},\n});\n\nconsole.log(response);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.chats.start(\n    account_id=\"accountID\",\n    user={},\n)\nprint(response)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Chats.Start(context.TODO(), beeperdesktopapi.ChatStartParams{\n\t\tAccountID: \"accountID\",\n\t\tUser:      beeperdesktopapi.ChatStartParamsUser{},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response)\n}\n",
-          "cli": "beeper-desktop-cli chats start \\\n  --access-token 'My Access Token' \\\n  --account-id accountID \\\n  --user '{}'",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $response = $client->chats->start(\n    accountID: 'accountID',\n    user: [\n      'id' => 'id',\n      'email' => 'email',\n      'fullName' => 'fullName',\n      'phoneNumber' => 'phoneNumber',\n      'username' => 'username',\n    ],\n    allowInvite: true,\n    messageText: 'messageText',\n  );\n\n  var_dump($response);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/chats/start \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"accountID\": \"accountID\",\n          \"user\": {}\n        }'"
         },
@@ -6603,10 +6552,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/chats/start \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"accountID\": \"accountID\",\n          \"user\": {}\n        }'"
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli chats start \\\n  --access-token 'My Access Token' \\\n  --account-id accountID \\\n  --user '{}'"
           }
         ]
       }
@@ -6672,7 +6617,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst chat = await client.chats.retrieve('!NCdzlIaMjZUmvmvyHU:beeper.com');\n\nconsole.log(chat.id);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nchat = client.chats.retrieve(\n    chat_id=\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n)\nprint(chat.id)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tchat, err := client.Chats.Get(\n\t\tcontext.TODO(),\n\t\t\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n\t\tbeeperdesktopapi.ChatGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", chat.ID)\n}\n",
-          "cli": "beeper-desktop-cli chats retrieve \\\n  --access-token 'My Access Token' \\\n  --chat-id '!NCdzlIaMjZUmvmvyHU:beeper.com'",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $chat = $client->chats->retrieve(\n    '!NCdzlIaMjZUmvmvyHU:beeper.com', maxParticipantCount: 100\n  );\n\n  var_dump($chat);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/chats/$CHAT_ID \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -6696,10 +6640,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/chats/$CHAT_ID \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli chats retrieve \\\n  --access-token 'My Access Token' \\\n  --chat-id '!NCdzlIaMjZUmvmvyHU:beeper.com'"
           }
         ]
       },
@@ -6797,7 +6737,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst chat = await client.chats.update('!NCdzlIaMjZUmvmvyHU:beeper.com');\n\nconsole.log(chat.id);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nchat = client.chats.update(\n    chat_id=\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n)\nprint(chat.id)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tchat, err := client.Chats.Update(\n\t\tcontext.TODO(),\n\t\t\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n\t\tbeeperdesktopapi.ChatUpdateParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", chat.ID)\n}\n",
-          "cli": "beeper-desktop-cli chats update \\\n  --access-token 'My Access Token' \\\n  --chat-id '!NCdzlIaMjZUmvmvyHU:beeper.com'",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $chat = $client->chats->update(\n    '!NCdzlIaMjZUmvmvyHU:beeper.com',\n    description: 'description',\n    draft: [\n      'text' => 'text',\n      'attachments' => [\n        'foo' => [\n          'uploadID' => 'uploadID',\n          'id' => 'id',\n          'duration' => 0,\n          'fileName' => 'fileName',\n          'mimeType' => 'mimeType',\n          'size' => ['height' => 0, 'width' => 0],\n          'type' => 'image',\n        ],\n      ],\n    ],\n    imgURL: 'imgURL',\n    isArchived: true,\n    isLowPriority: true,\n    isMuted: true,\n    isPinned: true,\n    messageExpirySeconds: 0,\n    title: 'title',\n  );\n\n  var_dump($chat);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/chats/$CHAT_ID \\\n    -X PATCH \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -6821,10 +6760,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/chats/$CHAT_ID \\\n    -X PATCH \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli chats update \\\n  --access-token 'My Access Token' \\\n  --chat-id '!NCdzlIaMjZUmvmvyHU:beeper.com'"
           }
         ]
       }
@@ -6886,7 +6821,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nawait client.chats.archive('!NCdzlIaMjZUmvmvyHU:beeper.com');",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nclient.chats.archive(\n    chat_id=\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n)",
           "go": "package main\n\nimport (\n\t\"context\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\terr := client.Chats.Archive(\n\t\tcontext.TODO(),\n\t\t\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n\t\tbeeperdesktopapi.ChatArchiveParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n",
-          "cli": "beeper-desktop-cli chats archive \\\n  --access-token 'My Access Token' \\\n  --chat-id '!NCdzlIaMjZUmvmvyHU:beeper.com'",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $result = $client->chats->archive(\n    '!NCdzlIaMjZUmvmvyHU:beeper.com', archived: true\n  );\n\n  var_dump($result);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/chats/$CHAT_ID/archive \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -6910,10 +6844,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/chats/$CHAT_ID/archive \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli chats archive \\\n  --access-token 'My Access Token' \\\n  --chat-id '!NCdzlIaMjZUmvmvyHU:beeper.com'"
           }
         ]
       }
@@ -6988,7 +6918,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nawait client.chats.reminders.create('!NCdzlIaMjZUmvmvyHU:beeper.com', {\n  reminder: { remindAt: '2025-08-31T23:30:12.520Z' },\n});",
           "python": "import os\nfrom datetime import datetime\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nclient.chats.reminders.create(\n    chat_id=\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n    reminder={\n        \"remind_at\": datetime.fromisoformat(\"2025-08-31T23:30:12.520\")\n    },\n)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"time\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\terr := client.Chats.Reminders.New(\n\t\tcontext.TODO(),\n\t\t\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n\t\tbeeperdesktopapi.ChatReminderNewParams{\n\t\t\tReminder: beeperdesktopapi.ChatReminderNewParamsReminder{\n\t\t\t\tRemindAt: time.Now(),\n\t\t\t},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n",
-          "cli": "beeper-desktop-cli chats:reminders create \\\n  --access-token 'My Access Token' \\\n  --chat-id '!NCdzlIaMjZUmvmvyHU:beeper.com' \\\n  --reminder \"{remindAt: '2025-08-31T23:30:12.520Z'}\"",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $result = $client->chats->reminders->create(\n    '!NCdzlIaMjZUmvmvyHU:beeper.com',\n    reminder: [\n      'remindAt' => new \\DateTimeImmutable('2025-08-31T23:30:12.520Z'),\n      'dismissOnIncomingMessage' => true,\n    ],\n  );\n\n  var_dump($result);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/chats/$CHAT_ID/reminders \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"reminder\": {\n            \"remindAt\": \"2025-08-31T23:30:12.520Z\"\n          }\n        }'"
         },
@@ -7012,10 +6941,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/chats/$CHAT_ID/reminders \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"reminder\": {\n            \"remindAt\": \"2025-08-31T23:30:12.520Z\"\n          }\n        }'"
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli chats:reminders create \\\n  --access-token 'My Access Token' \\\n  --chat-id '!NCdzlIaMjZUmvmvyHU:beeper.com' \\\n  --reminder \"{remindAt: '2025-08-31T23:30:12.520Z'}\""
           }
         ]
       },
@@ -7059,7 +6984,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nawait client.chats.reminders.delete('!NCdzlIaMjZUmvmvyHU:beeper.com');",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nclient.chats.reminders.delete(\n    \"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n)",
           "go": "package main\n\nimport (\n\t\"context\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\terr := client.Chats.Reminders.Delete(context.TODO(), \"!NCdzlIaMjZUmvmvyHU:beeper.com\")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n",
-          "cli": "beeper-desktop-cli chats:reminders delete \\\n  --access-token 'My Access Token' \\\n  --chat-id '!NCdzlIaMjZUmvmvyHU:beeper.com'",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $result = $client->chats->reminders->delete('!NCdzlIaMjZUmvmvyHU:beeper.com');\n\n  var_dump($result);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/chats/$CHAT_ID/reminders \\\n    -X DELETE \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -7083,10 +7007,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/chats/$CHAT_ID/reminders \\\n    -X DELETE \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli chats:reminders delete \\\n  --access-token 'My Access Token' \\\n  --chat-id '!NCdzlIaMjZUmvmvyHU:beeper.com'"
           }
         ]
       }
@@ -7153,7 +7073,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst chat = await client.chats.markRead('!NCdzlIaMjZUmvmvyHU:beeper.com');\n\nconsole.log(chat.id);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nchat = client.chats.mark_read(\n    chat_id=\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n)\nprint(chat.id)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tchat, err := client.Chats.MarkRead(\n\t\tcontext.TODO(),\n\t\t\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n\t\tbeeperdesktopapi.ChatMarkReadParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", chat.ID)\n}\n",
-          "cli": "beeper-desktop-cli chats mark-read \\\n  --access-token 'My Access Token' \\\n  --chat-id '!NCdzlIaMjZUmvmvyHU:beeper.com'",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $chat = $client->chats->markRead(\n    '!NCdzlIaMjZUmvmvyHU:beeper.com', messageID: '1343993'\n  );\n\n  var_dump($chat);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/chats/$CHAT_ID/read \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -7177,10 +7096,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/chats/$CHAT_ID/read \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli chats mark-read \\\n  --access-token 'My Access Token' \\\n  --chat-id '!NCdzlIaMjZUmvmvyHU:beeper.com'"
           }
         ]
       }
@@ -7247,7 +7162,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst chat = await client.chats.markUnread('!NCdzlIaMjZUmvmvyHU:beeper.com');\n\nconsole.log(chat.id);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nchat = client.chats.mark_unread(\n    chat_id=\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n)\nprint(chat.id)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tchat, err := client.Chats.MarkUnread(\n\t\tcontext.TODO(),\n\t\t\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n\t\tbeeperdesktopapi.ChatMarkUnreadParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", chat.ID)\n}\n",
-          "cli": "beeper-desktop-cli chats mark-unread \\\n  --access-token 'My Access Token' \\\n  --chat-id '!NCdzlIaMjZUmvmvyHU:beeper.com'",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $chat = $client->chats->markUnread(\n    '!NCdzlIaMjZUmvmvyHU:beeper.com', messageID: '1343993'\n  );\n\n  var_dump($chat);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/chats/$CHAT_ID/unread \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -7271,10 +7185,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/chats/$CHAT_ID/unread \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli chats mark-unread \\\n  --access-token 'My Access Token' \\\n  --chat-id '!NCdzlIaMjZUmvmvyHU:beeper.com'"
           }
         ]
       }
@@ -7332,7 +7242,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst chat = await client.chats.notifyAnyway('!NCdzlIaMjZUmvmvyHU:beeper.com');\n\nconsole.log(chat.id);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nchat = client.chats.notify_anyway(\n    \"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n)\nprint(chat.id)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tchat, err := client.Chats.NotifyAnyway(\n\t\tcontext.TODO(),\n\t\t\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n\t\tbeeperdesktopapi.ChatNotifyAnywayParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", chat.ID)\n}\n",
-          "cli": "beeper-desktop-cli chats notify-anyway \\\n  --access-token 'My Access Token' \\\n  --chat-id '!NCdzlIaMjZUmvmvyHU:beeper.com'",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $chat = $client->chats->notifyAnyway('!NCdzlIaMjZUmvmvyHU:beeper.com');\n\n  var_dump($chat);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/chats/$CHAT_ID/notify-anyway \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -7356,10 +7265,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/chats/$CHAT_ID/notify-anyway \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli chats notify-anyway \\\n  --access-token 'My Access Token' \\\n  --chat-id '!NCdzlIaMjZUmvmvyHU:beeper.com'"
           }
         ]
       }
@@ -7436,7 +7341,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const message of client.messages.list('!NCdzlIaMjZUmvmvyHU:beeper.com')) {\n  console.log(message.id);\n}",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\npage = client.messages.list(\n    chat_id=\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n)\npage = page.items[0]\nprint(page.id)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tpage, err := client.Messages.List(\n\t\tcontext.TODO(),\n\t\t\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n\t\tbeeperdesktopapi.MessageListParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", page)\n}\n",
-          "cli": "beeper-desktop-cli messages list \\\n  --access-token 'My Access Token' \\\n  --chat-id '!NCdzlIaMjZUmvmvyHU:beeper.com'",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $page = $client->messages->list(\n    '!NCdzlIaMjZUmvmvyHU:beeper.com',\n    cursor: '1725489123456|c29tZUltc2dQYWdl',\n    direction: 'before',\n  );\n\n  var_dump($page);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/chats/$CHAT_ID/messages \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -7460,10 +7364,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/chats/$CHAT_ID/messages \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli messages list \\\n  --access-token 'My Access Token' \\\n  --chat-id '!NCdzlIaMjZUmvmvyHU:beeper.com'"
           }
         ]
       },
@@ -7543,7 +7443,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.messages.send('!NCdzlIaMjZUmvmvyHU:beeper.com');\n\nconsole.log(response.pendingMessageID);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.messages.send(\n    chat_id=\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n)\nprint(response.pending_message_id)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Messages.Send(\n\t\tcontext.TODO(),\n\t\t\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n\t\tbeeperdesktopapi.MessageSendParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.PendingMessageID)\n}\n",
-          "cli": "beeper-desktop-cli messages send \\\n  --access-token 'My Access Token' \\\n  --chat-id '!NCdzlIaMjZUmvmvyHU:beeper.com'",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $response = $client->messages->send(\n    '!NCdzlIaMjZUmvmvyHU:beeper.com',\n    attachment: [\n      'uploadID' => 'uploadID',\n      'duration' => 0,\n      'fileName' => 'fileName',\n      'mimeType' => 'mimeType',\n      'size' => ['height' => 0, 'width' => 0],\n      'type' => 'image',\n    ],\n    replyToMessageID: 'replyToMessageID',\n    text: 'text',\n  );\n\n  var_dump($response);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/chats/$CHAT_ID/messages \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -7567,10 +7466,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/chats/$CHAT_ID/messages \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli messages send \\\n  --access-token 'My Access Token' \\\n  --chat-id '!NCdzlIaMjZUmvmvyHU:beeper.com'"
           }
         ]
       }
@@ -7632,7 +7527,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst message = await client.messages.retrieve('1343993', {\n  chatID: '!NCdzlIaMjZUmvmvyHU:beeper.com',\n});\n\nconsole.log(message.id);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nmessage = client.messages.retrieve(\n    message_id=\"1343993\",\n    chat_id=\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n)\nprint(message.id)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tmessage, err := client.Messages.Get(\n\t\tcontext.TODO(),\n\t\t\"1343993\",\n\t\tbeeperdesktopapi.MessageGetParams{\n\t\t\tChatID: \"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", message.ID)\n}\n",
-          "cli": "beeper-desktop-cli messages retrieve \\\n  --access-token 'My Access Token' \\\n  --chat-id '!NCdzlIaMjZUmvmvyHU:beeper.com' \\\n  --message-id 1343993",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $message = $client->messages->retrieve(\n    '1343993', chatID: '!NCdzlIaMjZUmvmvyHU:beeper.com'\n  );\n\n  var_dump($message);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/chats/$CHAT_ID/messages/$MESSAGE_ID \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -7656,10 +7550,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/chats/$CHAT_ID/messages/$MESSAGE_ID \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli messages retrieve \\\n  --access-token 'My Access Token' \\\n  --chat-id '!NCdzlIaMjZUmvmvyHU:beeper.com' \\\n  --message-id 1343993"
           }
         ]
       },
@@ -7736,7 +7626,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst message = await client.messages.update('1343993', {\n  chatID: '!NCdzlIaMjZUmvmvyHU:beeper.com',\n  text: 'x',\n});\n\nconsole.log(message);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nmessage = client.messages.update(\n    message_id=\"1343993\",\n    chat_id=\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n    text=\"x\",\n)\nprint(message)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tmessage, err := client.Messages.Update(\n\t\tcontext.TODO(),\n\t\t\"1343993\",\n\t\tbeeperdesktopapi.MessageUpdateParams{\n\t\t\tChatID: \"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n\t\t\tText:   \"x\",\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", message)\n}\n",
-          "cli": "beeper-desktop-cli messages update \\\n  --access-token 'My Access Token' \\\n  --chat-id '!NCdzlIaMjZUmvmvyHU:beeper.com' \\\n  --message-id 1343993 \\\n  --text x",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $message = $client->messages->update(\n    '1343993', chatID: '!NCdzlIaMjZUmvmvyHU:beeper.com', text: 'x'\n  );\n\n  var_dump($message);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/chats/$CHAT_ID/messages/$MESSAGE_ID \\\n    -X PUT \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"text\": \"x\"\n        }'"
         },
@@ -7760,10 +7649,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/chats/$CHAT_ID/messages/$MESSAGE_ID \\\n    -X PUT \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"text\": \"x\"\n        }'"
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli messages update \\\n  --access-token 'My Access Token' \\\n  --chat-id '!NCdzlIaMjZUmvmvyHU:beeper.com' \\\n  --message-id 1343993 \\\n  --text x"
           }
         ]
       },
@@ -7830,7 +7715,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nawait client.messages.delete('1343993', { chatID: '!NCdzlIaMjZUmvmvyHU:beeper.com' });",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nclient.messages.delete(\n    message_id=\"1343993\",\n    chat_id=\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n)",
           "go": "package main\n\nimport (\n\t\"context\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\terr := client.Messages.Delete(\n\t\tcontext.TODO(),\n\t\t\"1343993\",\n\t\tbeeperdesktopapi.MessageDeleteParams{\n\t\t\tChatID: \"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n",
-          "cli": "beeper-desktop-cli messages delete \\\n  --access-token 'My Access Token' \\\n  --chat-id '!NCdzlIaMjZUmvmvyHU:beeper.com' \\\n  --message-id 1343993",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $result = $client->messages->delete(\n    '1343993', chatID: '!NCdzlIaMjZUmvmvyHU:beeper.com', forEveryone: true\n  );\n\n  var_dump($result);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/chats/$CHAT_ID/messages/$MESSAGE_ID \\\n    -X DELETE \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -7854,10 +7738,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/chats/$CHAT_ID/messages/$MESSAGE_ID \\\n    -X DELETE \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli messages delete \\\n  --access-token 'My Access Token' \\\n  --chat-id '!NCdzlIaMjZUmvmvyHU:beeper.com' \\\n  --message-id 1343993"
           }
         ]
       }
@@ -7940,7 +7820,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.chats.messages.reactions.add('1343993', {\n  chatID: '!NCdzlIaMjZUmvmvyHU:beeper.com',\n  reactionKey: 'x',\n});\n\nconsole.log(response.chatID);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.chats.messages.reactions.add(\n    message_id=\"1343993\",\n    chat_id=\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n    reaction_key=\"x\",\n)\nprint(response.chat_id)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Chats.Messages.Reactions.Add(\n\t\tcontext.TODO(),\n\t\t\"1343993\",\n\t\tbeeperdesktopapi.ChatMessageReactionAddParams{\n\t\t\tChatID:      \"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n\t\t\tReactionKey: \"x\",\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.ChatID)\n}\n",
-          "cli": "beeper-desktop-cli chats:messages:reactions add \\\n  --access-token 'My Access Token' \\\n  --chat-id '!NCdzlIaMjZUmvmvyHU:beeper.com' \\\n  --message-id 1343993 \\\n  --reaction-key x",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $response = $client->chats->messages->reactions->add(\n    '1343993',\n    chatID: '!NCdzlIaMjZUmvmvyHU:beeper.com',\n    reactionKey: 'x',\n    transactionID: 'transactionID',\n  );\n\n  var_dump($response);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/chats/$CHAT_ID/messages/$MESSAGE_ID/reactions \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"reactionKey\": \"x\"\n        }'"
         },
@@ -7964,10 +7843,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/chats/$CHAT_ID/messages/$MESSAGE_ID/reactions \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"reactionKey\": \"x\"\n        }'"
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli chats:messages:reactions add \\\n  --access-token 'My Access Token' \\\n  --chat-id '!NCdzlIaMjZUmvmvyHU:beeper.com' \\\n  --message-id 1343993 \\\n  --reaction-key x"
           }
         ]
       }
@@ -8042,7 +7917,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst reaction = await client.chats.messages.reactions.delete('x', {\n  chatID: '!NCdzlIaMjZUmvmvyHU:beeper.com',\n  messageID: '1343993',\n});\n\nconsole.log(reaction.chatID);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nreaction = client.chats.messages.reactions.delete(\n    reaction_key=\"x\",\n    chat_id=\"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n    message_id=\"1343993\",\n)\nprint(reaction.chat_id)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\treaction, err := client.Chats.Messages.Reactions.Delete(\n\t\tcontext.TODO(),\n\t\t\"x\",\n\t\tbeeperdesktopapi.ChatMessageReactionDeleteParams{\n\t\t\tChatID:    \"!NCdzlIaMjZUmvmvyHU:beeper.com\",\n\t\t\tMessageID: \"1343993\",\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", reaction.ChatID)\n}\n",
-          "cli": "beeper-desktop-cli chats:messages:reactions delete \\\n  --access-token 'My Access Token' \\\n  --chat-id '!NCdzlIaMjZUmvmvyHU:beeper.com' \\\n  --message-id 1343993 \\\n  --reaction-key x",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $reaction = $client->chats->messages->reactions->delete(\n    'x', chatID: '!NCdzlIaMjZUmvmvyHU:beeper.com', messageID: '1343993'\n  );\n\n  var_dump($reaction);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/chats/$CHAT_ID/messages/$MESSAGE_ID/reactions/$REACTION_KEY \\\n    -X DELETE \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -8066,10 +7940,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/chats/$CHAT_ID/messages/$MESSAGE_ID/reactions/$REACTION_KEY \\\n    -X DELETE \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli chats:messages:reactions delete \\\n  --access-token 'My Access Token' \\\n  --chat-id '!NCdzlIaMjZUmvmvyHU:beeper.com' \\\n  --message-id 1343993 \\\n  --reaction-key x"
           }
         ]
       }
@@ -8114,7 +7984,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.assets.download({ url: 'mxc://example.org/Q4x9CqGz1pB3Oa6XgJ' });\n\nconsole.log(response.error);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.assets.download(\n    url=\"mxc://example.org/Q4x9CqGz1pB3Oa6XgJ\",\n)\nprint(response.error)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Assets.Download(context.TODO(), beeperdesktopapi.AssetDownloadParams{\n\t\tURL: \"mxc://example.org/Q4x9CqGz1pB3Oa6XgJ\",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.Error)\n}\n",
-          "cli": "beeper-desktop-cli assets download \\\n  --access-token 'My Access Token' \\\n  --url mxc://example.org/Q4x9CqGz1pB3Oa6XgJ",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $response = $client->assets->download(\n    url: 'mxc://example.org/Q4x9CqGz1pB3Oa6XgJ'\n  );\n\n  var_dump($response);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/assets/download \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"url\": \"mxc://example.org/Q4x9CqGz1pB3Oa6XgJ\"\n        }'"
         },
@@ -8138,10 +8007,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/assets/download \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"url\": \"mxc://example.org/Q4x9CqGz1pB3Oa6XgJ\"\n        }'"
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli assets download \\\n  --access-token 'My Access Token' \\\n  --url mxc://example.org/Q4x9CqGz1pB3Oa6XgJ"
           }
         ]
       }
@@ -8221,7 +8086,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.assets.serve({ url: 'x' });\n\nconsole.log(response);\n\nconst content = await response.blob();\nconsole.log(content);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.assets.serve(\n    url=\"x\",\n)\nprint(response)\ncontent = response.read()\nprint(content)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Assets.Serve(context.TODO(), beeperdesktopapi.AssetServeParams{\n\t\tURL: \"x\",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response)\n}\n",
-          "cli": "beeper-desktop-cli assets serve \\\n  --access-token 'My Access Token' \\\n  --url x",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $response = $client->assets->serve(url: 'x');\n\n  var_dump($response);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/assets/serve \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -8245,10 +8109,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/assets/serve \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli assets serve \\\n  --access-token 'My Access Token' \\\n  --url x"
           }
         ]
       }
@@ -8293,7 +8153,6 @@
           "typescript": "import fs from 'fs';\nimport BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.assets.upload({ file: fs.createReadStream('path/to/file') });\n\nconsole.log(response.width);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.assets.upload(\n    file=b\"Example data\",\n)\nprint(response.width)",
           "go": "package main\n\nimport (\n\t\"bytes\"\n\t\"context\"\n\t\"fmt\"\n\t\"io\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Assets.Upload(context.TODO(), beeperdesktopapi.AssetUploadParams{\n\t\tFile: io.Reader(bytes.NewBuffer([]byte(\"Example data\"))),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.Width)\n}\n",
-          "cli": "beeper-desktop-cli assets upload \\\n  --access-token 'My Access Token' \\\n  --file 'Example data'",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\FileParam;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $response = $client->assets->upload(\n    file: FileParam::fromString('Example data', filename: uniqid('file-upload-', true)),\n    fileName: 'fileName',\n    mimeType: 'mimeType',\n  );\n\n  var_dump($response);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/assets/upload \\\n    -H 'Content-Type: multipart/form-data' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -F 'file=@/path/to/file'"
         },
@@ -8317,10 +8176,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/assets/upload \\\n    -H 'Content-Type: multipart/form-data' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -F 'file=@/path/to/file'"
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli assets upload \\\n  --access-token 'My Access Token' \\\n  --file 'Example data'"
           }
         ]
       }
@@ -8365,7 +8220,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.assets.uploadBase64({ content: 'x' });\n\nconsole.log(response.width);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.assets.upload_base64(\n    content=\"x\",\n)\nprint(response.width)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Assets.UploadBase64(context.TODO(), beeperdesktopapi.AssetUploadBase64Params{\n\t\tContent: \"x\",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.Width)\n}\n",
-          "cli": "beeper-desktop-cli assets upload-base64 \\\n  --access-token 'My Access Token' \\\n  --content x",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $response = $client->assets->uploadBase64(\n    content: 'x', fileName: 'fileName', mimeType: 'mimeType'\n  );\n\n  var_dump($response);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/assets/upload/base64 \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"content\": \"x\"\n        }'"
         },
@@ -8389,10 +8243,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/assets/upload/base64 \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"content\": \"x\"\n        }'"
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli assets upload-base64 \\\n  --access-token 'My Access Token' \\\n  --content x"
           }
         ]
       }
@@ -8445,7 +8295,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop();\n\nconst response = await client.app.login.start();\n\nconsole.log(response.request);",
           "python": "from beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop()\nresponse = client.app.login.start()\nprint(response.request)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.App.Login.Start(context.TODO())\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.Request)\n}\n",
-          "cli": "beeper-desktop-cli app:login start \\\n  --access-token 'My Access Token'",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $response = $client->app->login->start();\n\n  var_dump($response);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/app/login/start \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -8469,10 +8318,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/app/login/start \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli app:login start \\\n  --access-token 'My Access Token'"
           }
         ]
       }
@@ -8536,7 +8381,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop();\n\nconst response = await client.app.login.email({ email: 'dev@stainless.com', request: 'request' });\n\nconsole.log(response);",
           "python": "from beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop()\nresponse = client.app.login.email(\n    email=\"dev@stainless.com\",\n    request=\"request\",\n)\nprint(response)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.App.Login.Email(context.TODO(), beeperdesktopapi.AppLoginEmailParams{\n\t\tEmail:   \"dev@stainless.com\",\n\t\tRequest: \"request\",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response)\n}\n",
-          "cli": "beeper-desktop-cli app:login email \\\n  --access-token 'My Access Token' \\\n  --email dev@stainless.com \\\n  --request request",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $response = $client->app->login->email(\n    email: 'dev@stainless.com', request: 'request'\n  );\n\n  var_dump($response);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/app/login/email \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"email\": \"dev@stainless.com\",\n          \"request\": \"request\"\n        }'"
         },
@@ -8560,10 +8404,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/app/login/email \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"email\": \"dev@stainless.com\",\n          \"request\": \"request\"\n        }'"
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli app:login email \\\n  --access-token 'My Access Token' \\\n  --email dev@stainless.com \\\n  --request request"
           }
         ]
       }
@@ -8964,7 +8804,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop();\n\nconst response = await client.app.login.response({ request: 'request', response: 'response' });\n\nconsole.log(response);",
           "python": "from beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop()\nresponse = client.app.login.response(\n    request=\"request\",\n    response=\"response\",\n)\nprint(response)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.App.Login.Response(context.TODO(), beeperdesktopapi.AppLoginResponseParams{\n\t\tRequest:  \"request\",\n\t\tResponse: \"response\",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response)\n}\n",
-          "cli": "beeper-desktop-cli app:login response \\\n  --access-token 'My Access Token' \\\n  --request request \\\n  --response response",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $response = $client->app->login->response(\n    request: 'request', response: 'response'\n  );\n\n  var_dump($response);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/app/login/response \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"request\": \"request\",\n          \"response\": \"response\"\n        }'"
         },
@@ -8988,10 +8827,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/app/login/response \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"request\": \"request\",\n          \"response\": \"response\"\n        }'"
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli app:login response \\\n  --access-token 'My Access Token' \\\n  --request request \\\n  --response response"
           }
         ]
       }
@@ -9333,7 +9168,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop();\n\nconst response = await client.app.login.register({\n  acceptTerms: true,\n  leadToken: 'leadToken',\n  request: 'request',\n  username: 'x',\n});\n\nconsole.log(response.appState);",
           "python": "from beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop()\nresponse = client.app.login.register(\n    accept_terms=True,\n    lead_token=\"leadToken\",\n    request=\"request\",\n    username=\"x\",\n)\nprint(response.app_state)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.App.Login.Register(context.TODO(), beeperdesktopapi.AppLoginRegisterParams{\n\t\tAcceptTerms: true,\n\t\tLeadToken:   \"leadToken\",\n\t\tRequest:     \"request\",\n\t\tUsername:    \"x\",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.AppState)\n}\n",
-          "cli": "beeper-desktop-cli app:login register \\\n  --access-token 'My Access Token' \\\n  --accept-terms true \\\n  --lead-token leadToken \\\n  --request request \\\n  --username x",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $response = $client->app->login->register(\n    acceptTerms: true, leadToken: 'leadToken', request: 'request', username: 'x'\n  );\n\n  var_dump($response);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/app/login/register \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"acceptTerms\": true,\n          \"leadToken\": \"leadToken\",\n          \"request\": \"request\",\n          \"username\": \"x\"\n        }'"
         },
@@ -9357,10 +9191,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/app/login/register \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"acceptTerms\": true,\n          \"leadToken\": \"leadToken\",\n          \"request\": \"request\",\n          \"username\": \"x\"\n        }'"
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli app:login register \\\n  --access-token 'My Access Token' \\\n  --accept-terms true \\\n  --lead-token leadToken \\\n  --request request \\\n  --username x"
           }
         ]
       }
@@ -9612,7 +9442,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.app.status();\n\nconsole.log(response.e2ee);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.app.status()\nprint(response.e2ee)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.App.Status(context.TODO())\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.E2ee)\n}\n",
-          "cli": "beeper-desktop-cli app status \\\n  --access-token 'My Access Token'",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $response = $client->app->status();\n\n  var_dump($response);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/app/status \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -9636,10 +9465,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/app/status \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli app status \\\n  --access-token 'My Access Token'"
           }
         ]
       }
@@ -9917,7 +9742,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.app.e2ee.recoveryCode.verify({ recoveryCode: 'x' });\n\nconsole.log(response.appState);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.app.e2ee.recovery_code.verify(\n    recovery_code=\"x\",\n)\nprint(response.app_state)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.App.E2ee.RecoveryCode.Verify(context.TODO(), beeperdesktopapi.AppE2eeRecoveryCodeVerifyParams{\n\t\tRecoveryCode: \"x\",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.AppState)\n}\n",
-          "cli": "beeper-desktop-cli app:e2ee:recovery-code verify \\\n  --access-token 'My Access Token' \\\n  --recovery-code x",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $response = $client->app->e2ee->recoveryCode->verify(recoveryCode: 'x');\n\n  var_dump($response);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/app/e2ee/recovery-code/verify \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"recoveryCode\": \"x\"\n        }'"
         },
@@ -9941,10 +9765,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/app/e2ee/recovery-code/verify \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"recoveryCode\": \"x\"\n        }'"
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli app:e2ee:recovery-code verify \\\n  --access-token 'My Access Token' \\\n  --recovery-code x"
           }
         ]
       }
@@ -10224,7 +10044,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst reset = await client.app.e2ee.recoveryCode.reset.create();\n\nconsole.log(reset.appState);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nreset = client.app.e2ee.recovery_code.reset.create()\nprint(reset.app_state)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\treset, err := client.App.E2ee.RecoveryCode.Reset.New(context.TODO(), beeperdesktopapi.AppE2eeRecoveryCodeResetNewParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", reset.AppState)\n}\n",
-          "cli": "beeper-desktop-cli app:e2ee:recovery-code:reset create \\\n  --access-token 'My Access Token'",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $reset = $client->app->e2ee->recoveryCode->reset->create(\n    recoveryCode: 'recoveryCode'\n  );\n\n  var_dump($reset);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/app/e2ee/recovery-code/reset \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -10248,10 +10067,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/app/e2ee/recovery-code/reset \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli app:e2ee:recovery-code:reset create \\\n  --access-token 'My Access Token'"
           }
         ]
       }
@@ -10529,7 +10344,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.app.e2ee.recoveryCode.reset.confirm({ recoveryCode: 'x' });\n\nconsole.log(response.appState);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.app.e2ee.recovery_code.reset.confirm(\n    recovery_code=\"x\",\n)\nprint(response.app_state)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.App.E2ee.RecoveryCode.Reset.Confirm(context.TODO(), beeperdesktopapi.AppE2eeRecoveryCodeResetConfirmParams{\n\t\tRecoveryCode: \"x\",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.AppState)\n}\n",
-          "cli": "beeper-desktop-cli app:e2ee:recovery-code:reset confirm \\\n  --access-token 'My Access Token' \\\n  --recovery-code x",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $response = $client->app->e2ee->recoveryCode->reset->confirm(\n    recoveryCode: 'x'\n  );\n\n  var_dump($response);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/app/e2ee/recovery-code/reset/confirm \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"recoveryCode\": \"x\"\n        }'"
         },
@@ -10553,10 +10367,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/app/e2ee/recovery-code/reset/confirm \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"recoveryCode\": \"x\"\n        }'"
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli app:e2ee:recovery-code:reset confirm \\\n  --access-token 'My Access Token' \\\n  --recovery-code x"
           }
         ]
       }
@@ -10816,7 +10626,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.app.e2ee.recoveryCode.markBackedUp();\n\nconsole.log(response.appState);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.app.e2ee.recovery_code.mark_backed_up()\nprint(response.app_state)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.App.E2ee.RecoveryCode.MarkBackedUp(context.TODO())\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.AppState)\n}\n",
-          "cli": "beeper-desktop-cli app:e2ee:recovery-code mark-backed-up \\\n  --access-token 'My Access Token'",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $response = $client->app->e2ee->recoveryCode->markBackedUp();\n\n  var_dump($response);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/app/e2ee/recovery-code/mark-backed-up \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -10840,10 +10649,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/app/e2ee/recovery-code/mark-backed-up \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli app:e2ee:recovery-code mark-backed-up \\\n  --access-token 'My Access Token'"
           }
         ]
       }
@@ -11123,7 +10928,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst verification = await client.app.e2ee.verification.create();\n\nconsole.log(verification.appState);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nverification = client.app.e2ee.verification.create()\nprint(verification.app_state)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tverification, err := client.App.E2ee.Verification.New(context.TODO(), beeperdesktopapi.AppE2eeVerificationNewParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", verification.AppState)\n}\n",
-          "cli": "beeper-desktop-cli app:e2ee:verification create \\\n  --access-token 'My Access Token'",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $verification = $client->app->e2ee->verification->create(userID: 'userID');\n\n  var_dump($verification);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/app/e2ee/verification \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -11147,10 +10951,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/app/e2ee/verification \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli app:e2ee:verification create \\\n  --access-token 'My Access Token'"
           }
         ]
       }
@@ -11428,7 +11228,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.app.e2ee.verification.qr.scan({ data: 'x' });\n\nconsole.log(response.appState);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.app.e2ee.verification.qr.scan(\n    data=\"x\",\n)\nprint(response.app_state)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.App.E2ee.Verification.Qr.Scan(context.TODO(), beeperdesktopapi.AppE2eeVerificationQrScanParams{\n\t\tData: \"x\",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.AppState)\n}\n",
-          "cli": "beeper-desktop-cli app:e2ee:verification:qr scan \\\n  --access-token 'My Access Token' \\\n  --data x",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $response = $client->app->e2ee->verification->qr->scan(data: 'x');\n\n  var_dump($response);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/app/e2ee/verification/qr/scan \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"data\": \"x\"\n        }'"
         },
@@ -11452,10 +11251,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/app/e2ee/verification/qr/scan \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"data\": \"x\"\n        }'"
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli app:e2ee:verification:qr scan \\\n  --access-token 'My Access Token' \\\n  --data x"
           }
         ]
       }
@@ -11728,7 +11523,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.app.e2ee.verification.accept('x');\n\nconsole.log(response.appState);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.app.e2ee.verification.accept(\n    \"x\",\n)\nprint(response.app_state)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.App.E2ee.Verification.Accept(context.TODO(), \"x\")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.AppState)\n}\n",
-          "cli": "beeper-desktop-cli app:e2ee:verification accept \\\n  --access-token 'My Access Token' \\\n  --verification-id x",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $response = $client->app->e2ee->verification->accept('x');\n\n  var_dump($response);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/app/e2ee/verification/$VERIFICATION_ID/accept \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -11752,10 +11546,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/app/e2ee/verification/$VERIFICATION_ID/accept \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli app:e2ee:verification accept \\\n  --access-token 'My Access Token' \\\n  --verification-id x"
           }
         ]
       }
@@ -12048,7 +11838,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.app.e2ee.verification.cancel('x');\n\nconsole.log(response.appState);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.app.e2ee.verification.cancel(\n    verification_id=\"x\",\n)\nprint(response.app_state)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.App.E2ee.Verification.Cancel(\n\t\tcontext.TODO(),\n\t\t\"x\",\n\t\tbeeperdesktopapi.AppE2eeVerificationCancelParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.AppState)\n}\n",
-          "cli": "beeper-desktop-cli app:e2ee:verification cancel \\\n  --access-token 'My Access Token' \\\n  --verification-id x",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $response = $client->app->e2ee->verification->cancel(\n    'x', code: 'code', reason: 'reason'\n  );\n\n  var_dump($response);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/app/e2ee/verification/$VERIFICATION_ID/cancel \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -12072,10 +11861,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/app/e2ee/verification/$VERIFICATION_ID/cancel \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli app:e2ee:verification cancel \\\n  --access-token 'My Access Token' \\\n  --verification-id x"
           }
         ]
       }
@@ -12348,7 +12133,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.app.e2ee.verification.qr.confirmScanned('x');\n\nconsole.log(response.appState);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.app.e2ee.verification.qr.confirm_scanned(\n    \"x\",\n)\nprint(response.app_state)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.App.E2ee.Verification.Qr.ConfirmScanned(context.TODO(), \"x\")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.AppState)\n}\n",
-          "cli": "beeper-desktop-cli app:e2ee:verification:qr confirm-scanned \\\n  --access-token 'My Access Token' \\\n  --verification-id x",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $response = $client->app->e2ee->verification->qr->confirmScanned('x');\n\n  var_dump($response);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/app/e2ee/verification/$VERIFICATION_ID/qr/confirm-scanned \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -12372,10 +12156,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/app/e2ee/verification/$VERIFICATION_ID/qr/confirm-scanned \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli app:e2ee:verification:qr confirm-scanned \\\n  --access-token 'My Access Token' \\\n  --verification-id x"
           }
         ]
       }
@@ -12648,7 +12428,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.app.e2ee.verification.sas.start('x');\n\nconsole.log(response.appState);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.app.e2ee.verification.sas.start(\n    \"x\",\n)\nprint(response.app_state)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.App.E2ee.Verification.Sas.Start(context.TODO(), \"x\")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.AppState)\n}\n",
-          "cli": "beeper-desktop-cli app:e2ee:verification:sas start \\\n  --access-token 'My Access Token' \\\n  --verification-id x",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $response = $client->app->e2ee->verification->sas->start('x');\n\n  var_dump($response);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/app/e2ee/verification/$VERIFICATION_ID/sas/start \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -12672,10 +12451,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/app/e2ee/verification/$VERIFICATION_ID/sas/start \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli app:e2ee:verification:sas start \\\n  --access-token 'My Access Token' \\\n  --verification-id x"
           }
         ]
       }
@@ -12948,7 +12723,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.app.e2ee.verification.sas.confirm('x');\n\nconsole.log(response.appState);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.app.e2ee.verification.sas.confirm(\n    \"x\",\n)\nprint(response.app_state)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.App.E2ee.Verification.Sas.Confirm(context.TODO(), \"x\")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.AppState)\n}\n",
-          "cli": "beeper-desktop-cli app:e2ee:verification:sas confirm \\\n  --access-token 'My Access Token' \\\n  --verification-id x",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $response = $client->app->e2ee->verification->sas->confirm('x');\n\n  var_dump($response);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/app/e2ee/verification/$VERIFICATION_ID/sas/confirm \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -12972,10 +12746,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/app/e2ee/verification/$VERIFICATION_ID/sas/confirm \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli app:e2ee:verification:sas confirm \\\n  --access-token 'My Access Token' \\\n  --verification-id x"
           }
         ]
       }
@@ -13007,7 +12777,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop();\n\nconst info = await client.info.retrieve();\n\nconsole.log(info.app);",
           "python": "from beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop()\ninfo = client.info.retrieve()\nprint(info.app)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tinfo, err := client.Info.Get(context.TODO())\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", info.App)\n}\n",
-          "cli": "beeper-desktop-cli info retrieve \\\n  --access-token 'My Access Token'",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $info = $client->info->retrieve();\n\n  var_dump($info);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/v1/info \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -13031,10 +12800,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/v1/info \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli info retrieve \\\n  --access-token 'My Access Token'"
           }
         ]
       }
@@ -13068,7 +12833,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.matrix.bridges.auth.whoami('bridgeID');\n\nconsole.log(response.bridge_bot);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.matrix.bridges.auth.whoami(\n    \"bridgeID\",\n)\nprint(response.bridge_bot)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Matrix.Bridges.Auth.Whoami(context.TODO(), \"bridgeID\")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.BridgeBot)\n}\n",
-          "cli": "beeper-desktop-cli matrix:bridges:auth whoami \\\n  --access-token 'My Access Token' \\\n  --bridge-id bridgeID",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $response = $client->matrix->bridges->auth->whoami('bridgeID');\n\n  var_dump($response);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/_matrix/client/unstable/com.beeper.bridge/$BRIDGE_ID/_matrix/provision/v3/whoami \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -13092,10 +12856,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/_matrix/client/unstable/com.beeper.bridge/$BRIDGE_ID/_matrix/provision/v3/whoami \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli matrix:bridges:auth whoami \\\n  --access-token 'My Access Token' \\\n  --bridge-id bridgeID"
           }
         ]
       }
@@ -13136,7 +12896,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.matrix.bridges.auth.listFlows('bridgeID');\n\nconsole.log(response.flows);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.matrix.bridges.auth.list_flows(\n    \"bridgeID\",\n)\nprint(response.flows)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Matrix.Bridges.Auth.ListFlows(context.TODO(), \"bridgeID\")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.Flows)\n}\n",
-          "cli": "beeper-desktop-cli matrix:bridges:auth list-flows \\\n  --access-token 'My Access Token' \\\n  --bridge-id bridgeID",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $response = $client->matrix->bridges->auth->listFlows('bridgeID');\n\n  var_dump($response);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/_matrix/client/unstable/com.beeper.bridge/$BRIDGE_ID/_matrix/provision/v3/login/flows \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -13160,10 +12919,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/_matrix/client/unstable/com.beeper.bridge/$BRIDGE_ID/_matrix/provision/v3/login/flows \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli matrix:bridges:auth list-flows \\\n  --access-token 'My Access Token' \\\n  --bridge-id bridgeID"
           }
         ]
       }
@@ -13204,7 +12959,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.matrix.bridges.auth.listLogins('bridgeID');\n\nconsole.log(response.login_ids);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.matrix.bridges.auth.list_logins(\n    \"bridgeID\",\n)\nprint(response.login_ids)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Matrix.Bridges.Auth.ListLogins(context.TODO(), \"bridgeID\")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.LoginIDs)\n}\n",
-          "cli": "beeper-desktop-cli matrix:bridges:auth list-logins \\\n  --access-token 'My Access Token' \\\n  --bridge-id bridgeID",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $response = $client->matrix->bridges->auth->listLogins('bridgeID');\n\n  var_dump($response);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/_matrix/client/unstable/com.beeper.bridge/$BRIDGE_ID/_matrix/provision/v3/logins \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -13228,10 +12982,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/_matrix/client/unstable/com.beeper.bridge/$BRIDGE_ID/_matrix/provision/v3/logins \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli matrix:bridges:auth list-logins \\\n  --access-token 'My Access Token' \\\n  --bridge-id bridgeID"
           }
         ]
       }
@@ -13282,7 +13032,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.matrix.bridges.auth.startLogin('qr', { bridgeID: 'bridgeID' });\n\nconsole.log(response);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.matrix.bridges.auth.start_login(\n    flow_id=\"qr\",\n    bridge_id=\"bridgeID\",\n)\nprint(response)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Matrix.Bridges.Auth.StartLogin(\n\t\tcontext.TODO(),\n\t\t\"qr\",\n\t\tbeeperdesktopapi.MatrixBridgeAuthStartLoginParams{\n\t\t\tBridgeID: \"bridgeID\",\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response)\n}\n",
-          "cli": "beeper-desktop-cli matrix:bridges:auth start-login \\\n  --access-token 'My Access Token' \\\n  --bridge-id bridgeID \\\n  --flow-id qr",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $response = $client->matrix->bridges->auth->startLogin(\n    'qr', bridgeID: 'bridgeID', loginID: 'bcc68892-b180-414f-9516-b4aadf7d0496'\n  );\n\n  var_dump($response);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/_matrix/client/unstable/com.beeper.bridge/$BRIDGE_ID/_matrix/provision/v3/login/start/$FLOW_ID \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -13306,10 +13055,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/_matrix/client/unstable/com.beeper.bridge/$BRIDGE_ID/_matrix/provision/v3/login/start/$FLOW_ID \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli matrix:bridges:auth start-login \\\n  --access-token 'My Access Token' \\\n  --bridge-id bridgeID \\\n  --flow-id qr"
           }
         ]
       }
@@ -13348,7 +13093,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.matrix.bridges.auth.submitUserInput('stepID', {\n  bridgeID: 'bridgeID',\n  loginProcessID: 'loginProcessID',\n  body: { foo: 'string' },\n});\n\nconsole.log(response);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.matrix.bridges.auth.submit_user_input(\n    step_id=\"stepID\",\n    bridge_id=\"bridgeID\",\n    login_process_id=\"loginProcessID\",\n    body={\n        \"foo\": \"string\"\n    },\n)\nprint(response)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Matrix.Bridges.Auth.SubmitUserInput(\n\t\tcontext.TODO(),\n\t\t\"stepID\",\n\t\tbeeperdesktopapi.MatrixBridgeAuthSubmitUserInputParams{\n\t\t\tBridgeID:       \"bridgeID\",\n\t\t\tLoginProcessID: \"loginProcessID\",\n\t\t\tBody: map[string]string{\n\t\t\t\t\"foo\": \"string\",\n\t\t\t},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response)\n}\n",
-          "cli": "beeper-desktop-cli matrix:bridges:auth submit-user-input \\\n  --access-token 'My Access Token' \\\n  --bridge-id bridgeID \\\n  --login-process-id loginProcessID \\\n  --step-id stepID \\\n  --body '{foo: string}'",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $response = $client->matrix->bridges->auth->submitUserInput(\n    'stepID',\n    bridgeID: 'bridgeID',\n    loginProcessID: 'loginProcessID',\n    body: ['foo' => 'string'],\n  );\n\n  var_dump($response);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/_matrix/client/unstable/com.beeper.bridge/$BRIDGE_ID/_matrix/provision/v3/login/step/$LOGIN_PROCESS_ID/$STEP_ID/user_input \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"foo\": \"string\"\n        }'"
         },
@@ -13372,10 +13116,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/_matrix/client/unstable/com.beeper.bridge/$BRIDGE_ID/_matrix/provision/v3/login/step/$LOGIN_PROCESS_ID/$STEP_ID/user_input \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"foo\": \"string\"\n        }'"
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli matrix:bridges:auth submit-user-input \\\n  --access-token 'My Access Token' \\\n  --bridge-id bridgeID \\\n  --login-process-id loginProcessID \\\n  --step-id stepID \\\n  --body '{foo: string}'"
           }
         ]
       }
@@ -13414,7 +13154,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.matrix.bridges.auth.submitCookies('stepID', {\n  bridgeID: 'bridgeID',\n  loginProcessID: 'loginProcessID',\n  body: { foo: 'string' },\n});\n\nconsole.log(response);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.matrix.bridges.auth.submit_cookies(\n    step_id=\"stepID\",\n    bridge_id=\"bridgeID\",\n    login_process_id=\"loginProcessID\",\n    body={\n        \"foo\": \"string\"\n    },\n)\nprint(response)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Matrix.Bridges.Auth.SubmitCookies(\n\t\tcontext.TODO(),\n\t\t\"stepID\",\n\t\tbeeperdesktopapi.MatrixBridgeAuthSubmitCookiesParams{\n\t\t\tBridgeID:       \"bridgeID\",\n\t\t\tLoginProcessID: \"loginProcessID\",\n\t\t\tBody: map[string]string{\n\t\t\t\t\"foo\": \"string\",\n\t\t\t},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response)\n}\n",
-          "cli": "beeper-desktop-cli matrix:bridges:auth submit-cookies \\\n  --access-token 'My Access Token' \\\n  --bridge-id bridgeID \\\n  --login-process-id loginProcessID \\\n  --step-id stepID \\\n  --body '{foo: string}'",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $response = $client->matrix->bridges->auth->submitCookies(\n    'stepID',\n    bridgeID: 'bridgeID',\n    loginProcessID: 'loginProcessID',\n    body: ['foo' => 'string'],\n  );\n\n  var_dump($response);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/_matrix/client/unstable/com.beeper.bridge/$BRIDGE_ID/_matrix/provision/v3/login/step/$LOGIN_PROCESS_ID/$STEP_ID/cookies \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"foo\": \"string\"\n        }'"
         },
@@ -13438,10 +13177,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/_matrix/client/unstable/com.beeper.bridge/$BRIDGE_ID/_matrix/provision/v3/login/step/$LOGIN_PROCESS_ID/$STEP_ID/cookies \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"foo\": \"string\"\n        }'"
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli matrix:bridges:auth submit-cookies \\\n  --access-token 'My Access Token' \\\n  --bridge-id bridgeID \\\n  --login-process-id loginProcessID \\\n  --step-id stepID \\\n  --body '{foo: string}'"
           }
         ]
       }
@@ -13468,7 +13203,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.matrix.bridges.auth.waitForStep('stepID', {\n  bridgeID: 'bridgeID',\n  loginProcessID: 'loginProcessID',\n});\n\nconsole.log(response);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.matrix.bridges.auth.wait_for_step(\n    step_id=\"stepID\",\n    bridge_id=\"bridgeID\",\n    login_process_id=\"loginProcessID\",\n)\nprint(response)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Matrix.Bridges.Auth.WaitForStep(\n\t\tcontext.TODO(),\n\t\t\"stepID\",\n\t\tbeeperdesktopapi.MatrixBridgeAuthWaitForStepParams{\n\t\t\tBridgeID:       \"bridgeID\",\n\t\t\tLoginProcessID: \"loginProcessID\",\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response)\n}\n",
-          "cli": "beeper-desktop-cli matrix:bridges:auth wait-for-step \\\n  --access-token 'My Access Token' \\\n  --bridge-id bridgeID \\\n  --login-process-id loginProcessID \\\n  --step-id stepID",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $response = $client->matrix->bridges->auth->waitForStep(\n    'stepID', bridgeID: 'bridgeID', loginProcessID: 'loginProcessID'\n  );\n\n  var_dump($response);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/_matrix/client/unstable/com.beeper.bridge/$BRIDGE_ID/_matrix/provision/v3/login/step/$LOGIN_PROCESS_ID/$STEP_ID/display_and_wait \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -13492,10 +13226,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/_matrix/client/unstable/com.beeper.bridge/$BRIDGE_ID/_matrix/provision/v3/login/step/$LOGIN_PROCESS_ID/$STEP_ID/display_and_wait \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli matrix:bridges:auth wait-for-step \\\n  --access-token 'My Access Token' \\\n  --bridge-id bridgeID \\\n  --login-process-id loginProcessID \\\n  --step-id stepID"
           }
         ]
       }
@@ -13547,7 +13277,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.matrix.bridges.auth.logout('bcc68892-b180-414f-9516-b4aadf7d0496', {\n  bridgeID: 'bridgeID',\n});\n\nconsole.log(response);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.matrix.bridges.auth.logout(\n    login_id=\"bcc68892-b180-414f-9516-b4aadf7d0496\",\n    bridge_id=\"bridgeID\",\n)\nprint(response)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Matrix.Bridges.Auth.Logout(\n\t\tcontext.TODO(),\n\t\t\"bcc68892-b180-414f-9516-b4aadf7d0496\",\n\t\tbeeperdesktopapi.MatrixBridgeAuthLogoutParams{\n\t\t\tBridgeID: \"bridgeID\",\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response)\n}\n",
-          "cli": "beeper-desktop-cli matrix:bridges:auth logout \\\n  --access-token 'My Access Token' \\\n  --bridge-id bridgeID \\\n  --login-id bcc68892-b180-414f-9516-b4aadf7d0496",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $response = $client->matrix->bridges->auth->logout(\n    'bcc68892-b180-414f-9516-b4aadf7d0496', bridgeID: 'bridgeID'\n  );\n\n  var_dump($response);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/_matrix/client/unstable/com.beeper.bridge/$BRIDGE_ID/_matrix/provision/v3/logout/$LOGIN_ID \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -13571,10 +13300,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/_matrix/client/unstable/com.beeper.bridge/$BRIDGE_ID/_matrix/provision/v3/logout/$LOGIN_ID \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli matrix:bridges:auth logout \\\n  --access-token 'My Access Token' \\\n  --bridge-id bridgeID \\\n  --login-id bcc68892-b180-414f-9516-b4aadf7d0496"
           }
         ]
       }
@@ -13622,7 +13347,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst contacts = await client.matrix.bridges.contacts.list('bridgeID');\n\nconsole.log(contacts.contacts);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\ncontacts = client.matrix.bridges.contacts.list(\n    bridge_id=\"bridgeID\",\n)\nprint(contacts.contacts)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tcontacts, err := client.Matrix.Bridges.Contacts.List(\n\t\tcontext.TODO(),\n\t\t\"bridgeID\",\n\t\tbeeperdesktopapi.MatrixBridgeContactListParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", contacts.Contacts)\n}\n",
-          "cli": "beeper-desktop-cli matrix:bridges:contacts list \\\n  --access-token 'My Access Token' \\\n  --bridge-id bridgeID",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $contacts = $client->matrix->bridges->contacts->list(\n    'bridgeID', loginID: 'bcc68892-b180-414f-9516-b4aadf7d0496'\n  );\n\n  var_dump($contacts);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/_matrix/client/unstable/com.beeper.bridge/$BRIDGE_ID/_matrix/provision/v3/contacts \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -13646,10 +13370,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/_matrix/client/unstable/com.beeper.bridge/$BRIDGE_ID/_matrix/provision/v3/contacts \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli matrix:bridges:contacts list \\\n  --access-token 'My Access Token' \\\n  --bridge-id bridgeID"
           }
         ]
       }
@@ -13712,7 +13432,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.matrix.bridges.users.search('bridgeID');\n\nconsole.log(response.results);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.matrix.bridges.users.search(\n    bridge_id=\"bridgeID\",\n)\nprint(response.results)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Matrix.Bridges.Users.Search(\n\t\tcontext.TODO(),\n\t\t\"bridgeID\",\n\t\tbeeperdesktopapi.MatrixBridgeUserSearchParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.Results)\n}\n",
-          "cli": "beeper-desktop-cli matrix:bridges:users search \\\n  --access-token 'My Access Token' \\\n  --bridge-id bridgeID",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $response = $client->matrix->bridges->users->search(\n    'bridgeID', loginID: 'bcc68892-b180-414f-9516-b4aadf7d0496', query: 'query'\n  );\n\n  var_dump($response);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/_matrix/client/unstable/com.beeper.bridge/$BRIDGE_ID/_matrix/provision/v3/search_users \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -13736,10 +13455,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/_matrix/client/unstable/com.beeper.bridge/$BRIDGE_ID/_matrix/provision/v3/search_users \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli matrix:bridges:users search \\\n  --access-token 'My Access Token' \\\n  --bridge-id bridgeID"
           }
         ]
       }
@@ -13778,7 +13493,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.matrix.bridges.users.resolve('identifier', { bridgeID: 'bridgeID' });\n\nconsole.log(response.id);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.matrix.bridges.users.resolve(\n    identifier=\"identifier\",\n    bridge_id=\"bridgeID\",\n)\nprint(response.id)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Matrix.Bridges.Users.Resolve(\n\t\tcontext.TODO(),\n\t\t\"identifier\",\n\t\tbeeperdesktopapi.MatrixBridgeUserResolveParams{\n\t\t\tBridgeID: \"bridgeID\",\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.ID)\n}\n",
-          "cli": "beeper-desktop-cli matrix:bridges:users resolve \\\n  --access-token 'My Access Token' \\\n  --bridge-id bridgeID \\\n  --identifier identifier",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $response = $client->matrix->bridges->users->resolve(\n    'identifier',\n    bridgeID: 'bridgeID',\n    loginID: 'bcc68892-b180-414f-9516-b4aadf7d0496',\n  );\n\n  var_dump($response);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/_matrix/client/unstable/com.beeper.bridge/$BRIDGE_ID/_matrix/provision/v3/resolve_identifier/$IDENTIFIER \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -13802,10 +13516,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/_matrix/client/unstable/com.beeper.bridge/$BRIDGE_ID/_matrix/provision/v3/resolve_identifier/$IDENTIFIER \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli matrix:bridges:users resolve \\\n  --access-token 'My Access Token' \\\n  --bridge-id bridgeID \\\n  --identifier identifier"
           }
         ]
       }
@@ -13849,7 +13559,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.matrix.bridges.rooms.createDm('identifier', { bridgeID: 'bridgeID' });\n\nconsole.log(response.id);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.matrix.bridges.rooms.create_dm(\n    identifier=\"identifier\",\n    bridge_id=\"bridgeID\",\n)\nprint(response.id)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Matrix.Bridges.Rooms.NewDm(\n\t\tcontext.TODO(),\n\t\t\"identifier\",\n\t\tbeeperdesktopapi.MatrixBridgeRoomNewDmParams{\n\t\t\tBridgeID: \"bridgeID\",\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.ID)\n}\n",
-          "cli": "beeper-desktop-cli matrix:bridges:rooms create-dm \\\n  --access-token 'My Access Token' \\\n  --bridge-id bridgeID \\\n  --identifier identifier",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $response = $client->matrix->bridges->rooms->createDm(\n    'identifier',\n    bridgeID: 'bridgeID',\n    loginID: 'bcc68892-b180-414f-9516-b4aadf7d0496',\n  );\n\n  var_dump($response);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/_matrix/client/unstable/com.beeper.bridge/$BRIDGE_ID/_matrix/provision/v3/create_dm/$IDENTIFIER \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -13873,10 +13582,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/_matrix/client/unstable/com.beeper.bridge/$BRIDGE_ID/_matrix/provision/v3/create_dm/$IDENTIFIER \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli matrix:bridges:rooms create-dm \\\n  --access-token 'My Access Token' \\\n  --bridge-id bridgeID \\\n  --identifier identifier"
           }
         ]
       }
@@ -13934,7 +13639,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.matrix.bridges.rooms.createGroup('groupType', {\n  bridgeID: 'bridgeID',\n});\n\nconsole.log(response.id);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.matrix.bridges.rooms.create_group(\n    group_type=\"groupType\",\n    bridge_id=\"bridgeID\",\n)\nprint(response.id)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Matrix.Bridges.Rooms.NewGroup(\n\t\tcontext.TODO(),\n\t\t\"groupType\",\n\t\tbeeperdesktopapi.MatrixBridgeRoomNewGroupParams{\n\t\t\tBridgeID: \"bridgeID\",\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.ID)\n}\n",
-          "cli": "beeper-desktop-cli matrix:bridges:rooms create-group \\\n  --access-token 'My Access Token' \\\n  --bridge-id bridgeID \\\n  --group-type groupType",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $response = $client->matrix->bridges->rooms->createGroup(\n    'groupType',\n    bridgeID: 'bridgeID',\n    loginID: 'bcc68892-b180-414f-9516-b4aadf7d0496',\n    avatar: ['url' => 'url'],\n    disappear: ['timer' => 0, 'type' => 'type'],\n    name: ['name' => 'name'],\n    parent: (object) [],\n    participants: ['string'],\n    roomID: 'room_id',\n    topic: ['topic' => 'topic'],\n    type: 'channel',\n    username: 'username',\n  );\n\n  var_dump($response);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/_matrix/client/unstable/com.beeper.bridge/$BRIDGE_ID/_matrix/provision/v3/create_group/$GROUP_TYPE \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -13958,10 +13662,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/_matrix/client/unstable/com.beeper.bridge/$BRIDGE_ID/_matrix/provision/v3/create_group/$GROUP_TYPE \\\n    -X POST \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli matrix:bridges:rooms create-group \\\n  --access-token 'My Access Token' \\\n  --bridge-id bridgeID \\\n  --group-type groupType"
           }
         ]
       }
@@ -13992,7 +13692,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst capability = await client.matrix.bridges.capabilities.retrieve('bridgeID');\n\nconsole.log(capability);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\ncapability = client.matrix.bridges.capabilities.retrieve(\n    \"bridgeID\",\n)\nprint(capability)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tcapability, err := client.Matrix.Bridges.Capabilities.Get(context.TODO(), \"bridgeID\")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", capability)\n}\n",
-          "cli": "beeper-desktop-cli matrix:bridges:capabilities retrieve \\\n  --access-token 'My Access Token' \\\n  --bridge-id bridgeID",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $capability = $client->matrix->bridges->capabilities->retrieve('bridgeID');\n\n  var_dump($capability);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/_matrix/client/unstable/com.beeper.bridge/$BRIDGE_ID/_matrix/provision/v3/capabilities \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -14016,10 +13715,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/_matrix/client/unstable/com.beeper.bridge/$BRIDGE_ID/_matrix/provision/v3/capabilities \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli matrix:bridges:capabilities retrieve \\\n  --access-token 'My Access Token' \\\n  --bridge-id bridgeID"
           }
         ]
       }
@@ -14149,7 +13844,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst accountData = await client.matrix.users.accountData.retrieve('org.example.custom.config', {\n  userId: '@alice:example.com',\n});\n\nconsole.log(accountData);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\naccount_data = client.matrix.users.account_data.retrieve(\n    type=\"org.example.custom.config\",\n    user_id=\"@alice:example.com\",\n)\nprint(account_data)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\taccountData, err := client.Matrix.Users.AccountData.Get(\n\t\tcontext.TODO(),\n\t\t\"org.example.custom.config\",\n\t\tbeeperdesktopapi.MatrixUserAccountDataGetParams{\n\t\t\tUserID: \"@alice:example.com\",\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", accountData)\n}\n",
-          "cli": "beeper-desktop-cli matrix:users:account-data retrieve \\\n  --access-token 'My Access Token' \\\n  --user-id @alice:example.com \\\n  --type org.example.custom.config",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $accountData = $client->matrix->users->accountData->retrieve(\n    'org.example.custom.config', userID: '@alice:example.com'\n  );\n\n  var_dump($accountData);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/_matrix/client/v3/user/$USER_ID/account_data/$TYPE \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -14173,10 +13867,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/_matrix/client/v3/user/$USER_ID/account_data/$TYPE \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli matrix:users:account-data retrieve \\\n  --access-token 'My Access Token' \\\n  --user-id @alice:example.com \\\n  --type org.example.custom.config"
           }
         ]
       },
@@ -14350,7 +14040,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst accountData = await client.matrix.users.accountData.update('org.example.custom.config', {\n  userId: '@alice:example.com',\n  body: { custom_account_data_key: 'custom_config_value' },\n});\n\nconsole.log(accountData);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\naccount_data = client.matrix.users.account_data.update(\n    type=\"org.example.custom.config\",\n    user_id=\"@alice:example.com\",\n    body={\n        \"custom_account_data_key\": \"custom_config_value\"\n    },\n)\nprint(account_data)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\taccountData, err := client.Matrix.Users.AccountData.Update(\n\t\tcontext.TODO(),\n\t\t\"org.example.custom.config\",\n\t\tbeeperdesktopapi.MatrixUserAccountDataUpdateParams{\n\t\t\tUserID: \"@alice:example.com\",\n\t\t\tBody: map[string]any{\n\t\t\t\t\"custom_account_data_key\": \"custom_config_value\",\n\t\t\t},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", accountData)\n}\n",
-          "cli": "beeper-desktop-cli matrix:users:account-data update \\\n  --access-token 'My Access Token' \\\n  --user-id @alice:example.com \\\n  --type org.example.custom.config \\\n  --body '{custom_account_data_key: custom_config_value}'",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $accountData = $client->matrix->users->accountData->update(\n    'org.example.custom.config',\n    userID: '@alice:example.com',\n    body: ['custom_account_data_key' => 'custom_config_value'],\n  );\n\n  var_dump($accountData);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/_matrix/client/v3/user/$USER_ID/account_data/$TYPE \\\n    -X PUT \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"custom_account_data_key\": \"custom_config_value\"\n        }'"
         },
@@ -14374,10 +14063,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/_matrix/client/v3/user/$USER_ID/account_data/$TYPE \\\n    -X PUT \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"custom_account_data_key\": \"custom_config_value\"\n        }'"
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli matrix:users:account-data update \\\n  --access-token 'My Access Token' \\\n  --user-id @alice:example.com \\\n  --type org.example.custom.config \\\n  --body '{custom_account_data_key: custom_config_value}'"
           }
         ]
       }
@@ -14553,7 +14238,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst accountData = await client.matrix.rooms.accountData.retrieve(\n  'org.example.custom.room.config',\n  { userId: '@alice:example.com', roomId: '!726s6s6q:example.com' },\n);\n\nconsole.log(accountData);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\naccount_data = client.matrix.rooms.account_data.retrieve(\n    type=\"org.example.custom.room.config\",\n    user_id=\"@alice:example.com\",\n    room_id=\"!726s6s6q:example.com\",\n)\nprint(account_data)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\taccountData, err := client.Matrix.Rooms.AccountData.Get(\n\t\tcontext.TODO(),\n\t\t\"org.example.custom.room.config\",\n\t\tbeeperdesktopapi.MatrixRoomAccountDataGetParams{\n\t\t\tUserID: \"@alice:example.com\",\n\t\t\tRoomID: \"!726s6s6q:example.com\",\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", accountData)\n}\n",
-          "cli": "beeper-desktop-cli matrix:rooms:account-data retrieve \\\n  --access-token 'My Access Token' \\\n  --user-id @alice:example.com \\\n  --room-id '!726s6s6q:example.com' \\\n  --type org.example.custom.room.config",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $accountData = $client->matrix->rooms->accountData->retrieve(\n    'org.example.custom.room.config',\n    userID: '@alice:example.com',\n    roomID: '!726s6s6q:example.com',\n  );\n\n  var_dump($accountData);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/_matrix/client/v3/user/$USER_ID/rooms/$ROOM_ID/account_data/$TYPE \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -14577,10 +14261,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/_matrix/client/v3/user/$USER_ID/rooms/$ROOM_ID/account_data/$TYPE \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli matrix:rooms:account-data retrieve \\\n  --access-token 'My Access Token' \\\n  --user-id @alice:example.com \\\n  --room-id '!726s6s6q:example.com' \\\n  --type org.example.custom.room.config"
           }
         ]
       },
@@ -14764,7 +14444,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst accountData = await client.matrix.rooms.accountData.update('org.example.custom.room.config', {\n  userId: '@alice:example.com',\n  roomId: '!726s6s6q:example.com',\n  body: { custom_account_data_key: 'custom_account_data_value' },\n});\n\nconsole.log(accountData);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\naccount_data = client.matrix.rooms.account_data.update(\n    type=\"org.example.custom.room.config\",\n    user_id=\"@alice:example.com\",\n    room_id=\"!726s6s6q:example.com\",\n    body={\n        \"custom_account_data_key\": \"custom_account_data_value\"\n    },\n)\nprint(account_data)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\taccountData, err := client.Matrix.Rooms.AccountData.Update(\n\t\tcontext.TODO(),\n\t\t\"org.example.custom.room.config\",\n\t\tbeeperdesktopapi.MatrixRoomAccountDataUpdateParams{\n\t\t\tUserID: \"@alice:example.com\",\n\t\t\tRoomID: \"!726s6s6q:example.com\",\n\t\t\tBody: map[string]any{\n\t\t\t\t\"custom_account_data_key\": \"custom_account_data_value\",\n\t\t\t},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", accountData)\n}\n",
-          "cli": "beeper-desktop-cli matrix:rooms:account-data update \\\n  --access-token 'My Access Token' \\\n  --user-id @alice:example.com \\\n  --room-id '!726s6s6q:example.com' \\\n  --type org.example.custom.room.config \\\n  --body '{custom_account_data_key: custom_account_data_value}'",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $accountData = $client->matrix->rooms->accountData->update(\n    'org.example.custom.room.config',\n    userID: '@alice:example.com',\n    roomID: '!726s6s6q:example.com',\n    body: ['custom_account_data_key' => 'custom_account_data_value'],\n  );\n\n  var_dump($accountData);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/_matrix/client/v3/user/$USER_ID/rooms/$ROOM_ID/account_data/$TYPE \\\n    -X PUT \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"custom_account_data_key\": \"custom_account_data_value\"\n        }'"
         },
@@ -14788,10 +14467,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/_matrix/client/v3/user/$USER_ID/rooms/$ROOM_ID/account_data/$TYPE \\\n    -X PUT \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"custom_account_data_key\": \"custom_account_data_value\"\n        }'"
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli matrix:rooms:account-data update \\\n  --access-token 'My Access Token' \\\n  --user-id @alice:example.com \\\n  --room-id '!726s6s6q:example.com' \\\n  --type org.example.custom.room.config \\\n  --body '{custom_account_data_key: custom_account_data_value}'"
           }
         ]
       }
@@ -15044,7 +14719,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst states = await client.matrix.rooms.state.list('!636q39766251:example.com');\n\nconsole.log(states);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nstates = client.matrix.rooms.state.list(\n    \"!636q39766251:example.com\",\n)\nprint(states)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tstates, err := client.Matrix.Rooms.State.List(context.TODO(), \"!636q39766251:example.com\")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", states)\n}\n",
-          "cli": "beeper-desktop-cli matrix:rooms:state list \\\n  --access-token 'My Access Token' \\\n  --room-id '!636q39766251:example.com'",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $states = $client->matrix->rooms->state->list('!636q39766251:example.com');\n\n  var_dump($states);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/_matrix/client/v3/rooms/$ROOM_ID/state \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -15068,10 +14742,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/_matrix/client/v3/rooms/$ROOM_ID/state \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli matrix:rooms:state list \\\n  --access-token 'My Access Token' \\\n  --room-id '!636q39766251:example.com'"
           }
         ]
       }
@@ -15152,7 +14822,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst state = await client.matrix.rooms.state.retrieve('state_key', {\n  roomId: '!636q39766251:example.com',\n  eventType: 'm.room.name',\n});\n\nconsole.log(state);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nstate = client.matrix.rooms.state.retrieve(\n    state_key=\"state_key\",\n    room_id=\"!636q39766251:example.com\",\n    event_type=\"m.room.name\",\n)\nprint(state)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tstate, err := client.Matrix.Rooms.State.Get(\n\t\tcontext.TODO(),\n\t\t\"state_key\",\n\t\tbeeperdesktopapi.MatrixRoomStateGetParams{\n\t\t\tRoomID:    \"!636q39766251:example.com\",\n\t\t\tEventType: \"m.room.name\",\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", state)\n}\n",
-          "cli": "beeper-desktop-cli matrix:rooms:state retrieve \\\n  --access-token 'My Access Token' \\\n  --room-id '!636q39766251:example.com' \\\n  --event-type m.room.name \\\n  --state-key state_key",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $state = $client->matrix->rooms->state->retrieve(\n    'state_key',\n    roomID: '!636q39766251:example.com',\n    eventType: 'm.room.name',\n    format: 'content',\n  );\n\n  var_dump($state);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/_matrix/client/v3/rooms/$ROOM_ID/state/$EVENT_TYPE/$STATE_KEY \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -15176,10 +14845,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/_matrix/client/v3/rooms/$ROOM_ID/state/$EVENT_TYPE/$STATE_KEY \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli matrix:rooms:state retrieve \\\n  --access-token 'My Access Token' \\\n  --room-id '!636q39766251:example.com' \\\n  --event-type m.room.name \\\n  --state-key state_key"
           }
         ]
       }
@@ -15411,7 +15076,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst event = await client.matrix.rooms.events.retrieve('$asfDuShaf7Gafaw:matrix.org', {\n  roomId: '!636q39766251:matrix.org',\n});\n\nconsole.log(event.event_id);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nevent = client.matrix.rooms.events.retrieve(\n    event_id=\"$asfDuShaf7Gafaw:matrix.org\",\n    room_id=\"!636q39766251:matrix.org\",\n)\nprint(event.event_id)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tevent, err := client.Matrix.Rooms.Events.Get(\n\t\tcontext.TODO(),\n\t\t\"$asfDuShaf7Gafaw:matrix.org\",\n\t\tbeeperdesktopapi.MatrixRoomEventGetParams{\n\t\t\tRoomID: \"!636q39766251:matrix.org\",\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", event.EventID)\n}\n",
-          "cli": "beeper-desktop-cli matrix:rooms:events retrieve \\\n  --access-token 'My Access Token' \\\n  --room-id '!636q39766251:matrix.org' \\\n  --event-id '$asfDuShaf7Gafaw:matrix.org'",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $event = $client->matrix->rooms->events->retrieve(\n    '$asfDuShaf7Gafaw:matrix.org', roomID: '!636q39766251:matrix.org'\n  );\n\n  var_dump($event);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/_matrix/client/v3/rooms/$ROOM_ID/event/$EVENT_ID \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -15435,10 +15099,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/_matrix/client/v3/rooms/$ROOM_ID/event/$EVENT_ID \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli matrix:rooms:events retrieve \\\n  --access-token 'My Access Token' \\\n  --room-id '!636q39766251:matrix.org' \\\n  --event-id '$asfDuShaf7Gafaw:matrix.org'"
           }
         ]
       }
@@ -15588,7 +15248,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.matrix.users.retrieveProfile('@alice:example.com');\n\nconsole.log(response.avatar_url);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.matrix.users.retrieve_profile(\n    \"@alice:example.com\",\n)\nprint(response.avatar_url)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Matrix.Users.GetProfile(context.TODO(), \"@alice:example.com\")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.AvatarURL)\n}\n",
-          "cli": "beeper-desktop-cli matrix:users retrieve-profile \\\n  --access-token 'My Access Token' \\\n  --user-id @alice:example.com",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $response = $client->matrix->users->retrieveProfile('@alice:example.com');\n\n  var_dump($response);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/_matrix/client/v3/profile/$USER_ID \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
         },
@@ -15612,10 +15271,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/_matrix/client/v3/profile/$USER_ID \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\""
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli matrix:users retrieve-profile \\\n  --access-token 'My Access Token' \\\n  --user-id @alice:example.com"
           }
         ]
       }
@@ -15829,7 +15484,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.matrix.rooms.join('!monkeys:matrix.org');\n\nconsole.log(response.room_id);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.matrix.rooms.join(\n    room_id_or_alias=\"!monkeys:matrix.org\",\n)\nprint(response.room_id)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Matrix.Rooms.Join(\n\t\tcontext.TODO(),\n\t\t\"!monkeys:matrix.org\",\n\t\tbeeperdesktopapi.MatrixRoomJoinParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response.RoomID)\n}\n",
-          "cli": "beeper-desktop-cli matrix:rooms join \\\n  --access-token 'My Access Token' \\\n  --room-id-or-alias '!monkeys:matrix.org'",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $response = $client->matrix->rooms->join(\n    '!monkeys:matrix.org',\n    via: ['string'],\n    reason: 'Looking for support',\n    thirdPartySigned: [\n      'token' => 'random8nonce',\n      'mxid' => 'bob',\n      'sender' => 'alice',\n      'signatures' => ['example.org' => ['ed25519:0' => 'some9signature']],\n    ],\n  );\n\n  var_dump($response);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/_matrix/client/v3/join/$ROOM_ID_OR_ALIAS \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"reason\": \"Looking for support\"\n        }'"
         },
@@ -15853,10 +15507,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/_matrix/client/v3/join/$ROOM_ID_OR_ALIAS \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"reason\": \"Looking for support\"\n        }'"
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli matrix:rooms join \\\n  --access-token 'My Access Token' \\\n  --room-id-or-alias '!monkeys:matrix.org'"
           }
         ]
       }
@@ -15978,7 +15628,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.matrix.rooms.leave('!nkl290a:matrix.org');\n\nconsole.log(response);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nresponse = client.matrix.rooms.leave(\n    room_id=\"!nkl290a:matrix.org\",\n)\nprint(response)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\tresponse, err := client.Matrix.Rooms.Leave(\n\t\tcontext.TODO(),\n\t\t\"!nkl290a:matrix.org\",\n\t\tbeeperdesktopapi.MatrixRoomLeaveParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", response)\n}\n",
-          "cli": "beeper-desktop-cli matrix:rooms leave \\\n  --access-token 'My Access Token' \\\n  --room-id '!nkl290a:matrix.org'",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $response = $client->matrix->rooms->leave(\n    '!nkl290a:matrix.org', reason: 'Saying farewell - thanks for the support!'\n  );\n\n  var_dump($response);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/_matrix/client/v3/rooms/$ROOM_ID/leave \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"reason\": \"Saying farewell - thanks for the support!\"\n        }'"
         },
@@ -16002,10 +15651,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/_matrix/client/v3/rooms/$ROOM_ID/leave \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"reason\": \"Saying farewell - thanks for the support!\"\n        }'"
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli matrix:rooms leave \\\n  --access-token 'My Access Token' \\\n  --room-id '!nkl290a:matrix.org'"
           }
         ]
       }
@@ -16248,7 +15893,6 @@
           "typescript": "import BeeperDesktop from '@beeper/desktop-api';\n\nconst client = new BeeperDesktop({\n  accessToken: process.env['BEEPER_ACCESS_TOKEN'], // This is the default and can be omitted\n});\n\nconst room = await client.matrix.rooms.create();\n\nconsole.log(room.room_id);",
           "python": "import os\nfrom beeper_desktop_api import BeeperDesktop\n\nclient = BeeperDesktop(\n    access_token=os.environ.get(\"BEEPER_ACCESS_TOKEN\"),  # This is the default and can be omitted\n)\nroom = client.matrix.rooms.create()\nprint(room.room_id)",
           "go": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/beeper/desktop-api-go\"\n\t\"github.com/beeper/desktop-api-go/option\"\n)\n\nfunc main() {\n\tclient := beeperdesktopapi.NewClient(\n\t\toption.WithAccessToken(\"My Access Token\"),\n\t)\n\troom, err := client.Matrix.Rooms.New(context.TODO(), beeperdesktopapi.MatrixRoomNewParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", room.RoomID)\n}\n",
-          "cli": "beeper-desktop-cli matrix:rooms create \\\n  --access-token 'My Access Token'",
           "php": "<?php\n\nrequire_once dirname(__DIR__) . '/vendor/autoload.php';\n\nuse BeeperDesktop\\Client;\nuse BeeperDesktop\\Core\\Exceptions\\APIException;\n\n$client = new Client(\n  accessToken: getenv('BEEPER_ACCESS_TOKEN') ?: 'My Access Token'\n);\n\ntry {\n  $room = $client->matrix->rooms->create(\n    creationContent: ['m.federate' => false],\n    initialState: [\n      ['content' => (object) [], 'type' => 'type', 'stateKey' => 'state_key']\n    ],\n    invite: ['string'],\n    invite3pid: [\n      [\n        'address' => 'cheeky@monkey.com',\n        'idAccessToken' => 'abc123_OpaqueString',\n        'idServer' => 'matrix.org',\n        'medium' => 'email',\n      ],\n    ],\n    isDirect: true,\n    name: 'The Grand Duke Pub',\n    powerLevelContentOverride: (object) [],\n    preset: 'public_chat',\n    roomAliasName: 'thepub',\n    roomVersion: '1',\n    topic: 'All about happy hour',\n    visibility: 'public',\n  );\n\n  var_dump($room);\n} catch (APIException $e) {\n  echo $e->getMessage();\n}",
           "curl": "curl http://localhost:23373/_matrix/client/v3/createRoom \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"creation_content\": {\n            \"m.federate\": false\n          },\n          \"name\": \"The Grand Duke Pub\",\n          \"preset\": \"public_chat\",\n          \"room_alias_name\": \"thepub\",\n          \"room_version\": \"1\",\n          \"topic\": \"All about happy hour\"\n        }'"
         },
@@ -16272,10 +15916,6 @@
           {
             "lang": "cURL",
             "source": "curl http://localhost:23373/_matrix/client/v3/createRoom \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: Bearer $BEEPER_ACCESS_TOKEN\" \\\n    -d '{\n          \"creation_content\": {\n            \"m.federate\": false\n          },\n          \"name\": \"The Grand Duke Pub\",\n          \"preset\": \"public_chat\",\n          \"room_alias_name\": \"thepub\",\n          \"room_version\": \"1\",\n          \"topic\": \"All about happy hour\"\n        }'"
-          },
-          {
-            "lang": "CLI",
-            "source": "beeper-desktop-cli matrix:rooms create \\\n  --access-token 'My Access Token'"
           }
         ]
       }
