@@ -25,10 +25,6 @@
       "description": "Top-level actions: focus the app window, jump to a chat, or run unified search across chats and messages."
     },
     {
-      "name": "App Onboarding",
-      "description": "First-party sign-in and encrypted messaging setup for Beeper Desktop."
-    },
-    {
       "name": "Server",
       "description": "Server discovery and capability metadata. Use /v1/info before authentication setup."
     },
@@ -51,6 +47,10 @@
     {
       "name": "Files",
       "description": "File upload, download, and streaming helpers for message attachments and drafts."
+    },
+    {
+      "name": "App Onboarding",
+      "description": "First-party sign-in and encrypted messaging setup for Beeper Desktop."
     },
     {
       "name": "Matrix",
