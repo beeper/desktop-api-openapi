@@ -1741,8 +1741,7 @@
           {
             "schema": {
               "type": "integer",
-              "minimum": 0,
-              "exclusiveMinimum": true,
+              "minimum": 1,
               "maximum": 20,
               "default": 20,
               "description": "Maximum number of messages to return.",
@@ -2516,14 +2515,14 @@
           {
             "schema": {
               "type": "string",
-              "description": "Opaque pagination cursor; do not inspect. Use together with 'direction'.",
+              "description": "Pagination cursor for this chat's message list. Use a message `sortKey` returned in the page's `items`, together with `direction`. Message IDs are not valid cursors. Treat the value as opaque; do not parse it.",
               "example": "1725489123456|c29tZUltc2dQYWdl",
               "x-stainless-pagination-property": {
                 "purpose": "next_cursor_param"
               }
             },
             "required": false,
-            "description": "Opaque pagination cursor; do not inspect. Use together with 'direction'.",
+            "description": "Pagination cursor for this chat's message list. Use a message `sortKey` returned in the page's `items`, together with `direction`. Message IDs are not valid cursors. Treat the value as opaque; do not parse it.",
             "name": "cursor",
             "in": "query"
           },
